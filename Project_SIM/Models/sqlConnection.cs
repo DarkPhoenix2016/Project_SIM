@@ -1,164 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 using MySql.Data.MySqlClient;
-
 
 namespace Project_SIM.Models
 {
-    
-    public class SqlConnectionClass
+    // Class for managing MySQL database connections
+    public static class SqlConnectionClass
     {
-        private MySqlConnection connection;
-        private string server;
-        private string database;
-        private string uid;
-        private string password;
-        private readonly string configFilePath;
+        private static string connectionString;
+        private static string server;
+        private static string database;
+        private static string uid;
+        private static string password;
 
-        // Constructor with default server details
-        public SqlConnectionClass()
+        // Constructor to initialize the class
+        static SqlConnectionClass()
         {
-            this.configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "resources", "server_config.txt");
-            this.LoadServerDetails();
-            this.Initialize();
+            Initialize();
         }
 
-        // Initialize values with custom server details
-        private void Initialize()
+        // Initialize connection details from application settings
+        private static void Initialize()
         {
-            string connectionString = $"SERVER={this.server};DATABASE={this.database};UID={this.uid};PASSWORD={this.password};SslMode=None;";
-            connection = new MySqlConnection(connectionString);
+            server = Properties.Settings.Default.Server;
+            database = Properties.Settings.Default.Database;
+            uid = Properties.Settings.Default.Uid;
+            password = Properties.Settings.Default.Password;
+
+            UpdateConnectionString();
         }
 
-        // Open connection to the database
-        public bool OpenConnection()
+        // Update the connection string based on current details
+        private static void UpdateConnectionString()
         {
-            try
-            {
-                connection.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                return false;
-            }
+            connectionString = $"SERVER={server};DATABASE={database};UID={uid};PASSWORD={password};";
         }
 
-        // Close connection to the database
-        public bool CloseConnection()
+        // Get the current connection string
+        public static string GetConnectionString()
         {
-            try
-            {
-                connection.Close();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                return false;
-            }
+            return connectionString;
         }
 
-        // Execute a query and return a reader
-        public MySqlDataReader ExecuteQuery(string query)
+        // Set new server details, save to settings, and update connection string
+        public static void SetServerDetails(string newServer, string newDatabase, string newUid, string newPassword)
         {
-            if (this.OpenConnection())
-            {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
-                    return cmd.ExecuteReader();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error executing query: {ex.Message}");
-                    return null;
-                }
-                finally
-                {
-                    this.CloseConnection();
-                }
-            }
+            server = newServer;
+            database = newDatabase;
+            uid = newUid;
+            password = newPassword;
 
-            return null;
+            SaveServerDetails();
+            UpdateConnectionString();
         }
 
-        // Set new server details
-        public void SetServerDetails(string server, string database, string uid, string password)
+        // Save current server details to application settings
+        private static void SaveServerDetails()
         {
-            this.server = server;
-            this.database = database;
-            this.uid = uid;
-            this.password = password;
+            Properties.Settings.Default.Server = server;
+            Properties.Settings.Default.Database = database;
+            Properties.Settings.Default.Uid = uid;
+            Properties.Settings.Default.Password = password;
 
-            this.SaveServerDetails();
-            this.Initialize();
-        }
-
-        // Save server details to a file
-        private void SaveServerDetails()
-        {
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(this.configFilePath))
-                {
-                    writer.WriteLine($"Server={this.server}");
-                    writer.WriteLine($"Database={this.database}");
-                    writer.WriteLine($"Uid={this.uid}");
-                    writer.WriteLine($"Password={this.password}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving server details: {ex.Message}");
-            }
-        }
-
-        // Load server details from a file
-        private void LoadServerDetails()
-        {
-            try
-            {
-                if (File.Exists(this.configFilePath))
-                {
-                    string[] lines = File.ReadAllLines(this.configFilePath);
-                    foreach (string line in lines)
-                    {
-                        string[] parts = line.Split('=');
-                        if (parts.Length == 2)
-                        {
-                            string key = parts[0].Trim();
-                            string value = parts[1].Trim();
-
-                            switch (key)
-                            {
-                                case "Server":
-                                    this.server = value;
-                                    break;
-                                case "Database":
-                                    this.database = value;
-                                    break;
-                                case "Uid":
-                                    this.uid = value;
-                                    break;
-                                case "Password":
-                                    this.password = value;
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading server details: {ex.Message}");
-            }
+            Properties.Settings.Default.Save();
         }
     }
-
 }

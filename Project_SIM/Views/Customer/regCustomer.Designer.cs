@@ -38,9 +38,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSubmit = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtConfirmPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtConfirmLoyaltyNumber = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -130,6 +130,7 @@
             this.btnClose.TabIndex = 8;
             this.btnClose.Text = "Cancel";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnSubmit
             // 
@@ -142,16 +143,17 @@
             this.btnSubmit.TabIndex = 7;
             this.btnSubmit.Text = "Register";
             this.btnSubmit.UseVisualStyleBackColor = false;
+            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
-            // textBox1
+            // txtConfirmPassword
             // 
-            this.textBox1.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(243, 267);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.PasswordChar = '*';
-            this.textBox1.Size = new System.Drawing.Size(269, 31);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.WordWrap = false;
+            this.txtConfirmPassword.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtConfirmPassword.Location = new System.Drawing.Point(243, 267);
+            this.txtConfirmPassword.Name = "txtConfirmPassword";
+            this.txtConfirmPassword.PasswordChar = '*';
+            this.txtConfirmPassword.Size = new System.Drawing.Size(269, 31);
+            this.txtConfirmPassword.TabIndex = 4;
+            this.txtConfirmPassword.WordWrap = false;
             // 
             // label5
             // 
@@ -163,14 +165,14 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "Confirm Password";
             // 
-            // textBox2
+            // txtConfirmLoyaltyNumber
             // 
-            this.textBox2.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(243, 385);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(269, 31);
-            this.textBox2.TabIndex = 6;
-            this.textBox2.WordWrap = false;
+            this.txtConfirmLoyaltyNumber.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtConfirmLoyaltyNumber.Location = new System.Drawing.Point(243, 385);
+            this.txtConfirmLoyaltyNumber.Name = "txtConfirmLoyaltyNumber";
+            this.txtConfirmLoyaltyNumber.Size = new System.Drawing.Size(269, 31);
+            this.txtConfirmLoyaltyNumber.TabIndex = 6;
+            this.txtConfirmLoyaltyNumber.WordWrap = false;
             // 
             // label6
             // 
@@ -187,9 +189,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(542, 541);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.txtConfirmLoyaltyNumber);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtConfirmPassword);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.btnClose);
@@ -224,9 +226,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnSubmit;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtConfirmPassword;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtConfirmLoyaltyNumber;
         private System.Windows.Forms.Label label6;
     }
 }

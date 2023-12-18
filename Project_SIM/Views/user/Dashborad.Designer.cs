@@ -53,11 +53,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtBoxQuantity = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.txtBoxLoyalty = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.loyaltyName = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.loyaltyPointBalance = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtBoxSubTotal = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -331,16 +331,18 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Loyalty Number";
             // 
-            // textBox4
+            // txtBoxLoyalty
             // 
-            this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox4.Cursor = System.Windows.Forms.Cursors.No;
-            this.textBox4.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox4.Location = new System.Drawing.Point(159, 14);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(265, 31);
-            this.textBox4.TabIndex = 8;
+            this.txtBoxLoyalty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtBoxLoyalty.Cursor = System.Windows.Forms.Cursors.No;
+            this.txtBoxLoyalty.Enabled = false;
+            this.txtBoxLoyalty.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBoxLoyalty.Location = new System.Drawing.Point(159, 14);
+            this.txtBoxLoyalty.Name = "txtBoxLoyalty";
+            this.txtBoxLoyalty.ReadOnly = true;
+            this.txtBoxLoyalty.Size = new System.Drawing.Size(265, 31);
+            this.txtBoxLoyalty.TabIndex = 8;
+            this.txtBoxLoyalty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LoyaltyNumber_KeyPress);
             // 
             // label5
             // 
@@ -353,16 +355,16 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "Customer Name";
             // 
-            // label6
+            // loyaltyName
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(159, 59);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(135, 28);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "F Name L Name";
+            this.loyaltyName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.loyaltyName.AutoSize = true;
+            this.loyaltyName.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loyaltyName.Location = new System.Drawing.Point(159, 59);
+            this.loyaltyName.Name = "loyaltyName";
+            this.loyaltyName.Size = new System.Drawing.Size(135, 28);
+            this.loyaltyName.TabIndex = 11;
+            this.loyaltyName.Text = "F Name L Name";
             // 
             // label7
             // 
@@ -375,16 +377,16 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Point Balance";
             // 
-            // label8
+            // loyaltyPointBalance
             // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Poppins", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(159, 97);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(27, 34);
-            this.label8.TabIndex = 13;
-            this.label8.Text = "0";
+            this.loyaltyPointBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.loyaltyPointBalance.AutoSize = true;
+            this.loyaltyPointBalance.Font = new System.Drawing.Font("Poppins", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loyaltyPointBalance.Location = new System.Drawing.Point(159, 97);
+            this.loyaltyPointBalance.Name = "loyaltyPointBalance";
+            this.loyaltyPointBalance.Size = new System.Drawing.Size(27, 34);
+            this.loyaltyPointBalance.TabIndex = 13;
+            this.loyaltyPointBalance.Text = "0";
             // 
             // panel2
             // 
@@ -394,12 +396,12 @@
             this.panel2.BackColor = System.Drawing.Color.White;
             this.panel2.Controls.Add(this.txtBoxSubTotal);
             this.panel2.Controls.Add(this.label10);
-            this.panel2.Controls.Add(this.label8);
+            this.panel2.Controls.Add(this.loyaltyPointBalance);
             this.panel2.Controls.Add(this.label7);
-            this.panel2.Controls.Add(this.label6);
+            this.panel2.Controls.Add(this.loyaltyName);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.textBox4);
+            this.panel2.Controls.Add(this.txtBoxLoyalty);
             this.panel2.Location = new System.Drawing.Point(10, 589);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(854, 141);
@@ -409,6 +411,7 @@
             // 
             this.txtBoxSubTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBoxSubTotal.Cursor = System.Windows.Forms.Cursors.No;
+            this.txtBoxSubTotal.Enabled = false;
             this.txtBoxSubTotal.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxSubTotal.Location = new System.Drawing.Point(588, 14);
             this.txtBoxSubTotal.Name = "txtBoxSubTotal";
@@ -490,7 +493,7 @@
             this.MinimumSize = new System.Drawing.Size(1260, 760);
             this.Name = "Dashborad";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = " ";
+            this.Text = "Project SIM - User Dashborad";
             this.ResizeEnd += new System.EventHandler(this.SimUserScreen_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form_KeyDown);
             this.Resize += new System.EventHandler(this.SimUserScreen_Resize);
@@ -521,11 +524,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtBoxQuantity;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox txtBoxLoyalty;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label loyaltyName;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label loyaltyPointBalance;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtBoxTotal;
