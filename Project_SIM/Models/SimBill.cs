@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Drawing;
 using Windows.Media.AppBroadcasting;
 
 namespace Project_SIM.Models
@@ -274,6 +275,114 @@ namespace Project_SIM.Models
             }
         }
 
+        public List<ReturnItem> GetBilledItems(string billNumber)
+        {
+            List<ReturnItem> listBilledItems = new List<ReturnItem>();
+
+            string query = "SELECT * FROM combined_billed_retuned_products WHERE BillNumber = @BillNumber";
+
+            using (MySqlConnection sqlConnection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    sqlConnection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, sqlConnection))
+                    {
+                        cmd.Parameters.AddWithValue("@BillNumber", billNumber);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    ReturnItem returnItem = new ReturnItem
+                                    {
+                                        BillNumber = reader["BillNumber"].ToString(),
+                                        TransactionDetailID = Convert.ToInt32(reader["TransactionDetailID"]),
+                                        ProductID = Convert.ToInt32(reader["ProductID"]),
+                                        ProductCode = reader["ProductCode"].ToString(),
+                                        ProductName = reader["ProductName"].ToString(),
+                                        BilledQuantity = Convert.ToDouble(reader["BilledQuantity"]),
+                                        Unit = reader["UnitOfMeasurement"].ToString(),
+                                        Reason = reader["Reason"].ToString()
+                                    };
+                                    returnItem.ReturnedQuantity = 0.0;
+                                    if (!String.IsNullOrEmpty(reader["ReturnedQuantity"].ToString()))
+                                    {
+                                        returnItem.ReturnedQuantity = Convert.ToDouble(reader["ReturnedQuantity"]);
+                                    }
+
+                                    listBilledItems.Add(returnItem);
+                                }
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+
+                        return listBilledItems;
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine($"Error executing query: {ex.Message}");
+                    return null;
+                }
+            }
+        }
+
+
+        public bool CreateRetrunedItem(ReturnItem returnItem, int loggedUserId)
+        {
+            try
+            {
+                using (MySqlConnection sqlConnection = new MySqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+
+                    using (MySqlTransaction transaction = sqlConnection.BeginTransaction())
+                    {
+                        try
+                        {
+                            // Assuming you have variables like insertedTransactionId, loyaltyPointPaymentID, etc.
+                            string queryAddTransactionPayments = "INSERT INTO `bill_return_item`(`BillNumber`, `TransactionDetailId`, `ReturnedQuantity`, `Unit`, `Reason`, `UserID`) VALUES (@BillNumber, @TransactionDetailId, @ReturnedQuantity, @Unit, @Reason, @UserID)";
+
+                            using (MySqlCommand cmd = new MySqlCommand(queryAddTransactionPayments, sqlConnection, transaction))
+                            {
+                                // Assuming that you have properties like returnItem.BillNumber, returnItem.TransactionDetailID, etc.
+                                cmd.Parameters.AddWithValue("@BillNumber", returnItem.BillNumber);
+                                cmd.Parameters.AddWithValue("@TransactionDetailId", returnItem.TransactionDetailID);
+                                cmd.Parameters.AddWithValue("@ReturnedQuantity", returnItem.ToReturnQuantity);
+                                cmd.Parameters.AddWithValue("@Unit", returnItem.Unit);
+                                cmd.Parameters.AddWithValue("@Reason", returnItem.Reason);
+                                cmd.Parameters.AddWithValue("@UserID", loggedUserId);
+
+                                cmd.ExecuteNonQuery();
+                            }
+
+                            transaction.Commit();
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            FormatMaker.ShowErrorMessageBox($"Error during transaction: {ex.Message}");
+
+                            // Rollback the transaction in case of an error
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                FormatMaker.ShowErrorMessageBox($"Error connecting to the database: {ex.Message}");
+                return false;
+            }
+        }
 
     }
 
@@ -291,7 +400,7 @@ namespace Project_SIM.Models
     public class ReturnItem
     {
         public string BillNumber { get; set; }
-        public int TransactionId {  get; set; }
+        public int TransactionDetailID {  get; set; }
         public int ProductID { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }

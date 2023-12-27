@@ -85,6 +85,7 @@
             this.btnSearchBill.TabIndex = 2;
             this.btnSearchBill.Text = "Load Bill";
             this.btnSearchBill.UseVisualStyleBackColor = true;
+            this.btnSearchBill.Click += new System.EventHandler(this.btnSearchBill_Click);
             // 
             // listViewBilledItems
             // 
@@ -96,6 +97,7 @@
             this.returnedQuantity});
             this.listViewBilledItems.Enabled = false;
             this.listViewBilledItems.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listViewBilledItems.FullRowSelect = true;
             this.listViewBilledItems.HideSelection = false;
             this.listViewBilledItems.Location = new System.Drawing.Point(23, 194);
             this.listViewBilledItems.Name = "listViewBilledItems";
@@ -103,6 +105,7 @@
             this.listViewBilledItems.TabIndex = 3;
             this.listViewBilledItems.UseCompatibleStateImageBehavior = false;
             this.listViewBilledItems.View = System.Windows.Forms.View.Details;
+            this.listViewBilledItems.SelectedIndexChanged += new System.EventHandler(this.listViewBilledItems_SelectedIndexChanged);
             // 
             // no
             // 
@@ -134,6 +137,7 @@
             this.btnClearBill.TabIndex = 5;
             this.btnClearBill.Text = "Clear";
             this.btnClearBill.UseVisualStyleBackColor = true;
+            this.btnClearBill.Click += new System.EventHandler(this.btnClearBill_Click);
             // 
             // label2
             // 
@@ -230,6 +234,7 @@
             this.txtBilledQuantity.Name = "txtBilledQuantity";
             this.txtBilledQuantity.Size = new System.Drawing.Size(281, 31);
             this.txtBilledQuantity.TabIndex = 15;
+            this.txtBilledQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // txtReturnedQunatity
             // 
@@ -240,6 +245,7 @@
             this.txtReturnedQunatity.Name = "txtReturnedQunatity";
             this.txtReturnedQunatity.Size = new System.Drawing.Size(281, 31);
             this.txtReturnedQunatity.TabIndex = 16;
+            this.txtReturnedQunatity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // btnReturn
             // 
@@ -251,6 +257,7 @@
             this.btnReturn.TabIndex = 17;
             this.btnReturn.Text = "Return ";
             this.btnReturn.UseVisualStyleBackColor = true;
+            this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
             // lblLoggedUser
             // 
@@ -270,6 +277,8 @@
             this.txtNowReturningQuantity.Name = "txtNowReturningQuantity";
             this.txtNowReturningQuantity.Size = new System.Drawing.Size(281, 31);
             this.txtNowReturningQuantity.TabIndex = 20;
+            this.txtNowReturningQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtNowReturningQuantity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNowReturningQuantity_KeyPress);
             // 
             // label8
             // 
@@ -290,12 +299,14 @@
             this.btnClose.TabIndex = 21;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // txtReturnReason
             // 
             this.txtReturnReason.Enabled = false;
             this.txtReturnReason.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtReturnReason.Location = new System.Drawing.Point(895, 476);
+            this.txtReturnReason.MaxLength = 200;
             this.txtReturnReason.Name = "txtReturnReason";
             this.txtReturnReason.Size = new System.Drawing.Size(281, 31);
             this.txtReturnReason.TabIndex = 23;
@@ -343,6 +354,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1200, 600);
             this.Name = "ReturnScreen";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Return Item";
             this.Load += new System.EventHandler(this.ReturnScreen_Load);
             this.ResumeLayout(false);
