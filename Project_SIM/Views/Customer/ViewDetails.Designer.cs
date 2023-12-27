@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewDetails));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -96,6 +97,7 @@
             this.txtName.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtName.Location = new System.Drawing.Point(208, 79);
             this.txtName.Name = "txtName";
+            this.txtName.ReadOnly = true;
             this.txtName.Size = new System.Drawing.Size(259, 31);
             this.txtName.TabIndex = 5;
             // 
@@ -104,6 +106,7 @@
             this.txtDateOfJoin.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDateOfJoin.Location = new System.Drawing.Point(208, 134);
             this.txtDateOfJoin.Name = "txtDateOfJoin";
+            this.txtDateOfJoin.ReadOnly = true;
             this.txtDateOfJoin.Size = new System.Drawing.Size(259, 31);
             this.txtDateOfJoin.TabIndex = 6;
             // 
@@ -112,6 +115,7 @@
             this.txtUsername.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUsername.Location = new System.Drawing.Point(208, 189);
             this.txtUsername.Name = "txtUsername";
+            this.txtUsername.ReadOnly = true;
             this.txtUsername.Size = new System.Drawing.Size(259, 31);
             this.txtUsername.TabIndex = 7;
             // 
@@ -120,6 +124,7 @@
             this.txtLoyaltyNumber.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLoyaltyNumber.Location = new System.Drawing.Point(208, 244);
             this.txtLoyaltyNumber.Name = "txtLoyaltyNumber";
+            this.txtLoyaltyNumber.ReadOnly = true;
             this.txtLoyaltyNumber.Size = new System.Drawing.Size(259, 31);
             this.txtLoyaltyNumber.TabIndex = 8;
             // 
@@ -128,6 +133,7 @@
             this.txtLoyaltyPoints.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLoyaltyPoints.Location = new System.Drawing.Point(208, 299);
             this.txtLoyaltyPoints.Name = "txtLoyaltyPoints";
+            this.txtLoyaltyPoints.ReadOnly = true;
             this.txtLoyaltyPoints.Size = new System.Drawing.Size(259, 31);
             this.txtLoyaltyPoints.TabIndex = 9;
             // 
@@ -140,6 +146,7 @@
             this.btnClose.TabIndex = 10;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // ViewDetails
             // 
@@ -157,6 +164,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ViewDetails";

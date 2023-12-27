@@ -16,7 +16,9 @@ namespace Project_SIM
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Views.user.Dashborad());
+            Views.OpenScreen startScreen = new Views.OpenScreen();
+            startScreen.Show();
+            Application.Run();
         }
     }
 }

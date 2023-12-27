@@ -14,6 +14,8 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,10 +28,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,6 +52,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Project_SIM.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
@@ -87,6 +90,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Athenticator.cs" />
+    <Compile Include="Models\FormatMaker.cs" />
+    <Compile Include="Models\SessionManager.cs" />
+    <Compile Include="Models\SimBill.cs" />
     <Compile Include="Models\SimCustomer.cs" />
     <Compile Include="Models\SimManager.cs" />
     <Compile Include="Models\SimProduct.cs" />
@@ -142,6 +148,12 @@
     </Compile>
     <Compile Include="Views\Customer\ViewDetails.Designer.cs">
       <DependentUpon>ViewDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LogingForm.Designer.cs">
+      <DependentUpon>LogingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Manager\Dashborad.cs">
       <SubType>Form</SubType>
@@ -227,11 +239,29 @@
     <Compile Include="Views\StoreKeeper\Stores.Designer.cs">
       <DependentUpon>Stores.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\user\Dashborad.cs">
+    <Compile Include="Views\User\Dashborad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\user\Dashborad.Designer.cs">
+    <Compile Include="Views\User\Dashborad.Designer.cs">
       <DependentUpon>Dashborad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\InventoryList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\User\InventoryList.Designer.cs">
+      <DependentUpon>InventoryList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\PaymentSceren.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\User\PaymentSceren.Designer.cs">
+      <DependentUpon>PaymentSceren.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\User\ReturnScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\User\ReturnScreen.Designer.cs">
+      <DependentUpon>ReturnScreen.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -267,8 +297,23 @@
     <EmbeddedResource Include="Views\Customer\ViewDetails.resx">
       <DependentUpon>ViewDetails.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\user\Dashborad.resx">
+    <EmbeddedResource Include="Views\LogingForm.resx">
+      <DependentUpon>LogingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\OpenScreen.resx">
+      <DependentUpon>OpenScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\User\Dashborad.resx">
       <DependentUpon>Dashborad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\User\InventoryList.resx">
+      <DependentUpon>InventoryList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\User\PaymentSceren.resx">
+      <DependentUpon>PaymentSceren.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\User\ReturnScreen.resx">
+      <DependentUpon>ReturnScreen.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -283,10 +328,36 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="resources\icons\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="icon.ico" />
+    <Content Include="resources\artwork.png" />
+    <Content Include="resources\icons\icon.ico" />
+    <Content Include="resources\icons\admin.png" />
+    <Content Include="resources\icons\admin_190px.png" />
+    <Content Include="resources\icons\arrow-left-black.png" />
+    <Content Include="resources\icons\arrow-left-white.png" />
+    <Content Include="resources\icons\close-square-black.png" />
+    <Content Include="resources\icons\close-square-white.png" />
+    <Content Include="resources\icons\close-square.png" />
+    <Content Include="resources\icons\close.png" />
+    <Content Include="resources\icons\Customer.png" />
+    <Content Include="resources\icons\icon.png" />
+    <Content Include="resources\icons\Inventory.png" />
+    <Content Include="resources\icons\logout-24.png" />
+    <Content Include="resources\icons\logout.png" />
+    <Content Include="resources\icons\Manager.png" />
+    <Content Include="resources\icons\maximize-black.png" />
+    <Content Include="resources\icons\maximize-white.png" />
+    <Content Include="resources\icons\maximize.png" />
+    <Content Include="resources\icons\minimize.png" />
+    <Content Include="resources\icons\minus-square-black.png" />
+    <Content Include="resources\icons\minus-square-white.png" />
+    <Content Include="resources\icons\minus-square.png" />
+    <Content Include="resources\icons\user.png" />
+    <Content Include="resources\icons\users.png" />
+    <Content Include="resources\icons\usersx190.png" />
+    <Content Include="resources\Logo.png" />
     <Content Include="resources\server_config.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -305,8 +376,14 @@
     <PackageReference Include="BCrypt.Net">
       <Version>0.1.0</Version>
     </PackageReference>
+    <PackageReference Include="Blazorise.Icons.Material">
+      <Version>1.4.0</Version>
+    </PackageReference>
     <PackageReference Include="BouncyCastle">
       <Version>1.8.9</Version>
+    </PackageReference>
+    <PackageReference Include="FaIconPicker">
+      <Version>2.1.0</Version>
     </PackageReference>
     <PackageReference Include="Google.Protobuf">
       <Version>3.25.1</Version>

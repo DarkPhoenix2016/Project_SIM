@@ -5,40 +5,192 @@ using Project_SIM.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using ZXing;
 using static Project_SIM.Models.SimProduct;
+using System.Windows.Forms;
 
-namespace Project_SIM.Views.user
+namespace Project_SIM.Views.User
 {
     public partial class Dashborad : MaterialForm
     {
-        private MySqlConnection sqlConnection;
         private BarcodeReader barcodeReader;
-        private List<BillItem> bill;
-        private int currentItem = 1;
-        private string productCodeEdit;
 
+        private int currentItem = 1;
+        private string productCodeEdit = string.Empty;
         private int editPosition = -1;
+        private double[] coloumRatios = { 0.05, 0.10, 0.30, 0.10, 0.10,0.10, 0.24 };
+        private string sessionID = string.Empty;
+        private bool isClosing = false;
+        public static string SelectedItemFromInvetory;
+
         private Customer.RegCustomer regForm;
         private Customer.ViewDetails viewCusDataForm;
+        private InventoryList inverntoryList;
+        private PaymentSceren payScreen;
+        private ReturnScreen returnScreen;
+        
+        private UserInfo currentUser;
+        private SimUser simUserClass;
+        private SimUser.UserData loggedUserData;
         private SimCustomer simCustomerClass;
         private SimCustomer.Customer CustomerData;
+        private SimProduct simProduct = new SimProduct();
+        private List<BillItem> bill;
+        
+
 
         public Dashborad()
         {
             InitializeComponent();
+
+            regForm = new Customer.RegCustomer();
             simCustomerClass = new SimCustomer();
-            sqlConnection = new MySqlConnection(SqlConnectionClass.GetConnectionString());
-            barcodeReader = new BarcodeReader(); // Initialize the barcode reader
-            SetupListViewColumns();
-            bill = new List<BillItem>(); // Initialize the bill list
-            txtBoxBarcode.Focus();
-            
-            loyaltyName.Text = string.Empty;
-            loyaltyPointBalance.Text = string.Empty;
+            simUserClass = new SimUser();
             
 
+            barcodeReader = new BarcodeReader(); // Initialize the barcode reader
+
+            FormatMaker.SetupListViewColumns(listViewBill, coloumRatios);
+            txtBoxBarcode.Focus();
+
+            bill = new List<BillItem>();
+
+            loyaltyName.Text = string.Empty;
+            loyaltyPointBalance.Text = string.Empty;
+
+            CustomerData = simCustomerClass.Select("0000000000");
+
+            lblCurrentCustomer.Text = CustomerData.FullName.ToString();
+
+        }
+
+
+        public void SetSession(string session)
+        {
+            sessionID = session.Trim();
+            currentUser = SessionManager.GetUserInfo(sessionID);
+            loggedUserData = simUserClass.Select(currentUser.Username.ToString());
+            lblFullName.Text = loggedUserData.FullName + "(" + loggedUserData.Username + ")";
+
+        }
+
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F1)
+            {
+                EditUnitPrice_Imideate(); 
+            }
+            else if (e.KeyCode == Keys.F2)
+            {
+                EditQuntity();
+            }
+            else if (e.KeyCode == Keys.F6)
+            {
+                txtBoxLoyalty.Enabled = true;
+                txtBoxLoyalty.ReadOnly = false;
+                txtBoxLoyalty.Focus();
+            }
+            else if (e.KeyCode == Keys.F7)
+            {
+                RegisterNewCustomer();
+            }
+            else if (e.KeyCode == Keys.F8)
+            {
+                ViewCustomerData();
+            }
+            else if (e.KeyCode == Keys.F9)
+            {
+                LoadInventoryData();
+            }
+            else if (e.KeyCode == Keys.F10)
+            {
+                LoadReturnItem();
+            }
+            else if (e.KeyCode == Keys.F11)
+            {
+                if (this.WindowState == FormWindowState.Normal)
+                {
+                    this.TopMost = true;
+                    this.FormBorderStyle = FormBorderStyle.None;
+                    this.WindowState = FormWindowState.Maximized;
+                }
+                else
+                {
+                    this.TopMost = false;
+                    this.FormBorderStyle = FormBorderStyle.Sizable;
+                    this.WindowState = FormWindowState.Normal;
+                }
+            }
+            else if((e.KeyCode == Keys.F12))
+            {
+                LoadPayment();
+            }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                RemoveItemListView();
+            }else
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void SimUserScreen_Resize(object sender, EventArgs e)
+        {
+            // Adjust column widths when the form is resized
+
+            FormatMaker.SetupListViewColumns(listViewBill, coloumRatios);
+        }
+
+        private void Dashborad_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!isClosing)
+            {
+                // Handle other closing scenarios, e.g., logout button
+                DialogResult result = MessageBox.Show("Are you sure you want to Exit?", "Confirm Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    // If the user confirms logout, close the dashboard form
+                    isClosing = true;
+                    e.Cancel = false;
+                    // The X button was clicked, close the entire application
+                    Application.Exit();
+                }
+                else
+                {
+                    // If the user cancels logout, prevent the dashboard form from closing
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                e.Cancel = false;
+            }
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            // Call the common method to handle session ending and application closing
+            HandleLogout();
+        }
+
+        private void HandleLogout()
+        {
+            // Prompt the user with a yes/no question
+            DialogResult result = MessageBox.Show("Are you sure you want to Logout?", "Confirm log out", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            // Check the user's response
+            if (result == DialogResult.Yes)
+            {
+                // If the user clicks "Yes," end the session
+                SessionManager.EndSession(sessionID);
+
+                // Close the current form (Dashboard) and open the login screen
+                OpenScreen openScreen = new OpenScreen();
+                openScreen.Show();
+                isClosing = true;
+                this.Close();
+            }
         }
 
         private void Barcode_KeyPress(object sender, KeyPressEventArgs e)
@@ -47,11 +199,11 @@ namespace Project_SIM.Views.user
             {
                 if (!string.IsNullOrEmpty(txtBoxBarcode.Text))
                 {
-                    RetrieveData();
+                    AddToBill();
                 }
                 else
                 {
-                    ShowErrorMessageBox("Barcode or Item Code cannot be empty");
+                    FormatMaker.ShowErrorMessageBox("Barcode or Item Code cannot be empty");
                     txtBoxBarcode.Focus();
                 }
             }
@@ -62,31 +214,32 @@ namespace Project_SIM.Views.user
             {
                 if (!string.IsNullOrEmpty(txtBoxQuantity.Text))
                 {
-                    if (!(Convert.ToDouble(txtBoxQuantity.Text)==0)) {
+                    if (!(Convert.ToDouble(txtBoxQuantity.Text) == 0))
+                    {
 
-                        if(editPosition > -1)
+                        if (editPosition > -1)
                         {
                             CalculateItemTotal(editPosition);
-                            AddToBill(editPosition);
+                            AddToListView(editPosition);
                         }
                         else
                         {
                             CalculateItemTotal();
-                            AddToBill();
+                            AddToListView();
                         }
-                        
+
                     }
                     else
                     {
-                        MessageBox.Show("Quantity can not be Zero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        FormatMaker.ShowErrorMessageBox("Quantity can not be Zero");
                         txtBoxQuantity.Text = "";
                         txtBoxQuantity.Focus();
                     }
-                    
+
                 }
                 else
                 {
-                    MessageBox.Show("Quantity can not be Empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    FormatMaker.ShowErrorMessageBox("Quantity can not be Empty");
                     txtBoxQuantity.Focus();
                 }
             }
@@ -110,28 +263,27 @@ namespace Project_SIM.Views.user
             {
                 if (!string.IsNullOrEmpty(txtBoxUnitPrice.Text))
                 {
-
                     if (!(Convert.ToDouble(txtBoxUnitPrice.Text) == 0))
                     {
                         DialogResult dialogResult = MessageBox.Show("Do you want to change the unit Price?", "Unit Price Change", MessageBoxButtons.YesNo);
                         if (dialogResult == DialogResult.Yes)
                         {
                             bill[currentItem - 1].UnitPrice = Convert.ToDouble(txtBoxUnitPrice.Text);
-                            BlockOutTextFeild(txtBoxUnitPrice);
+                            FormatMaker.BlockOutTextFeild(txtBoxUnitPrice);
                             txtBoxQuantity.Focus();
-                            EnableTextFeild(txtBoxQuantity);
+                            FormatMaker.EnableTextFeild(txtBoxQuantity);
                         }
                         else if (dialogResult == DialogResult.No)
                         {
                             txtBoxUnitPrice.Text = bill[currentItem - 1].UnitPrice.ToString("0.00");
-                            BlockOutTextFeild(txtBoxUnitPrice);
+                            FormatMaker.BlockOutTextFeild(txtBoxUnitPrice);
                             txtBoxQuantity.Focus();
-                            EnableTextFeild(txtBoxQuantity);
+                            FormatMaker.EnableTextFeild(txtBoxQuantity);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Unit Price can not be Zero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        FormatMaker.ShowErrorMessageBox("Unit Price can not be Zero");
                         txtBoxUnitPrice.Text = "";
                         txtBoxUnitPrice.Focus();
                     }
@@ -139,8 +291,9 @@ namespace Project_SIM.Views.user
                 }
                 else
                 {
-                    MessageBox.Show("Unit Price can not be Empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    txtBoxQuantity.Focus();
+                    FormatMaker.ShowErrorMessageBox("Unit Price can not be Empty");
+                    txtBoxUnitPrice.Text = "";
+                    txtBoxUnitPrice.Focus();
                 }
             }
 
@@ -164,27 +317,11 @@ namespace Project_SIM.Views.user
             {
                 if (!string.IsNullOrEmpty(txtBoxLoyalty.Text))
                 {
-                    bool avalibility = simCustomerClass.IsAvailable(txtBoxLoyalty.Text.Trim());
-                    
-                    if (avalibility)
-                    {
-                        CustomerData = simCustomerClass.Select(txtBoxLoyalty.Text.Trim());
-                        txtBoxLoyalty.ReadOnly = true;
-                        txtBoxLoyalty.Enabled = false;
-                        loyaltyName.Text = CustomerData.FullName;
-                        loyaltyPointBalance.Text = CustomerData.LoyaltyPoints.ToString("0.00");
-
-                    }
-                    else
-                    {
-                        ShowErrorMessageBox("Loyalty Numebr Not Found, Please Check Again");
-                        txtBoxLoyalty.Text = string.Empty;
-                        txtBoxLoyalty.Focus();
-                    }
+                    LoadCustomerData(txtBoxLoyalty.Text.Trim());
                 }
                 else
                 {
-                    ShowErrorMessageBox("Loyalty Numebr can not be Empty");
+                    FormatMaker.ShowErrorMessageBox("Loyalty Numebr can not be Empty");
                     txtBoxLoyalty.Focus();
                 }
             }
@@ -197,48 +334,15 @@ namespace Project_SIM.Views.user
 
         }
 
-        private void Form_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F1)
-            {
-                EditUnitPrice_Imideate();
-                e.Handled = true; // Prevent beep sound
-            }
-            else if (e.KeyCode == Keys.F2)
-            {
-                EditQuntity();
-                e.Handled = true;
-            }
-            else if (e.KeyCode == Keys.F11)
-            {
-                if (this.WindowState == FormWindowState.Normal)
-                {
-                    this.TopMost = true;
-                    this.FormBorderStyle = FormBorderStyle.None;
-                    this.WindowState = FormWindowState.Maximized;
-                }
-                else
-                {
-                    this.TopMost = false;
-                    this.FormBorderStyle = FormBorderStyle.Sizable;
-                    this.WindowState = FormWindowState.Normal;
-                }
-            }else if(e.KeyCode == Keys.Delete)
-            {
-                RemoveItemFromBill();
-            }
-        }
+
         private void Barcode_Enter(object sender, EventArgs e)
         {
             txtBoxBarcode.Focus();
             txtBoxBarcode.Text = "";
         }
-        private void SimUserScreen_Resize(object sender, EventArgs e)
-        {
-            // Adjust column widths when the form is resized
-            SetupListViewColumns();
-        }
-        private void BtnEditPrice(object sender, EventArgs e)
+
+
+        private void BtnEditPrice_Click(object sender, EventArgs e)
         {
             EditUnitPrice_Imideate();
         }
@@ -248,50 +352,59 @@ namespace Project_SIM.Views.user
         }
         private void BtnDeleteItem_Click(object sender, EventArgs e)
         {
-            RemoveItemFromBill();
+            RemoveItemListView();
         }
-        private void btnRegCustomer_Click(object sender, EventArgs e)
+        private void BtnReturnItem_Click(object sender, EventArgs e)
         {
-            regForm = new Customer.RegCustomer();
-            regForm.ShowDialog();
+            LoadReturnItem();
         }
-        private void btnViewCustomer_Click(object sender, EventArgs e)
+
+        private void BtnRegCustomer_Click(object sender, EventArgs e)
         {
-            viewCusDataForm = new Customer.ViewDetails();
-            viewCusDataForm.ShowDialog();
+            RegisterNewCustomer();
         }
-        private void btnAddCustomer_Click(object sender, EventArgs e)
+        private void BtnViewCustomer_Click(object sender, EventArgs e)
+        {
+            ViewCustomerData();
+        }
+        private void BtnAddCustomer_Click(object sender, EventArgs e)
         {
             txtBoxLoyalty.Enabled = true;
             txtBoxLoyalty.ReadOnly = false;
             txtBoxLoyalty.Focus();
         }
+        private void BtnViewInventory_Click(object sender, EventArgs e)
+        {
+            LoadInventoryData();
+        }
+        private void BtnPayment_Click(object sender, EventArgs e)
+        {
+            LoadPayment();
+        }
 
-
-
-        private void RetrieveData()
+        private void AddToBill()
         {
             string barcode = txtBoxBarcode.Text.Trim();
 
             if (string.IsNullOrEmpty(barcode))
             {
-                ShowErrorMessageBox("Barcode cannot be empty");
+                FormatMaker.ShowErrorMessageBox("Barcode cannot be empty");
                 txtBoxBarcode.Focus();
                 return;
             }
 
-            SimProduct simProduct = new SimProduct();
             SimProductData productData = simProduct.GetProductByCodeOrBarcode(barcode);
 
             if (productData != null)
             {
-                BillItem currentBillItem = new BillItem
+                BillItem currentBillItem = new BillItem()
                 {
                     Number = currentItem,
                     ProductID = productData.ProductID,
                     ProductCode = productData.ProductCode,
                     ProductName = productData.Name,
-                    UnitPrice = Convert.ToDouble(productData.Price)
+                    UnitPrice = Convert.ToDouble(productData.Price),
+                    Unit = productData.Unit
                 };
 
                 txtBoxBarcode.Text = currentBillItem.ProductName;
@@ -299,23 +412,22 @@ namespace Project_SIM.Views.user
 
                 txtBoxUnitPrice.Text = currentBillItem.UnitPrice.ToString("0.00");
                 txtBoxQuantity.Focus();
-                EnableTextFeild(txtBoxQuantity);
+                FormatMaker.EnableTextFeild(txtBoxQuantity);
             }
             else
             {
-                ShowErrorMessageBox("Product not found");
+                FormatMaker.ShowErrorMessageBox("Product not found");
                 txtBoxBarcode.Focus();
                 txtBoxBarcode.Text = string.Empty;
             }
         }
-        private void RetrieveData(String ProductCode)
+        private void AddToBill(String ProductCode)
         {
             string barcode = ProductCode.Trim();
-            BlockOutTextFeild(txtBoxBarcode);
+            FormatMaker.BlockOutTextFeild(txtBoxBarcode);
 
             if (!string.IsNullOrEmpty(barcode))
             {
-                SimProduct simProduct = new SimProduct();
                 SimProductData productData = simProduct.GetProductByCodeOrBarcode(barcode);
 
                 if (productData != null)
@@ -324,11 +436,12 @@ namespace Project_SIM.Views.user
                     // Declare currentBillItem outside the loop
                     BillItem currentBillItem = new BillItem();
 
-                    currentBillItem.Number = editPosition+1;
+                    currentBillItem.Number = editPosition + 1;
                     currentBillItem.ProductID = productData.ProductID;
                     currentBillItem.ProductCode = productData.ProductCode;
                     currentBillItem.ProductName = productData.Name;
                     currentBillItem.UnitPrice = Convert.ToDouble(productData.Price);
+                    currentBillItem.Unit = productData.Unit;
 
                     txtBoxBarcode.Text = currentBillItem.ProductName;
                     // Add the currentBillItem to the bill list
@@ -337,7 +450,7 @@ namespace Project_SIM.Views.user
                     // Set the unit price in the textbox and set focus
                     txtBoxUnitPrice.Text = currentBillItem.UnitPrice.ToString("0.00");
                     txtBoxQuantity.Focus();
-                    EnableTextFeild(txtBoxQuantity);
+                    FormatMaker.EnableTextFeild(txtBoxQuantity);
 
                 }
             }
@@ -345,7 +458,7 @@ namespace Project_SIM.Views.user
 
         }
 
-        private void AddToBill()
+        private void AddToListView()
         {
             ListViewItem newItem = new ListViewItem(currentItem.ToString());
 
@@ -353,6 +466,7 @@ namespace Project_SIM.Views.user
             newItem.SubItems.Add(bill[currentItem - 1].ProductName);
             newItem.SubItems.Add(bill[currentItem - 1].UnitPrice.ToString("0.00"));
             newItem.SubItems.Add(bill[currentItem - 1].Quantity.ToString("0.000"));
+            newItem.SubItems.Add(bill[currentItem - 1].Unit);
             newItem.SubItems.Add(bill[currentItem - 1].Price.ToString("0.00"));
             listViewBill.Items.Add(newItem);
 
@@ -365,20 +479,21 @@ namespace Project_SIM.Views.user
             currentItem++;
 
             // Set focus back to textBoxBarcode
-            BlockOutTextFeild(txtBoxQuantity);
+            FormatMaker.BlockOutTextFeild(txtBoxQuantity);
             txtBoxBarcode.Focus();
 
             UpdateSubTotal();
             UpdateTotal();
         }
-        private void AddToBill(int ItemIndex)
+        private void AddToListView(int ItemIndex)
         {
             listViewBill.Items[ItemIndex].SubItems[0].Text = bill[ItemIndex].Number.ToString();
             listViewBill.Items[ItemIndex].SubItems[1].Text = bill[ItemIndex].ProductCode.ToString();
             listViewBill.Items[ItemIndex].SubItems[2].Text = bill[ItemIndex].ProductName.ToString();
             listViewBill.Items[ItemIndex].SubItems[3].Text = bill[ItemIndex].UnitPrice.ToString("0.00");
             listViewBill.Items[ItemIndex].SubItems[4].Text = bill[ItemIndex].Quantity.ToString("0.000");
-            listViewBill.Items[ItemIndex].SubItems[5].Text = bill[ItemIndex].Price.ToString("0.00");
+            listViewBill.Items[ItemIndex].SubItems[5].Text = bill[ItemIndex].Unit;
+            listViewBill.Items[ItemIndex].SubItems[6].Text = bill[ItemIndex].Price.ToString("0.00");
 
             // Clear the textboxes for the next entry
             txtBoxBarcode.Text = string.Empty;
@@ -386,9 +501,9 @@ namespace Project_SIM.Views.user
             txtBoxQuantity.Text = string.Empty;
 
             // Set focus back to textBoxBarcode
-            BlockOutTextFeild(txtBoxQuantity);
+            FormatMaker.BlockOutTextFeild(txtBoxQuantity);
             txtBoxBarcode.Focus();
-            EnableTextFeild(txtBoxBarcode);
+            FormatMaker.EnableTextFeild(txtBoxBarcode);
 
             UpdateSubTotal();
             UpdateTotal();
@@ -396,7 +511,8 @@ namespace Project_SIM.Views.user
             editPosition = -1;
 
         }
-        private void RemoveItemFromBill()
+
+        private void RemoveItemListView()
         {
             if (!(listViewBill.Items.Count <= 0))
             {
@@ -408,9 +524,9 @@ namespace Project_SIM.Views.user
                         // Item selected, retrieve index
                         int selectedIndex = Convert.ToInt32(listViewBill.SelectedItems[0].Text);
                         // Remove the item from the ListView
-                        listViewBill.Items.RemoveAt(selectedIndex-1);
+                        listViewBill.Items.RemoveAt(selectedIndex - 1);
                         // Remove the item from the structure
-                        bill.RemoveAt(selectedIndex-1);
+                        bill.RemoveAt(selectedIndex - 1);
                         currentItem--;
 
                         UpdateSubTotal();
@@ -424,7 +540,7 @@ namespace Project_SIM.Views.user
                 else
                 {
                     // No item selected, show dialog
-                    MessageBox.Show("Please select an item from the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    FormatMaker.ShowErrorMessageBox("Please select an item from the list.");
                     listViewBill.Items[0].Selected = true;
                     listViewBill.SelectedItems[0].Focused = true;
 
@@ -432,10 +548,11 @@ namespace Project_SIM.Views.user
             }
             else
             {
-                MessageBox.Show("Please Add at least one Item to the Bill", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormatMaker.ShowErrorMessageBox("Please Add at least one Item to the Bill");
                 txtBoxBarcode.Focus();
             }
         }
+
 
 
         private void UpdateSubTotal()
@@ -444,7 +561,7 @@ namespace Project_SIM.Views.user
 
             foreach (ListViewItem item in listViewBill.Items)
             {
-                if (double.TryParse(item.SubItems[5].Text, out double amount))
+                if (double.TryParse(item.SubItems[6].Text, out double amount))
                 {
                     subTotal += amount;
                 }
@@ -455,7 +572,7 @@ namespace Project_SIM.Views.user
         private void UpdateTotal()
         {
             double subTotal = Convert.ToDouble(txtBoxSubTotal.Text);
-            //can add other discoust or any logic
+
             txtBoxTotal.Text = subTotal.ToString("0.00");
         }
         private void ReorderBillItems()
@@ -502,9 +619,9 @@ namespace Project_SIM.Views.user
                         UpdateSubTotal();
                         UpdateTotal();
 
-                        RetrieveData(productCodeEdit);
+                        AddToBill(productCodeEdit);
                     }
-                   
+
 
                 }
                 else
@@ -523,15 +640,15 @@ namespace Project_SIM.Views.user
                 MessageBox.Show("Please Add at least one Item to the Bill", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtBoxBarcode.Focus();
             }
- 
+
         }
         private void EditUnitPrice_Imideate()
         {
             if (!String.IsNullOrEmpty(txtBoxUnitPrice.Text))
             {
-                BlockOutTextFeild(txtBoxQuantity);
+                FormatMaker.BlockOutTextFeild(txtBoxQuantity);
                 txtBoxUnitPrice.Focus();
-                EnableTextFeild(txtBoxUnitPrice);
+                FormatMaker.EnableTextFeild(txtBoxUnitPrice);
 
             }
             else
@@ -539,63 +656,110 @@ namespace Project_SIM.Views.user
                 MessageBox.Show("Please enter Item code or Scan Barcode", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtBoxBarcode.Focus();
             }
-            
+
 
         }
 
-        private void BlockOutTextFeild(TextBox Name)
-        {
-            Name.ReadOnly = true;
-            txtBoxQuantity.Cursor = Cursors.No;
-        }
-        private void EnableTextFeild(TextBox Name)
-        {
-            Name.ReadOnly = false;
-            txtBoxQuantity.Cursor = Cursors.Arrow;
-        }
-        private void SetupListViewColumns()
-        {
-            // Specify the ratios for each column
-            double[] columnRatios = { 0.05, 0.1, 0.4, 0.1, 0.1, 0.25 };
 
-            // Calculate total width
-            int totalWidth = listViewBill.Width;
+        private void RegisterNewCustomer()
+        {
+            regForm = new Customer.RegCustomer();
+            regForm.ShowDialog();
+        }
+        private void ViewCustomerData()
+        {
+            viewCusDataForm = new Customer.ViewDetails();
+            viewCusDataForm.setCustomerDetails(CustomerData);
+            viewCusDataForm.ShowDialog();
+        }
+        private void LoadCustomerData(string LoyaltyNumber)
+        {
+            bool avalibility = simCustomerClass.IsAvailable(LoyaltyNumber);
 
-            // Adjust column widths based on ratios
-            for (int i = 0; i < listViewBill.Columns.Count; i++)
+            if (avalibility)
             {
-                listViewBill.Columns[i].Width = (int)(totalWidth * columnRatios[i]);
+                CustomerData = simCustomerClass.Select(LoyaltyNumber);
+                txtBoxLoyalty.ReadOnly = true;
+                txtBoxLoyalty.Enabled = false;
+                loyaltyName.Text = CustomerData.FullName;
+                lblCurrentCustomer.Text = CustomerData.FullName.ToString();
+                loyaltyPointBalance.Text = CustomerData.LoyaltyPoints.ToString("0.00");
+                txtBoxBarcode.Focus();
+                btnViewCustomer.Enabled = true;
+
+            }
+            else
+            {
+                FormatMaker.ShowErrorMessageBox("Loyalty Numebr Not Found, Please Check Again");
+                txtBoxLoyalty.Text = string.Empty;
+                txtBoxLoyalty.Focus();
             }
         }
 
-        private void ShowErrorMessageBox(string message)
+
+        private void LoadInventoryData()
         {
-            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            inverntoryList = new InventoryList();
+            DialogResult inventoryResult= inverntoryList.ShowDialog();
+            if(inventoryResult == DialogResult.OK)
+            {
+                txtBoxBarcode.Text = SelectedItemFromInvetory;
+            }
         }
 
-
-        private void btnViewInventory_Click(object sender, EventArgs e)
+        private void LoadPayment()
         {
+            payScreen = new PaymentSceren();
 
+            payScreen.subTotal = Decimal.Parse(txtBoxTotal.Text);
+
+            payScreen.loggedUserData = loggedUserData;
+            payScreen.customerData = CustomerData;
+            payScreen.bill = bill;
+
+            payScreen.ShowDialog();
+
+            if(payScreen.DialogResult == DialogResult.OK)
+            {
+                ClearOutCurrentBillData();
+            }
         }
 
-        private void btnReturnItem_Click(object sender, EventArgs e)
+        private void ClearOutCurrentBillData()
         {
+            bill=new List<BillItem>();
 
+            currentItem = 1;
+            productCodeEdit = string.Empty;
+            editPosition = -1;
+
+            listViewBill.Items.Clear();
+            UpdateSubTotal();
+            UpdateTotal();
+
+            loyaltyName.Text = string.Empty;
+            txtBoxLoyalty.Text= string.Empty;
+            loyaltyPointBalance.Text = string.Empty;
+
+            CustomerData = simCustomerClass.Select("0000000000");
+            lblCurrentCustomer.Text = CustomerData.FullName.ToString();
+
+            txtBoxBarcode.Focus();
         }
+        
+        private void LoadReturnItem()
+        {
+            returnScreen = new ReturnScreen();
+
+            returnScreen.loggedUserData = loggedUserData;
+
+            returnScreen.ShowDialog();
+        }
+        
+
+
     }
 
-    public class BillItem
-    {
-        public int Number { get; set; }
-        public int ProductID { get; set; }
-        public string ProductCode { get; set; }
-        public string ProductName { get; set; }
-        public double UnitPrice { get; set; }
-        public double Quantity { get; set; }
-        public double Price { get; set; }
-    }
+
 
 }
-
-

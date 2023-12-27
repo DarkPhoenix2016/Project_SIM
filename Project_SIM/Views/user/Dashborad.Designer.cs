@@ -1,4 +1,4 @@
-﻿namespace Project_SIM.Views.user
+﻿namespace Project_SIM.Views.User
 {
     partial class Dashborad
     {
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashborad));
             this.listViewBill = new System.Windows.Forms.ListView();
             this.number = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.itemCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -63,7 +64,13 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.txtBoxTotal = new System.Windows.Forms.TextBox();
-            this.button9 = new System.Windows.Forms.Button();
+            this.btnPayment = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnLogout = new System.Windows.Forms.Button();
+            this.lblFullName = new System.Windows.Forms.Label();
+            this.lblCurrentCustomer = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.unit = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -79,15 +86,16 @@
             this.name,
             this.price,
             this.quantity,
+            this.unit,
             this.amount});
             this.listViewBill.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewBill.FullRowSelect = true;
             this.listViewBill.HideSelection = false;
-            this.listViewBill.Location = new System.Drawing.Point(11, 144);
+            this.listViewBill.Location = new System.Drawing.Point(11, 178);
             this.listViewBill.MinimumSize = new System.Drawing.Size(853, 433);
             this.listViewBill.Name = "listViewBill";
-            this.listViewBill.Size = new System.Drawing.Size(853, 433);
-            this.listViewBill.TabIndex = 0;
+            this.listViewBill.Size = new System.Drawing.Size(853, 450);
+            this.listViewBill.TabIndex = 3;
             this.listViewBill.UseCompatibleStateImageBehavior = false;
             this.listViewBill.View = System.Windows.Forms.View.Details;
             // 
@@ -138,11 +146,11 @@
             this.panel1.Controls.Add(this.btnDeleteItem);
             this.panel1.Controls.Add(this.btnEditQuantity);
             this.panel1.Controls.Add(this.button1);
-            this.panel1.Location = new System.Drawing.Point(880, 144);
+            this.panel1.Location = new System.Drawing.Point(880, 178);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(378, 433);
-            this.panel1.TabIndex = 1;
+            this.panel1.Size = new System.Drawing.Size(378, 450);
+            this.panel1.TabIndex = 15;
             // 
             // materialDivider2
             // 
@@ -173,9 +181,9 @@
             this.btnReturnItem.Name = "btnReturnItem";
             this.btnReturnItem.Size = new System.Drawing.Size(120, 96);
             this.btnReturnItem.TabIndex = 11;
-            this.btnReturnItem.Text = "Return Item";
+            this.btnReturnItem.Text = "Return Item (F10)";
             this.btnReturnItem.UseVisualStyleBackColor = true;
-            this.btnReturnItem.Click += new System.EventHandler(this.btnReturnItem_Click);
+            this.btnReturnItem.Click += new System.EventHandler(this.BtnReturnItem_Click);
             // 
             // btnViewInventory
             // 
@@ -184,9 +192,9 @@
             this.btnViewInventory.Name = "btnViewInventory";
             this.btnViewInventory.Size = new System.Drawing.Size(120, 96);
             this.btnViewInventory.TabIndex = 10;
-            this.btnViewInventory.Text = "View Inventory";
+            this.btnViewInventory.Text = "View Inventory (F9)";
             this.btnViewInventory.UseVisualStyleBackColor = true;
-            this.btnViewInventory.Click += new System.EventHandler(this.btnViewInventory_Click);
+            this.btnViewInventory.Click += new System.EventHandler(this.BtnViewInventory_Click);
             // 
             // btnViewCustomer
             // 
@@ -196,9 +204,9 @@
             this.btnViewCustomer.Name = "btnViewCustomer";
             this.btnViewCustomer.Size = new System.Drawing.Size(120, 96);
             this.btnViewCustomer.TabIndex = 9;
-            this.btnViewCustomer.Text = "View Customer";
+            this.btnViewCustomer.Text = "View Customer (F8)";
             this.btnViewCustomer.UseVisualStyleBackColor = true;
-            this.btnViewCustomer.Click += new System.EventHandler(this.btnViewCustomer_Click);
+            this.btnViewCustomer.Click += new System.EventHandler(this.BtnViewCustomer_Click);
             // 
             // btnRegCustomer
             // 
@@ -207,8 +215,8 @@
             this.btnRegCustomer.Name = "btnRegCustomer";
             this.btnRegCustomer.Size = new System.Drawing.Size(120, 96);
             this.btnRegCustomer.TabIndex = 8;
-            this.btnRegCustomer.Text = "New Customer";
-            this.btnRegCustomer.Click += new System.EventHandler(this.btnRegCustomer_Click);
+            this.btnRegCustomer.Text = "New Customer (F7)";
+            this.btnRegCustomer.Click += new System.EventHandler(this.BtnRegCustomer_Click);
             // 
             // btnAddCustomer
             // 
@@ -217,9 +225,9 @@
             this.btnAddCustomer.Name = "btnAddCustomer";
             this.btnAddCustomer.Size = new System.Drawing.Size(120, 96);
             this.btnAddCustomer.TabIndex = 7;
-            this.btnAddCustomer.Text = "Loyalty Customer";
+            this.btnAddCustomer.Text = "Loyalty Customer (F6)";
             this.btnAddCustomer.UseVisualStyleBackColor = true;
-            this.btnAddCustomer.Click += new System.EventHandler(this.btnAddCustomer_Click);
+            this.btnAddCustomer.Click += new System.EventHandler(this.BtnAddCustomer_Click);
             // 
             // btnDeleteItem
             // 
@@ -252,15 +260,15 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "Edit Price (F1)";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.BtnEditPrice);
+            this.button1.Click += new System.EventHandler(this.BtnEditPrice_Click);
             // 
             // txtBoxBarcode
             // 
             this.txtBoxBarcode.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBoxBarcode.Location = new System.Drawing.Point(60, 91);
+            this.txtBoxBarcode.Location = new System.Drawing.Point(60, 131);
             this.txtBoxBarcode.Name = "txtBoxBarcode";
             this.txtBoxBarcode.Size = new System.Drawing.Size(311, 31);
-            this.txtBoxBarcode.TabIndex = 1;
+            this.txtBoxBarcode.TabIndex = 0;
             this.txtBoxBarcode.Text = "Scan Barcode or Item Code";
             this.txtBoxBarcode.Click += new System.EventHandler(this.Barcode_Enter);
             this.txtBoxBarcode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Barcode_KeyPress);
@@ -269,7 +277,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 92);
+            this.label1.Location = new System.Drawing.Point(6, 132);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 28);
             this.label1.TabIndex = 3;
@@ -279,7 +287,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(377, 92);
+            this.label2.Location = new System.Drawing.Point(377, 132);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 28);
             this.label2.TabIndex = 5;
@@ -290,11 +298,11 @@
             this.txtBoxUnitPrice.BackColor = System.Drawing.Color.White;
             this.txtBoxUnitPrice.Cursor = System.Windows.Forms.Cursors.No;
             this.txtBoxUnitPrice.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBoxUnitPrice.Location = new System.Drawing.Point(469, 91);
+            this.txtBoxUnitPrice.Location = new System.Drawing.Point(469, 131);
             this.txtBoxUnitPrice.Name = "txtBoxUnitPrice";
             this.txtBoxUnitPrice.ReadOnly = true;
             this.txtBoxUnitPrice.Size = new System.Drawing.Size(167, 31);
-            this.txtBoxUnitPrice.TabIndex = 2;
+            this.txtBoxUnitPrice.TabIndex = 1;
             this.txtBoxUnitPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtBoxUnitPrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UnitPrice_KeyPress);
             // 
@@ -302,7 +310,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(642, 92);
+            this.label3.Location = new System.Drawing.Point(642, 132);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(85, 28);
             this.label3.TabIndex = 7;
@@ -312,11 +320,11 @@
             // 
             this.txtBoxQuantity.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.txtBoxQuantity.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBoxQuantity.Location = new System.Drawing.Point(729, 91);
+            this.txtBoxQuantity.Location = new System.Drawing.Point(729, 131);
             this.txtBoxQuantity.Name = "txtBoxQuantity";
             this.txtBoxQuantity.ReadOnly = true;
             this.txtBoxQuantity.Size = new System.Drawing.Size(139, 31);
-            this.txtBoxQuantity.TabIndex = 3;
+            this.txtBoxQuantity.TabIndex = 2;
             this.txtBoxQuantity.UseWaitCursor = true;
             this.txtBoxQuantity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Quantity_KeyPress);
             // 
@@ -363,7 +371,7 @@
             this.loyaltyName.Location = new System.Drawing.Point(159, 59);
             this.loyaltyName.Name = "loyaltyName";
             this.loyaltyName.Size = new System.Drawing.Size(135, 28);
-            this.loyaltyName.TabIndex = 11;
+            this.loyaltyName.TabIndex = 0;
             this.loyaltyName.Text = "F Name L Name";
             // 
             // label7
@@ -385,7 +393,7 @@
             this.loyaltyPointBalance.Location = new System.Drawing.Point(159, 97);
             this.loyaltyPointBalance.Name = "loyaltyPointBalance";
             this.loyaltyPointBalance.Size = new System.Drawing.Size(27, 34);
-            this.loyaltyPointBalance.TabIndex = 13;
+            this.loyaltyPointBalance.TabIndex = 0;
             this.loyaltyPointBalance.Text = "0";
             // 
             // panel2
@@ -402,10 +410,10 @@
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.txtBoxLoyalty);
-            this.panel2.Location = new System.Drawing.Point(10, 589);
+            this.panel2.Location = new System.Drawing.Point(10, 640);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(854, 141);
-            this.panel2.TabIndex = 14;
+            this.panel2.TabIndex = 15;
             // 
             // txtBoxSubTotal
             // 
@@ -417,7 +425,7 @@
             this.txtBoxSubTotal.Name = "txtBoxSubTotal";
             this.txtBoxSubTotal.ReadOnly = true;
             this.txtBoxSubTotal.Size = new System.Drawing.Size(252, 31);
-            this.txtBoxSubTotal.TabIndex = 15;
+            this.txtBoxSubTotal.TabIndex = 0;
             this.txtBoxSubTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label10
@@ -437,10 +445,10 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Poppins", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.Green;
-            this.label9.Location = new System.Drawing.Point(1168, 83);
+            this.label9.Location = new System.Drawing.Point(1168, 123);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(90, 48);
-            this.label9.TabIndex = 14;
+            this.label9.TabIndex = 0;
             this.label9.Text = "Total";
             // 
             // txtBoxTotal
@@ -450,34 +458,102 @@
             this.txtBoxTotal.Cursor = System.Windows.Forms.Cursors.No;
             this.txtBoxTotal.Font = new System.Drawing.Font("Poppins", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxTotal.ForeColor = System.Drawing.Color.DarkGreen;
-            this.txtBoxTotal.Location = new System.Drawing.Point(880, 84);
+            this.txtBoxTotal.Location = new System.Drawing.Point(880, 124);
             this.txtBoxTotal.Name = "txtBoxTotal";
             this.txtBoxTotal.ReadOnly = true;
             this.txtBoxTotal.Size = new System.Drawing.Size(282, 47);
-            this.txtBoxTotal.TabIndex = 15;
+            this.txtBoxTotal.TabIndex = 0;
+            this.txtBoxTotal.TabStop = false;
             this.txtBoxTotal.Text = "0.00";
             this.txtBoxTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // button9
+            // btnPayment
             // 
-            this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button9.AutoSize = true;
-            this.button9.BackColor = System.Drawing.Color.Green;
-            this.button9.Font = new System.Drawing.Font("Poppins SemiBold", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.ForeColor = System.Drawing.Color.White;
-            this.button9.Location = new System.Drawing.Point(880, 589);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(375, 141);
-            this.button9.TabIndex = 12;
-            this.button9.Text = "Pay";
-            this.button9.UseVisualStyleBackColor = false;
+            this.btnPayment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPayment.AutoSize = true;
+            this.btnPayment.BackColor = System.Drawing.Color.Green;
+            this.btnPayment.Font = new System.Drawing.Font("Poppins SemiBold", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPayment.ForeColor = System.Drawing.Color.White;
+            this.btnPayment.Location = new System.Drawing.Point(880, 640);
+            this.btnPayment.Name = "btnPayment";
+            this.btnPayment.Size = new System.Drawing.Size(375, 141);
+            this.btnPayment.TabIndex = 12;
+            this.btnPayment.Text = "Pay (F12)";
+            this.btnPayment.UseVisualStyleBackColor = false;
+            this.btnPayment.Click += new System.EventHandler(this.BtnPayment_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(5, 75);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(91, 28);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Loged As :";
+            // 
+            // btnLogout
+            // 
+            this.btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLogout.BackColor = System.Drawing.Color.White;
+            this.btnLogout.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLogout.ForeColor = System.Drawing.Color.DarkRed;
+            this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
+            this.btnLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnLogout.Location = new System.Drawing.Point(1135, 68);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(118, 42);
+            this.btnLogout.TabIndex = 18;
+            this.btnLogout.Text = "Log Out";
+            this.btnLogout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnLogout.UseVisualStyleBackColor = false;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
+            // lblFullName
+            // 
+            this.lblFullName.AutoSize = true;
+            this.lblFullName.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFullName.Location = new System.Drawing.Point(102, 75);
+            this.lblFullName.Name = "lblFullName";
+            this.lblFullName.Size = new System.Drawing.Size(24, 28);
+            this.lblFullName.TabIndex = 20;
+            this.lblFullName.Text = "_";
+            // 
+            // lblCurrentCustomer
+            // 
+            this.lblCurrentCustomer.AutoSize = true;
+            this.lblCurrentCustomer.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrentCustomer.Location = new System.Drawing.Point(627, 75);
+            this.lblCurrentCustomer.Name = "lblCurrentCustomer";
+            this.lblCurrentCustomer.Size = new System.Drawing.Size(24, 28);
+            this.lblCurrentCustomer.TabIndex = 22;
+            this.lblCurrentCustomer.Text = "_";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(464, 75);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(157, 28);
+            this.label12.TabIndex = 21;
+            this.label12.Text = "Current Customer:";
+            // 
+            // unit
+            // 
+            this.unit.Text = "Unit";
             // 
             // Dashborad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1260, 760);
-            this.Controls.Add(this.button9);
+            this.ClientSize = new System.Drawing.Size(1260, 811);
+            this.Controls.Add(this.lblCurrentCustomer);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.lblFullName);
+            this.Controls.Add(this.btnLogout);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.btnPayment);
             this.Controls.Add(this.txtBoxTotal);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.panel2);
@@ -489,11 +565,16 @@
             this.Controls.Add(this.txtBoxBarcode);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.listViewBill);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1260, 760);
             this.Name = "Dashborad";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Project SIM - User Dashborad";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Dashborad_FormClosing);
             this.ResizeEnd += new System.EventHandler(this.SimUserScreen_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form_KeyDown);
             this.Resize += new System.EventHandler(this.SimUserScreen_Resize);
@@ -537,11 +618,17 @@
         private System.Windows.Forms.Button btnAddCustomer;
         private System.Windows.Forms.Button btnReturnItem;
         private System.Windows.Forms.Button btnViewInventory;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button btnPayment;
         private MaterialSkin.Controls.MaterialDivider materialDivider2;
         private MaterialSkin.Controls.MaterialDivider materialDivider1;
         private System.Windows.Forms.TextBox txtBoxSubTotal;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ColumnHeader itemCode;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnLogout;
+        private System.Windows.Forms.Label lblFullName;
+        private System.Windows.Forms.Label lblCurrentCustomer;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ColumnHeader unit;
     }
 }

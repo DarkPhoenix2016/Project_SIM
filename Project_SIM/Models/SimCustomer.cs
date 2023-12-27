@@ -1,19 +1,18 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows;
 
 namespace Project_SIM.Models
 {
     public class SimCustomer
     {
+        private readonly string connectionString;
         private MySqlConnection sqlConnection;
-        private MySqlDataReader reader;
 
         public SimCustomer()
         {
-            sqlConnection = new MySqlConnection(SqlConnectionClass.GetConnectionString());
+            connectionString = SqlConnectionClass.GetConnectionString();
+            sqlConnection = new MySqlConnection(connectionString);
         }
 
         public bool Register(string fullName, string username, string loyaltyNumber, string password)
@@ -29,27 +28,31 @@ namespace Project_SIM.Models
                 sqlConnection.Open();
                 transaction = sqlConnection.BeginTransaction();
 
-                // Insert the new user account
-                string queryAddUserAccount = $"INSERT INTO `users`(`Username`, `PasswordHash`, `FullName`, `AccessLevel`)" +
-                    $"VALUES ('{username}','{hashedPassword}','{fullName}','Customer')";
+                // Insert the new User Account
+                SimUser user = new SimUser();
+                bool result = user.Register(fullName, username, hashedPassword); // Use hashed password
+                if (result)
+                {
+                    // Insert the new customer account
+                    string queryAddCustomerAccount = $"INSERT INTO `customers`(`UserID`, `LoyaltyNumber`, `LoyaltyPoints`)" +
+                        $"VALUES (LAST_INSERT_ID(),'{loyaltyNumber}','0')";
 
-                // ExecuteNonQuery is used for non-query commands (INSERT, UPDATE, DELETE)
-                new MySqlCommand(queryAddUserAccount, sqlConnection, transaction).ExecuteNonQuery();
+                    // ExecuteNonQuery is used for non-query commands (INSERT, UPDATE, DELETE)
+                    new MySqlCommand(queryAddCustomerAccount, sqlConnection, transaction).ExecuteNonQuery();
 
-                // Insert the new customer account
-                string queryAddCustomerAccount = $"INSERT INTO `customers`(`UserID`, `LoyaltyNumber`, `LoyaltyPoints`)" +
-                    $"VALUES (LAST_INSERT_ID(),'{loyaltyNumber}','0')";
+                    // Commit the transaction
+                    transaction.Commit();
 
-                // ExecuteNonQuery is used for non-query commands (INSERT, UPDATE, DELETE)
-                new MySqlCommand(queryAddCustomerAccount, sqlConnection, transaction).ExecuteNonQuery();
+                    // Display success message box
+                    MessageBox.Show("Customer registration successful.");
 
-                // Commit the transaction
-                transaction.Commit();
-
-                // Display success message box
-                MessageBox.Show("Customer registration successful.");
-
-                return true;
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("Error while registration ");
+                    return false;
+                }
             }
             catch (MySqlException ex)
             {
@@ -67,13 +70,15 @@ namespace Project_SIM.Models
 
         public bool IsAvailable(string loyaltyNumber)
         {
-            string query = $"SELECT COUNT(*) FROM customers WHERE LoyaltyNumber = '{loyaltyNumber}';";
+            string query = $"SELECT COUNT(*) FROM customers WHERE LoyaltyNumber = @loyaltyNumber";
             sqlConnection.Open();
 
             try
             {
                 using (MySqlCommand cmd = new MySqlCommand(query, sqlConnection))
                 {
+                    cmd.Parameters.AddWithValue("@loyaltyNumber", loyaltyNumber);
+
                     int count = Convert.ToInt32(cmd.ExecuteScalar());
 
                     if (count <= 0)
@@ -103,36 +108,40 @@ namespace Project_SIM.Models
 
         public Customer Select(string loyaltyNumber)
         {
-            string query = $"SELECT * FROM customer_details WHERE LoyaltyNumber = '{loyaltyNumber}';";
+            string query = $"SELECT * FROM customer_details WHERE LoyaltyNumber = @loyaltyNumber";
             sqlConnection.Open();
 
             try
             {
                 using (MySqlCommand cmd = new MySqlCommand(query, sqlConnection))
                 {
-                    reader = cmd.ExecuteReader();
+                    cmd.Parameters.AddWithValue("@loyaltyNumber", loyaltyNumber);
 
-                    if (reader != null && reader.HasRows)
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        reader.Read(); // Read the first row
-
-                        Customer customer = new Customer
+                        if (reader != null && reader.HasRows)
                         {
-                            UserID = Convert.ToInt32(reader["UserID"]),
-                            Username = reader["Username"].ToString(),
-                            AccessLevel = reader["AccessLevel"].ToString(),
-                            FullName = reader["FullName"].ToString(),
-                            CustomerID = Convert.ToInt32(reader["CustomerID"]),
-                            LoyaltyNumber = reader["LoyaltyNumber"].ToString(),
-                            LoyaltyPoints = Convert.ToInt32(reader["LoyaltyPoints"])
-                        };
+                            reader.Read(); // Read the first row
 
-                        Console.WriteLine($"Customer found: {customer.FullName}");
-                        return customer;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"No matching customer found: {query}");
+                            Customer customer = new Customer
+                            {
+                                UserID = Convert.ToInt32(reader["UserID"]),
+                                Username = reader["Username"].ToString(),
+                                AccessLevel = reader["AccessLevel"].ToString(),
+                                FullName = reader["FullName"].ToString(),
+                                CustomerID = Convert.ToInt32(reader["CustomerID"]),
+                                LoyaltyNumber = reader["LoyaltyNumber"].ToString(),
+                                LoyaltyPoints = Convert.ToInt32(reader["LoyaltyPoints"]),
+                                DateOfJoin = (DateTime)reader["DateOfJoin"]
+                            };
+
+                            Console.WriteLine($"Customer found: {customer.FullName}");
+                            return customer;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"No matching customer found: {query}");
+                        }
                     }
                 }
             }
@@ -148,6 +157,91 @@ namespace Project_SIM.Models
             return null; // Return null if no customer is found
         }
 
+        public  bool AddLoyaltyPoints(string loyaltyNumber, string loyaltyPoints)
+        {
+            try
+            {
+                sqlConnection.Open();
+
+                using (MySqlTransaction transaction = sqlConnection.BeginTransaction())
+                {
+                    try
+                    {
+                        string queryUpdateLoyaltyPoints = "INSERT INTO `loyaltypoints_transactions`(`LoyaltyNumber`,`Amount`, `State`) VALUES (@loyaltyNumber,@loyaltyPoints,'Credit')";
+
+                        using (MySqlCommand cmd = new MySqlCommand(queryUpdateLoyaltyPoints, sqlConnection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@loyaltyPoints", loyaltyPoints);
+                            cmd.Parameters.AddWithValue("@loyaltyNumber", loyaltyNumber);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error during transaction: {ex.Message}");
+
+                        // Rollback the transaction in case of an error
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error connecting to the database: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
+
+        public  bool RemoveLoyaltyPoints(string loyaltyNumber, string loyaltyPoints)
+        {
+            try
+            {
+                sqlConnection.Open();
+
+                using (MySqlTransaction transaction = sqlConnection.BeginTransaction())
+                {
+                    try
+                    {
+                        string queryUpdateLoyaltyPoints = "INSERT INTO `loyaltypoints_transactions`(`LoyaltyNumber`,`Amount`, `State`) VALUES (@loyaltyNumber,@loyaltyPoints,'Debit')";
+
+                        using (MySqlCommand cmd = new MySqlCommand(queryUpdateLoyaltyPoints, sqlConnection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@loyaltyPoints", loyaltyPoints);
+                            cmd.Parameters.AddWithValue("@loyaltyNumber", loyaltyNumber);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error during transaction: {ex.Message}");
+
+                        // Rollback the transaction in case of an error
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error connecting to the database: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+        }
 
         public bool Update()
         {
@@ -170,8 +264,7 @@ namespace Project_SIM.Models
             public int CustomerID { get; set; }
             public string LoyaltyNumber { get; set; }
             public int LoyaltyPoints { get; set; }
+            public DateTime DateOfJoin { get; set; }
         }
     }
-    
-
 }

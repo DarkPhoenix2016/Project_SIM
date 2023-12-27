@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Project_SIM.Models;
+using Project_SIM.Views.Customer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +14,150 @@ namespace Project_SIM.Views
 {
     public partial class OpenScreen : Form
     {
+        private LogingForm logingForm;
+        private bool isClosing = false;
+
         public OpenScreen()
         {
             InitializeComponent();
+            logingForm = new LogingForm();
         }
+
+        public void SetFormVisibility(bool isVisible)
+        {
+            this.Visible = isVisible;
+        }
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            // Set the flag to indicate that the form is being closed intentionally
+            isClosing = true;
+            this.Close();
+        }
+
+        private void OpenScreen_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isClosing)
+            {
+                // The X button was clicked, close the entire application
+                Application.Exit();
+            }
+        }
+
+        private void btnMinimize_Click(object sender, EventArgs e)
+        {
+           this.WindowState = FormWindowState.Minimized;    
+        }
+
+        private void btnManager_Click(object sender, EventArgs e)
+        {
+            logingForm.SetPosition(btnManager.Text);
+            this.WindowState = FormWindowState.Minimized;
+            DialogResult dialogResult = logingForm.ShowDialog();
+            logingForm.Focus();
+            if(dialogResult == DialogResult.Cancel)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            if (dialogResult == DialogResult.OK)
+            {
+                string sessionID = logingForm.sessionID;
+                string validatedDesignation = logingForm.validatedDesignation;
+                if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnManager.Text)
+                {
+                    FormatMaker.ShowErrorMessageBox($"Login Success Session Created {sessionID} ");
+                    isClosing = false;
+                    this.Close();
+                }
+                else
+                {
+                    FormatMaker.ShowErrorMessageBox("Unkown Error During Login");
+                } 
+            }
+        }
+
+        private void btnUser_Click(object sender, EventArgs e)
+        {
+            logingForm.SetPosition(btnUser.Text);
+            this.WindowState = FormWindowState.Minimized;
+            DialogResult dialogResult = logingForm.ShowDialog();
+            logingForm.Focus();
+            if (dialogResult == DialogResult.Cancel)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            if (dialogResult == DialogResult.OK)
+            {
+                string sessionID = logingForm.sessionID;
+                string validatedDesignation = logingForm.validatedDesignation;
+                if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnUser.Text)
+                {
+                    User.Dashborad dashborad = new User.Dashborad();
+                    dashborad.SetSession(sessionID);
+                    dashborad.Show();
+                    isClosing = false;
+                    this.Close();
+                }
+                else
+                {
+                    FormatMaker.ShowErrorMessageBox("Unkown Error During Login");
+                }
+            }
+        }
+
+        private void btnInventory_Click(object sender, EventArgs e)
+        {
+            logingForm.SetPosition(btnInventory.Text);
+            this.WindowState = FormWindowState.Minimized;
+            DialogResult dialogResult = logingForm.ShowDialog();
+            logingForm.Focus();
+            if (dialogResult == DialogResult.Cancel)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            if (dialogResult == DialogResult.OK)
+            {
+                string sessionID = logingForm.sessionID;
+                string validatedDesignation = logingForm.validatedDesignation;
+                if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnInventory.Text)
+                {
+                    FormatMaker.ShowErrorMessageBox($"Login Success Session Created {sessionID} ");
+                    isClosing = false;
+                    this.Close();
+                }
+                else
+                {
+                    FormatMaker.ShowErrorMessageBox("Unkown Error During Login");
+                }
+            }
+        }
+
+        private void btnCustomer_Click(object sender, EventArgs e)
+        {
+            logingForm.SetPosition(btnCustomer.Text);
+            this.WindowState = FormWindowState.Minimized;
+            DialogResult dialogResult = logingForm.ShowDialog();
+            logingForm.Focus();
+            if (dialogResult == DialogResult.Cancel)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            if (dialogResult == DialogResult.OK)
+            {
+                string sessionID = logingForm.sessionID;
+                string validatedDesignation = logingForm.validatedDesignation;
+                if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnCustomer.Text)
+                {
+                    FormatMaker.ShowErrorMessageBox($"Login Success Session Created {sessionID} ");
+                    isClosing = false;
+                    this.Close();
+                }
+                else
+                {
+                    FormatMaker.ShowErrorMessageBox("Unkown Error During Login");
+                }
+            }
+        }
+
     }
+
 }
