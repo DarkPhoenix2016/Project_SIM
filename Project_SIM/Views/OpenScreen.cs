@@ -103,6 +103,35 @@ namespace Project_SIM.Views
                 }
             }
         }
+        private void btnCustomer_Click(object sender, EventArgs e)
+        {
+            logingForm.SetPosition(btnCustomer.Text);
+            this.WindowState = FormWindowState.Minimized;
+            DialogResult dialogResult = logingForm.ShowDialog();
+            logingForm.Focus();
+            if (dialogResult == DialogResult.Cancel)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            if (dialogResult == DialogResult.OK)
+            {
+                string sessionID = logingForm.sessionID;
+                string validatedDesignation = logingForm.validatedDesignation;
+
+                if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnCustomer.Text)
+                {
+                    Dashborad dashborad = new Dashborad();
+                    dashborad.SetSession(sessionID);
+                    dashborad.Show();
+                    isClosing = false;
+                    this.Close();
+                }
+                else
+                {
+                    FormatMaker.ShowErrorMessageBox("Unkown Error During Login");
+                }
+            }
+        }
 
         private void btnInventory_Click(object sender, EventArgs e)
         {
@@ -131,32 +160,7 @@ namespace Project_SIM.Views
             }
         }
 
-        private void btnCustomer_Click(object sender, EventArgs e)
-        {
-            logingForm.SetPosition(btnCustomer.Text);
-            this.WindowState = FormWindowState.Minimized;
-            DialogResult dialogResult = logingForm.ShowDialog();
-            logingForm.Focus();
-            if (dialogResult == DialogResult.Cancel)
-            {
-                this.WindowState = FormWindowState.Normal;
-            }
-            if (dialogResult == DialogResult.OK)
-            {
-                string sessionID = logingForm.sessionID;
-                string validatedDesignation = logingForm.validatedDesignation;
-                if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnCustomer.Text)
-                {
-                    FormatMaker.ShowErrorMessageBox($"Login Success Session Created {sessionID} ");
-                    isClosing = false;
-                    this.Close();
-                }
-                else
-                {
-                    FormatMaker.ShowErrorMessageBox("Unkown Error During Login");
-                }
-            }
-        }
+        
 
     }
 

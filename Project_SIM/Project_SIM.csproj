@@ -332,6 +332,8 @@
   <ItemGroup>
     <Content Include="icon.ico" />
     <Content Include="resources\artwork.png" />
+    <None Include="resources\icons\home.png" />
+    <None Include="resources\icons\home_1.png" />
     <Content Include="resources\icons\icon.ico" />
     <Content Include="resources\icons\admin.png" />
     <Content Include="resources\icons\admin_190px.png" />
@@ -343,6 +345,7 @@
     <Content Include="resources\icons\close.png" />
     <Content Include="resources\icons\Customer.png" />
     <Content Include="resources\icons\icon.png" />
+    <None Include="resources\icons\id.png" />
     <Content Include="resources\icons\Inventory.png" />
     <Content Include="resources\icons\logout-24.png" />
     <Content Include="resources\icons\logout.png" />
@@ -354,6 +357,10 @@
     <Content Include="resources\icons\minus-square-black.png" />
     <Content Include="resources\icons\minus-square-white.png" />
     <Content Include="resources\icons\minus-square.png" />
+    <None Include="resources\icons\receipt.png" />
+    <Content Include="resources\icons\rotation.png" />
+    <None Include="resources\icons\settings.png" />
+    <None Include="resources\icons\sign-out.png" />
     <Content Include="resources\icons\user.png" />
     <Content Include="resources\icons\users.png" />
     <Content Include="resources\icons\usersx190.png" />

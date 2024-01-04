@@ -152,23 +152,32 @@ namespace Project_SIM.Views.User
 
         private void btnAddPayment_Click(object sender, EventArgs e)
         {
-            bool result = true;
-            chkBoxLoyaltyDiscount.Enabled = false;
+            if (!string.IsNullOrEmpty(txtPayAmount.Text.Trim()))
+            {
+                bool result = true;
+                chkBoxLoyaltyDiscount.Enabled = false;
 
-            if (comBoxPayMethods.SelectedItem.ToString() == "Loyalty Points")
-            {
-                result = LoyaltyPayment();
-            }
-            if (comBoxPayMethods.SelectedItem.ToString() == "Card")
-            {
-                result = CardPayment();
-            }
+                if (comBoxPayMethods.SelectedItem.ToString() == "Loyalty Points")
+                {
+                    result = LoyaltyPayment();
+                }
+                if (comBoxPayMethods.SelectedItem.ToString() == "Card")
+                {
+                    result = CardPayment();
+                }
 
-            if (result)
-            {
-                AddPayment();
-                AddToListView();
+                if (result)
+                {
+                    AddPayment();
+                    AddToListView();
+                }
             }
+            else
+            {
+                FormatMaker.ShowErrorMessageBox("Amount Can not be Empty!");
+                txtPayAmount.Focus();
+            }
+            
 
         }
         private void btnCloseBill_Click(object sender, EventArgs e)

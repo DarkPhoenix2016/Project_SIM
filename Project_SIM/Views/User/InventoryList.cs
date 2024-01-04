@@ -18,6 +18,7 @@ namespace Project_SIM.Views.User
         private int currentItem = 1;
         private SimProduct simProduct = new SimProduct();
         private double[] coloumRatios = { 0.05, 0.25, 0.40, 0.20,0.05 };
+        
 
         public InventoryList()
         {
