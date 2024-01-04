@@ -125,23 +125,11 @@
     <Compile Include="Views\Customer\LoyaltyPage.Designer.cs">
       <DependentUpon>LoyaltyPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Customer\ProfilePage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Customer\ProfilePage.Designer.cs">
-      <DependentUpon>ProfilePage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Customer\RegCustomer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\Customer\RegCustomer.Designer.cs">
       <DependentUpon>RegCustomer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Customer\SettingsPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Customer\SettingsPage.Designer.cs">
-      <DependentUpon>SettingsPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Customer\ViewDetails.cs">
       <SubType>Form</SubType>
@@ -285,14 +273,8 @@
     <EmbeddedResource Include="Views\Customer\LoyaltyPage.resx">
       <DependentUpon>LoyaltyPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Customer\ProfilePage.resx">
-      <DependentUpon>ProfilePage.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\Customer\regCustomer.resx">
       <DependentUpon>RegCustomer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Customer\SettingsPage.resx">
-      <DependentUpon>SettingsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Customer\ViewDetails.resx">
       <DependentUpon>ViewDetails.cs</DependentUpon>
