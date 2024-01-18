@@ -1,15 +1,9 @@
 ﻿using Project_SIM.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Project_SIM.Models.SimCustomer;
-using static Project_SIM.Models.SimProduct;
+
 
 namespace Project_SIM.Views.Customer
 {
@@ -19,8 +13,7 @@ namespace Project_SIM.Views.Customer
 
         private SimCustomer simCustomerClass;
         private SimCustomer.Customer CustomerData;
-        private SimCustomer.CustomerLastBillReport CustomerBillReport;
-        private List<CustomerAllBillSummry> customerBillSummries;
+        List<CustomerAllBillSummry> customerBillSummries;
 
         public BillsPage()
         {
@@ -41,7 +34,7 @@ namespace Project_SIM.Views.Customer
         private void SetupListViewColumns()
         {
             // Specify the ratios for each column
-            double[] columnRatios = { 0.05, 0.15, 0.15,0.15,0.15, 0.15, 0.15};
+            double[] columnRatios = { 0.05, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15 };
 
             // Calculate total width
             int totalWidth = listViewBills.Width;
@@ -64,7 +57,7 @@ namespace Project_SIM.Views.Customer
             currentItem = 1; // Reset the counter when reloading data
 
             // Retrieve customer bill summaries
-            List<CustomerAllBillSummry> customerBillSummries = simCustomerClass.SelectCustomerAllBillSummary(CustomerData.CustomerID.ToString());
+            customerBillSummries = simCustomerClass.SelectCustomerAllBillSummary(CustomerData.CustomerID.ToString());
 
             if (customerBillSummries != null && customerBillSummries.Count > 0)
             {
@@ -75,7 +68,7 @@ namespace Project_SIM.Views.Customer
                     newItem.SubItems.Add(billSummary.TransactionDate.ToString("yyyy-MM-dd"));
                     newItem.SubItems.Add(billSummary.BillNumber);
                     newItem.SubItems.Add(billSummary.TotalLineCount.ToString());
-                    newItem.SubItems.Add("Rs "+(Convert.ToDecimal(billSummary.TotalDiscount)+ Convert.ToDecimal(billSummary.TotalAmount)).ToString("0.00"));
+                    newItem.SubItems.Add("Rs " + (Convert.ToDecimal(billSummary.TotalDiscount) + Convert.ToDecimal(billSummary.TotalAmount)).ToString("0.00"));
                     newItem.SubItems.Add("Rs " + billSummary.TotalDiscount);
                     newItem.SubItems.Add("Rs " + billSummary.TotalAmount);
 
@@ -85,7 +78,32 @@ namespace Project_SIM.Views.Customer
             }
         }
 
-    }
+        private int lastSelectedIndex = -1;
+        private void listViewBills_ItemActivate(object sender, EventArgs e)
+        {
+            int selectedIndex = listViewBills.SelectedIndices[0];
 
+            // Check if the selected item is the same as the last selected item
+            if (selectedIndex == lastSelectedIndex)
+            {
+                selectedIndex = listViewBills.SelectedIndices[0];
+
+                CustomerAllBillSummry selectedBill = customerBillSummries[selectedIndex];
+
+                string savedBillNumber = selectedBill.BillNumber.ToString();
+                string savedTransactionId = selectedBill.TransactionID.ToString();
+
+                BillRecord record = new BillRecord();
+                record.createdBillNumber = savedBillNumber;
+                record.createdtransactionID = Convert.ToInt32(savedTransactionId);
+                record.ShowDialog();
+            }
+
+            // Update the last selected index
+            lastSelectedIndex = selectedIndex;
+
+        }
+
+    }  
 
 }

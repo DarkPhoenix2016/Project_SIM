@@ -1,4 +1,5 @@
-﻿using Project_SIM.Models;
+﻿using MySql.Data.MySqlClient;
+using Project_SIM.Models;
 using Project_SIM.Views.Customer;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,9 @@ namespace Project_SIM.Views
                 string validatedDesignation = logingForm.validatedDesignation;
                 if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnManager.Text)
                 {
-                    FormatMaker.ShowErrorMessageBox($"Login Success Session Created {sessionID} ");
+                    Manager.Dashborad dashborad = new Manager.Dashborad();
+                    dashborad.SetSession(sessionID);
+                    dashborad.Show();
                     isClosing = false;
                     this.Close();
                 }
@@ -160,8 +163,47 @@ namespace Project_SIM.Views
             }
         }
 
-        
+        private void btnServerSettings_Click(object sender, EventArgs e)
+        {
+            ServerSettings serverSettings = new ServerSettings();
+            serverSettings.ShowDialog();
+            ValidateConncetion();
+        }
 
+        private void ValidateConncetion()
+        {
+            string connectionString = SqlConnectionClass.GetConnectionString();
+
+            try
+            {
+                using (MySqlConnection sqlConnection = new MySqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+                    sqlConnection.Close();
+
+                    btnCustomer.Enabled = true;
+                    btnInventory.Enabled = false;
+                    btnManager.Enabled = true;
+                    btnUser.Enabled = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                FormatMaker.ShowErrorMessageBox($"Error On New Conncetion Details\nPlease Update Conncetion details to the Server\nError Message: {ex.Message}");
+                btnCustomer.Enabled = false;
+                btnInventory.Enabled = false;
+                btnManager.Enabled = false;
+                btnUser.Enabled = false;
+                btnServerSettings.Focus();
+
+            }
+        }
+
+        private void OpenScreen_Load(object sender, EventArgs e)
+        {
+            ValidateConncetion();
+        }
     }
 
 }

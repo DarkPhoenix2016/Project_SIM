@@ -211,6 +211,7 @@
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Customer Registration";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

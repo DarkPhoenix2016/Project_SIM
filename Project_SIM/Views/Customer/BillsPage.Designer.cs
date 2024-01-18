@@ -28,6 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            "",
+            "gdsg",
+            "sgs",
+            "sgd",
+            "sgg",
+            "sgdg",
+            "sgd"}, -1);
             this.listViewBills = new System.Windows.Forms.ListView();
             this.index = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -52,6 +60,8 @@
             this.listViewBills.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewBills.FullRowSelect = true;
             this.listViewBills.HideSelection = false;
+            this.listViewBills.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
             this.listViewBills.Location = new System.Drawing.Point(0, 0);
             this.listViewBills.MultiSelect = false;
             this.listViewBills.Name = "listViewBills";
@@ -59,6 +69,7 @@
             this.listViewBills.TabIndex = 0;
             this.listViewBills.UseCompatibleStateImageBehavior = false;
             this.listViewBills.View = System.Windows.Forms.View.Details;
+            this.listViewBills.ItemActivate += new System.EventHandler(this.listViewBills_ItemActivate);
             // 
             // index
             // 

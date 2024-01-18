@@ -1,12 +1,5 @@
 ﻿using Project_SIM.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Project_SIM.Views.Customer
@@ -17,8 +10,6 @@ namespace Project_SIM.Views.Customer
         private SimCustomer.Customer CustomerData;
         private SimCustomer.CustomerLastBillReport CustomerBillReport;
 
-        private DateTime dateOfJoin;
-        private DateTime dateNow;
 
         public HomePage()
         {
@@ -51,11 +42,11 @@ namespace Project_SIM.Views.Customer
             lblTotalBillsStartDate.Text = CustomerData.DateOfJoin.ToString("yyyy-MM-dd");
             lblTotalBills.Text = CustomerBillReport.BillCount.ToString();
 
-            CalculateAge(dateOfJoin, dateNow);
+            CalculateAge(dateOfJoin, dateNow,lblAgeAsCustomer);
 
         }
 
-        void CalculateAge(DateTime dateOfJoin, DateTime currentDate)
+        public void CalculateAge(DateTime dateOfJoin, DateTime currentDate,Label textLable)
         {
             // Calculate the difference in years and months
             int years = currentDate.Year - dateOfJoin.Year;
@@ -67,7 +58,7 @@ namespace Project_SIM.Views.Customer
                 years--;
                 months += 12;
             }
-            lblAgeAsCustomer.Text = $"{years} Years {months} Months";
+            textLable.Text = $"{years} Years {months} Months";
         }
 
 

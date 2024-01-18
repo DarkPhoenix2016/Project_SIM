@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using ZXing;
 using static Project_SIM.Models.SimProduct;
 using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
 
 namespace Project_SIM.Views.User
 {
@@ -62,6 +63,7 @@ namespace Project_SIM.Views.User
 
             lblCurrentCustomer.Text = CustomerData.FullName.ToString();
 
+
         }
 
 
@@ -72,6 +74,15 @@ namespace Project_SIM.Views.User
             loggedUserData = simUserClass.Select(currentUser.Username.ToString());
             lblFullName.Text = loggedUserData.FullName + "(" + loggedUserData.Username + ")";
 
+            if(currentUser.Designation == "Manager")
+            {
+                btnManagerDashborad.Visible = true;
+            }
+            else
+            {
+                btnManagerDashborad.Visible = false;
+            }
+
         }
 
         private void Form_KeyDown(object sender, KeyEventArgs e)
@@ -81,6 +92,10 @@ namespace Project_SIM.Views.User
                 EditUnitPrice_Imideate(); 
             }
             else if (e.KeyCode == Keys.F2)
+            {
+                ClearOutCurrentBillData();
+            }
+            else if (e.KeyCode == Keys.F3)
             {
                 EditQuntity();
             }
@@ -687,6 +702,11 @@ namespace Project_SIM.Views.User
                 txtBoxBarcode.Focus();
                 btnViewCustomer.Enabled = true;
 
+                if ("0000000000"== LoyaltyNumber)
+                {
+                    btnViewCustomer.Enabled = false;
+                }
+
             }
             else
             {
@@ -704,6 +724,8 @@ namespace Project_SIM.Views.User
             if(inventoryResult == DialogResult.OK)
             {
                 txtBoxBarcode.Text = SelectedItemFromInvetory;
+                txtBoxBarcode.Focus();
+
             }
         }
 
@@ -717,13 +739,20 @@ namespace Project_SIM.Views.User
             payScreen.customerData = CustomerData;
             payScreen.bill = bill;
 
-            payScreen.ShowDialog();
 
-            if(payScreen.DialogResult == DialogResult.OK)
+            // Show the dialog and get the result
+            DialogResult dialogResult = payScreen.ShowDialog();
+
+            if (dialogResult == DialogResult.OK)
             {
+                // Access the variable from the dialog
+                string createdBillNumber = payScreen.createdBillNumber;
+                int createdtransactionID = payScreen.createdtransactionID;
+
                 ClearOutCurrentBillData();
             }
         }
+
 
         private void ClearOutCurrentBillData()
         {
@@ -755,9 +784,20 @@ namespace Project_SIM.Views.User
 
             returnScreen.ShowDialog();
         }
-        
 
+        private void btnCancelBill_Click(object sender, EventArgs e)
+        {
+            ClearOutCurrentBillData();
+        }
 
+        private void btnManagerDashborad_Click(object sender, EventArgs e)
+        {
+            Manager.Dashborad dashborad = new Manager.Dashborad();
+            dashborad.SetSession(sessionID);
+            dashborad.Show();
+            isClosing = true;
+            this.Close();
+        }
     }
 
 

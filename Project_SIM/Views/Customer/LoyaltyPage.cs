@@ -1,12 +1,6 @@
 ﻿using Project_SIM.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Project_SIM.Models.SimCustomer;
 
@@ -18,7 +12,6 @@ namespace Project_SIM.Views.Customer
 
         private SimCustomer simCustomerClass;
         private SimCustomer.Customer CustomerData;
-        private List<LoyaltyPointTransaction> LoyaltyTransactions;
 
 
         public LoyaltyPage()

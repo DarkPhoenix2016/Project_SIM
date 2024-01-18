@@ -104,6 +104,93 @@ namespace Project_SIM.Models
             return null; // Return null if no customer is found
         }
 
+        public bool Update(int userId, string fullName, string username)
+        {
+            try
+            {
+                using (MySqlConnection _sqlConnection = new MySqlConnection(connectionString))
+                {
+                    _sqlConnection.Open();
+
+                    using (MySqlTransaction transaction = _sqlConnection.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = $"UPDATE users SET FullName ='{fullName}', Username ='{username}' WHERE UserID = {userId} ";
+
+                            Console.WriteLine(query);
+
+                            // ExecuteNonQuery is used for non-query commands (INSERT, UPDATE, DELETE)
+                            new MySqlCommand(query, _sqlConnection, transaction).ExecuteNonQuery();
+
+                            // Commit the transaction
+                            transaction.Commit();
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            FormatMaker.ShowErrorMessageBox($"Error during transaction: {ex.Message}");
+
+                            // Rollback the transaction in case of an error
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                FormatMaker.ShowErrorMessageBox($"Error connecting to the database: {ex.Message}");
+                return false;
+            }
+            
+        }
+
+        public bool Update(int userId, string password)
+        {
+            try
+            {
+                using (MySqlConnection _sqlConnection = new MySqlConnection(connectionString))
+                {
+                    _sqlConnection.Open();
+
+                    using (MySqlTransaction transaction = _sqlConnection.BeginTransaction())
+                    {
+                        try
+                        {
+                            // Hash the password and get salt
+                            string hashedPassword = Authenticator.HashPassword(password);
+
+                            string query = $"UPDATE users SET PasswordHash ='{hashedPassword}' WHERE UserID = {userId} ";
+
+                            Console.WriteLine(query);
+
+                            // ExecuteNonQuery is used for non-query commands (INSERT, UPDATE, DELETE)
+                            new MySqlCommand(query, _sqlConnection, transaction).ExecuteNonQuery();
+
+                            // Commit the transaction
+                            transaction.Commit();
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            FormatMaker.ShowErrorMessageBox($"Error during transaction: {ex.Message}");
+
+                            // Rollback the transaction in case of an error
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                FormatMaker.ShowErrorMessageBox($"Error connecting to the database: {ex.Message}");
+                return false;
+            }
+            
+        }
+
         public bool IsUsernameAvailable(string username)
         {
             using (sqlConnection)

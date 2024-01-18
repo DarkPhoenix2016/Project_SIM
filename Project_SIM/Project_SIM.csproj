@@ -16,7 +16,7 @@
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>D:\University\Assigments\Semester 03\IT21053 - Object Oriented Programming %28P%29\publishing\SIM\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -26,16 +26,22 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <TargetCulture>en</TargetCulture>
+    <ProductName>Project SIM</ProductName>
+    <PublisherName>CG_WIN11_PC</PublisherName>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
+    <UseApplicationTrust>true</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -55,6 +61,19 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>6A14E724DE95C24412B7037566F494EDB1F6F4E0</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
@@ -76,6 +95,7 @@
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -96,11 +116,18 @@
     <Compile Include="Models\SimCustomer.cs" />
     <Compile Include="Models\SimManager.cs" />
     <Compile Include="Models\SimProduct.cs" />
-    <Compile Include="Models\SimStoreKeeper.cs" />
+    <Compile Include="Models\SimStore.cs" />
+    <Compile Include="Models\SimInventory.cs" />
     <Compile Include="Models\SimUser.cs" />
     <Compile Include="Models\sqlConnection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Customer\BillRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Customer\BillRecord.Designer.cs">
+      <DependentUpon>BillRecord.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Customer\BillsPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +158,12 @@
     <Compile Include="Views\Customer\RegCustomer.Designer.cs">
       <DependentUpon>RegCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Customer\UpdateDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Customer\UpdateDetails.Designer.cs">
+      <DependentUpon>UpdateDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Customer\ViewDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +175,12 @@
     </Compile>
     <Compile Include="Views\LogingForm.Designer.cs">
       <DependentUpon>LogingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Manager\BillsPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Manager\BillsPage.Designer.cs">
+      <DependentUpon>BillsPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Manager\Dashborad.cs">
       <SubType>Form</SubType>
@@ -179,11 +218,23 @@
     <Compile Include="Views\Manager\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Manager\UpdateDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Manager\UpdateDetails.Designer.cs">
+      <DependentUpon>UpdateDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\OpenScreen.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\OpenScreen.Designer.cs">
       <DependentUpon>OpenScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ServerSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ServerSettings.Designer.cs">
+      <DependentUpon>ServerSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\StoreKeeper\Dahsborad.cs">
       <SubType>Form</SubType>
@@ -261,6 +312,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Reports\bill.rdlc" />
+    <EmbeddedResource Include="Views\Customer\BillRecord.resx">
+      <DependentUpon>BillRecord.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Customer\BillsPage.resx">
       <DependentUpon>BillsPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -276,14 +331,38 @@
     <EmbeddedResource Include="Views\Customer\regCustomer.resx">
       <DependentUpon>RegCustomer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Customer\UpdateDetails.resx">
+      <DependentUpon>UpdateDetails.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Customer\ViewDetails.resx">
       <DependentUpon>ViewDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LogingForm.resx">
       <DependentUpon>LogingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Manager\BillsPage.resx">
+      <DependentUpon>BillsPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Manager\Dashborad.resx">
+      <DependentUpon>Dashborad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Manager\Home.resx">
+      <DependentUpon>Home.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Manager\Inventory.resx">
+      <DependentUpon>Inventory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Manager\Products.resx">
+      <DependentUpon>Products.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Manager\UpdateDetails.resx">
+      <DependentUpon>UpdateDetails.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\OpenScreen.resx">
       <DependentUpon>OpenScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ServerSettings.resx">
+      <DependentUpon>ServerSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\User\Dashborad.resx">
       <DependentUpon>Dashborad.cs</DependentUpon>
@@ -297,6 +376,13 @@
     <EmbeddedResource Include="Views\User\ReturnScreen.resx">
       <DependentUpon>ReturnScreen.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Project_SIM_1_TemporaryKey.pfx" />
+    <None Include="Project_SIM_TemporaryKey.pfx" />
+    <None Include="Properties\DataSources\Project_SIM.Models.LoyaltyTransaction.datasource" />
+    <None Include="Properties\DataSources\Project_SIM.Models.Payments.datasource" />
+    <None Include="Properties\DataSources\Project_SIM.Models.SalesTransaction.datasource" />
+    <None Include="Properties\DataSources\Project_SIM.Models.SalesTransactionDetails.datasource" />
+    <None Include="Properties\DataSources\Project_SIM.Models.StoreDetails.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -314,6 +400,13 @@
   <ItemGroup>
     <Content Include="icon.ico" />
     <Content Include="resources\artwork.png" />
+    <Content Include="resources\icons\box.png" />
+    <Content Include="resources\icons\bill.png" />
+    <Content Include="resources\icons\dashboard.png" />
+    <Content Include="resources\icons\product.png" />
+    <Content Include="resources\icons\public-relation.png" />
+    <Content Include="resources\icons\statistics.png" />
+    <Content Include="resources\icons\user %281%29.png" />
     <None Include="resources\icons\home.png" />
     <None Include="resources\icons\home_1.png" />
     <Content Include="resources\icons\icon.ico" />
@@ -343,11 +436,13 @@
     <Content Include="resources\icons\rotation.png" />
     <None Include="resources\icons\settings.png" />
     <None Include="resources\icons\sign-out.png" />
+    <Content Include="resources\icons\user-2.png" />
     <Content Include="resources\icons\user.png" />
     <Content Include="resources\icons\users.png" />
     <Content Include="resources\icons\usersx190.png" />
+    <Content Include="resources\icons\inventory-2.png" />
     <Content Include="resources\Logo.png" />
-    <Content Include="resources\server_config.txt" />
+    <Content Include="resources\icons\payment-terminal.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -375,7 +470,7 @@
       <Version>2.1.0</Version>
     </PackageReference>
     <PackageReference Include="Google.Protobuf">
-      <Version>3.25.1</Version>
+      <Version>3.25.2</Version>
     </PackageReference>
     <PackageReference Include="K4os.Compression.LZ4.Streams">
       <Version>1.3.6</Version>
@@ -388,6 +483,12 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions">
       <Version>8.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.WinForms">
+      <Version>150.1586.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.SqlServer.Types">
+      <Version>14.0.314.76</Version>
     </PackageReference>
     <PackageReference Include="ModernWpfUI">
       <Version>0.9.6</Version>
@@ -432,7 +533,7 @@
       <Version>8.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
-      <Version>8.0.0</Version>
+      <Version>8.0.1</Version>
     </PackageReference>
     <PackageReference Include="ZstdSharp.Port">
       <Version>0.7.4</Version>
@@ -440,6 +541,9 @@
     <PackageReference Include="ZXing.Net">
       <Version>0.16.9</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

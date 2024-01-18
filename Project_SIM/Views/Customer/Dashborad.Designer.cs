@@ -31,13 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashborad));
             this.pnlMenu = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnProfile = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
             this.btnLoyalty = new System.Windows.Forms.Button();
             this.btnBills = new System.Windows.Forms.Button();
             this.btnHome = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.pnlMenu.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -60,6 +61,7 @@
             // panel2
             // 
             this.panel2.AutoSize = true;
+            this.panel2.Controls.Add(this.btnProfile);
             this.panel2.Controls.Add(this.btnLogout);
             this.panel2.Controls.Add(this.btnLoyalty);
             this.panel2.Controls.Add(this.btnBills);
@@ -69,6 +71,52 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(250, 575);
             this.panel2.TabIndex = 2;
+            // 
+            // label3
+            // 
+            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label3.Font = new System.Drawing.Font("Poppins", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(0, 89);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(250, 29);
+            this.label3.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.Font = new System.Drawing.Font("Poppins Light", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(0, 56);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(250, 33);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Your Sale and Inverntory Manger";
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Font = new System.Drawing.Font("Poppins", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(250, 56);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Project SIM";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnProfile
+            // 
+            this.btnProfile.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnProfile.Font = new System.Drawing.Font("Poppins SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProfile.Image = global::Project_SIM.Properties.Resources.user__1_;
+            this.btnProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnProfile.Location = new System.Drawing.Point(0, 162);
+            this.btnProfile.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.btnProfile.Name = "btnProfile";
+            this.btnProfile.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnProfile.Size = new System.Drawing.Size(250, 54);
+            this.btnProfile.TabIndex = 10;
+            this.btnProfile.Text = "My Profile";
+            this.btnProfile.UseVisualStyleBackColor = true;
+            this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
             // 
             // btnLogout
             // 
@@ -122,7 +170,7 @@
             // 
             this.btnHome.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnHome.Font = new System.Drawing.Font("Poppins SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHome.Image = ((System.Drawing.Image)(resources.GetObject("btnHome.Image")));
+            this.btnHome.Image = global::Project_SIM.Properties.Resources.home_1;
             this.btnHome.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnHome.Location = new System.Drawing.Point(0, 0);
             this.btnHome.Name = "btnHome";
@@ -133,36 +181,6 @@
             this.btnHome.UseVisualStyleBackColor = true;
             this.btnHome.Click += new System.EventHandler(this.btnHome_Click);
             // 
-            // label3
-            // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Font = new System.Drawing.Font("Poppins", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(0, 89);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(250, 29);
-            this.label3.TabIndex = 2;
-            // 
-            // label2
-            // 
-            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Font = new System.Drawing.Font("Poppins Light", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(0, 56);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(250, 33);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Your Sale and Inverntory Manger";
-            // 
-            // label1
-            // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Font = new System.Drawing.Font("Poppins", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(250, 56);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Project SIM";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // Dashborad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -170,6 +188,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1260, 760);
             this.Controls.Add(this.pnlMenu);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MinimumSize = new System.Drawing.Size(1260, 760);
             this.Name = "Dashborad";
@@ -196,5 +215,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnProfile;
     }
 }

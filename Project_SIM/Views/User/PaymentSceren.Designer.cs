@@ -527,6 +527,7 @@
             this.Text = "Payment";
             this.Load += new System.EventHandler(this.PaymentSceren_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PaymentSceren_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PaymentSceren_KeyPress);
             this.ResumeLayout(false);
             this.PerformLayout();
 

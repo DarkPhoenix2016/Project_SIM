@@ -20,6 +20,7 @@ namespace Project_SIM.Views
         public LogingForm()
         {
             InitializeComponent();
+            this.Activate();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -49,7 +50,12 @@ namespace Project_SIM.Views
             
         }
 
-        
+        private void LogingForm_Load(object sender, EventArgs e)
+        {
+            this.Activate();
+            this.Focus();
+            txtUsername.Focus();
+        }
     }
 
 

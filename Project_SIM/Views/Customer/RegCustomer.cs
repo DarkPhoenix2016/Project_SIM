@@ -26,7 +26,17 @@ namespace Project_SIM.Views.Customer
         public RegCustomer()
         {
             InitializeComponent();
+            KeyPreview = true;
             
+        }
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+                this.Close();
+
+            }
         }
         private void btnSubmit_Click(object sender, EventArgs e)
         {

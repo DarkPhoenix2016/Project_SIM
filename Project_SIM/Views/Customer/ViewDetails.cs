@@ -19,6 +19,7 @@ namespace Project_SIM.Views.Customer
         public ViewDetails()
         {
             InitializeComponent();
+            KeyPreview = true;
             
         }
 
@@ -31,7 +32,15 @@ namespace Project_SIM.Views.Customer
             txtDateOfJoin.Text = CustomerData.DateOfJoin.ToString();
 
         }
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+                this.Close();
 
+            }
+        }
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();

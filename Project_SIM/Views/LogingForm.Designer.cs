@@ -164,6 +164,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Loging Form";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.LogingForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

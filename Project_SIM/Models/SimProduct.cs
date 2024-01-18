@@ -62,12 +62,23 @@ namespace Project_SIM.Models
             return null;
         }
 
-        public List<SimProductData> GetProductsByProductCodeSearch(string codeOrBarcode)
+        public List<SimProductData> GetProductsByProductCodeSearch(string codeOrBarcode,bool fromProductDetails = false, bool viewOnly = false)
         {
             List<SimProductData> productList = new List<SimProductData>();
 
             codeOrBarcode = codeOrBarcode.Trim();
-            string query = "SELECT * FROM products WHERE ProductCode LIKE @CodeOrBarcode OR Name LIKE @CodeOrBarcode ";
+
+            string query = "SELECT * FROM products WHERE ProductCode LIKE @CodeOrBarcode OR Name LIKE @CodeOrBarcode; ";
+
+            if (fromProductDetails)
+            {
+                query = "SELECT * FROM products_details WHERE ProductCode LIKE @CodeOrBarcode OR Name LIKE @CodeOrBarcode LIMIT 100; ";
+            }
+
+            if (viewOnly)
+            {
+                query = "SELECT * FROM products_details WHERE ProductCode LIKE @CodeOrBarcode OR Name LIKE @CodeOrBarcode LIMIT 200; ";
+            }
 
             using (MySqlConnection sqlConnection = new MySqlConnection(connectionString))
             {
@@ -91,7 +102,14 @@ namespace Project_SIM.Models
                                     Name = reader["Name"].ToString(),
                                     Price = Convert.ToDecimal(reader["Price"]),
                                     Unit = reader["UnitOfMeasurement"].ToString()
+
                                 };
+
+                                if (fromProductDetails)
+                                {
+                                    product.CatCode = reader["CategoryCode"].ToString();
+                                    product.CatDiscription = reader["CategoryName"].ToString();
+                                }
 
                                 productList.Add(product);
                             }
@@ -106,8 +124,6 @@ namespace Project_SIM.Models
 
             return productList;
         }
-
-
         public class SimProductData
         {
             public int ProductID { get; set; }
@@ -116,6 +132,10 @@ namespace Project_SIM.Models
             public string Name { get; set; }
             public decimal Price { get; set; }
             public string Unit {  get; set; }
+            public string CatCode { get; set; }
+            public string CatDiscription { get; set; }
         }
+    
+
     }
 }

@@ -28,8 +28,7 @@ namespace Project_SIM.Views.Customer
         HomePage Home;
         BillsPage Bills;
         LoyaltyPage Loyalty;
-        ProfilePage Profile;
-        SettingsPage Settings;
+        UpdateDetails UpdateDetails;
 
         public Dashborad()
         {
@@ -47,13 +46,27 @@ namespace Project_SIM.Views.Customer
             CustomerData = simCustomerClass.Select(loggedUserData.UserID.ToString());
 
         }
-        private void HandleLogout()
+        public void HandleLogout(bool forced = false)
         {
-            // Prompt the user with a yes/no question
-            DialogResult result = MessageBox.Show("Are you sure you want to Logout?", "Confirm log out", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (!forced)
+            {
+                // Prompt the user with a yes/no question
+                DialogResult result = MessageBox.Show("Are you sure you want to Logout?", "Confirm log out", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            // Check the user's response
-            if (result == DialogResult.Yes)
+                // Check the user's response
+                if (result == DialogResult.Yes)
+                {
+                    // If the user clicks "Yes," end the session
+                    SessionManager.EndSession(sessionID);
+
+                    // Close the current form (Dashboard) and open the login screen
+                    OpenScreen openScreen = new OpenScreen();
+                    openScreen.Show();
+                    isClosing = true;
+                    this.Close();
+                }
+            }
+            if (forced)
             {
                 // If the user clicks "Yes," end the session
                 SessionManager.EndSession(sessionID);
@@ -63,7 +76,10 @@ namespace Project_SIM.Views.Customer
                 openScreen.Show();
                 isClosing = true;
                 this.Close();
+
+
             }
+
         }
 
         private void btnHome_Click(object sender, EventArgs e)
@@ -90,13 +106,9 @@ namespace Project_SIM.Views.Customer
                 {
                     Loyalty.Close();
                 }
-                if (Profile != null)
+                if (UpdateDetails != null)
                 {
-                    Profile.Close();
-                }
-                if (Settings != null)
-                {
-                    Settings.Close();
+                    UpdateDetails.Close();
                 }
 
 
@@ -127,14 +139,12 @@ namespace Project_SIM.Views.Customer
                 {
                     Loyalty.Close();
                 }
-                if (Profile != null)
+                if (UpdateDetails != null)
                 {
-                    Profile.Close();
+                    UpdateDetails.Close();
                 }
-                if (Settings != null)
-                {
-                    Settings.Close();
-                }
+
+
             }
         }
 
@@ -161,31 +171,30 @@ namespace Project_SIM.Views.Customer
                 {
                     Bills.Close();
                 }
+                if (UpdateDetails != null)
+                {
+                    UpdateDetails.Close();
+                }
 
-                if (Profile != null)
-                {
-                    Profile.Close();
-                }
-                if (Settings != null)
-                {
-                    Settings.Close();
-                }
             }
-        }
 
+        }
         private void btnProfile_Click(object sender, EventArgs e)
         {
-            if (Profile == null)
+            if (UpdateDetails == null)
             {
-                Profile = new ProfilePage();
-                Profile.FormClosed += Profile_Formclosed;
-                Profile.MdiParent = this;
-                Profile.Dock = DockStyle.Fill;
-                Profile.Show();
+                UpdateDetails = new UpdateDetails();
+                UpdateDetails.setCustomerDetails(CustomerData);
+                UpdateDetails.SetCurrentUser(currentUser);
+                UpdateDetails.setDashborad(this);
+                UpdateDetails.FormClosed += UpdateDetails_Formclosed;
+                UpdateDetails.MdiParent = this;
+                UpdateDetails.Dock = DockStyle.Fill;
+                UpdateDetails.Show();
             }
             else
             {
-                Profile.Activate();
+                UpdateDetails.Activate();
 
                 if (Home != null)
                 {
@@ -199,47 +208,10 @@ namespace Project_SIM.Views.Customer
                 {
                     Loyalty.Close();
                 }
-                if (Settings != null)
-                {
-                    Settings.Close();
-                }
-            }
-        }
 
-        private void btnSettings_Click(object sender, EventArgs e)
-        {
-            if (Settings == null)
-            {
-                Settings = new SettingsPage();
-                Settings.FormClosed += Settings_Formclosed;
-                Settings.MdiParent = this;
-                Settings.Dock = DockStyle.Fill;
-                Settings.Show();
-            }
-            else
-            {
-                Settings.Activate();
-
-                if (Home != null)
-                {
-                    Home.Close();
-                }
-                if (Bills != null)
-                {
-                    Bills.Close();
-                }
-                if (Loyalty != null)
-                {
-                    Loyalty.Close();
-                }
-                if (Profile != null)
-                {
-                    Profile.Close();
-                }
 
             }
         }
-
         private void btnLogout_Click(object sender, EventArgs e)
         {
             // Call the common method to handle session ending and application closing
@@ -257,14 +229,11 @@ namespace Project_SIM.Views.Customer
         {
             Loyalty = null;
         }
-        private void Profile_Formclosed(object sender, FormClosedEventArgs e)
+        private void UpdateDetails_Formclosed(object sender, FormClosedEventArgs e)
         {
-            Profile = null;
+            UpdateDetails = null;
         }
-        private void Settings_Formclosed(object sender, FormClosedEventArgs e)
-        {
-            Settings = null;
-        }
+
 
         private void Dashborad_Load(object sender, EventArgs e)
         {
@@ -303,6 +272,6 @@ namespace Project_SIM.Views.Customer
             }
         }
 
-        
+       
     }
 }

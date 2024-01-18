@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Security.Cryptography.Pkcs;
 using System.Windows;
 using System.Windows.Documents;
+using System.Xml.Linq;
+using Windows.System;
 using static Project_SIM.Models.SimCustomer;
 
 namespace Project_SIM.Models
@@ -12,6 +14,7 @@ namespace Project_SIM.Models
     {
         private readonly string connectionString;
         private MySqlConnection sqlConnection;
+        
 
         public SimCustomer()
         {
@@ -161,6 +164,59 @@ namespace Project_SIM.Models
             return null; // Return null if no customer is found
         }
 
+        public bool Update(int UserID, int CustomerID, string newFullName, string newUsername, string newLoyaltyNumber, string newDateOfJoin)
+        {
+            SimUser user = new SimUser();
+            bool updateUser = user.Update(UserID, newFullName, newUsername);
+
+            if (!updateUser)
+            {
+                return false;
+            }
+
+            using (MySqlConnection sqlConnection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    using (MySqlConnection _sqlConnection = new MySqlConnection(connectionString))
+                    {
+                        _sqlConnection.Open();
+
+                        using (MySqlTransaction transaction = _sqlConnection.BeginTransaction())
+                        {
+                            try
+                            {
+
+                                string query = $"UPDATE customers SET LoyaltyNumber ='{newLoyaltyNumber}', DateOfJoin ='{newDateOfJoin}' WHERE CustomerID = {CustomerID} ";
+
+                                Console.WriteLine(query);
+
+                                // ExecuteNonQuery is used for non-query commands (INSERT, UPDATE, DELETE)
+                                new MySqlCommand(query, _sqlConnection, transaction).ExecuteNonQuery();
+
+                                // Commit the transaction
+                                transaction.Commit();
+                                return true;
+                            }
+                            catch (Exception ex)
+                            {
+                                FormatMaker.ShowErrorMessageBox($"Error during transaction: {ex.Message}");
+
+                                // Rollback the transaction in case of an error
+                                transaction.Rollback();
+                                return false;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    FormatMaker.ShowErrorMessageBox($"Error connecting to the database: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+        
         public CustomerLastBillReport SelectCustomerLastBillSummary(string CustomerID)
         {
             string query = @"SELECT * FROM customer_bill_summary WHERE CustomerID = @CustomerID";
@@ -394,7 +450,7 @@ namespace Project_SIM.Models
             return null; // Return null if no transaction details are found
         }
 
-        public bool AddLoyaltyPoints(string loyaltyNumber, string loyaltyPoints)
+        public bool AddLoyaltyPoints(string billNumber, string loyaltyNumber, string loyaltyPoints)
         {
             try
             {
@@ -404,10 +460,11 @@ namespace Project_SIM.Models
                 {
                     try
                     {
-                        string queryUpdateLoyaltyPoints = "INSERT INTO `loyaltypoints_transactions`(`LoyaltyNumber`,`Amount`, `State`) VALUES (@loyaltyNumber,@loyaltyPoints,'Credit')";
+                        string queryUpdateLoyaltyPoints = "INSERT INTO `loyaltypoints_transactions`(`BillNumber`,`LoyaltyNumber`,`Amount`, `State`) VALUES (@BillNumber,@loyaltyNumber,@loyaltyPoints,'Credit')";
 
                         using (MySqlCommand cmd = new MySqlCommand(queryUpdateLoyaltyPoints, sqlConnection, transaction))
                         {
+                            cmd.Parameters.AddWithValue("@BillNumber", billNumber);
                             cmd.Parameters.AddWithValue("@loyaltyPoints", loyaltyPoints);
                             cmd.Parameters.AddWithValue("@loyaltyNumber", loyaltyNumber);
                             cmd.ExecuteNonQuery();
@@ -437,7 +494,7 @@ namespace Project_SIM.Models
             }
         }
 
-        public  bool RemoveLoyaltyPoints(string loyaltyNumber, string loyaltyPoints)
+        public  bool RemoveLoyaltyPoints(string billNumber, string loyaltyNumber, string loyaltyPoints)
         {
             try
             {
@@ -447,10 +504,11 @@ namespace Project_SIM.Models
                 {
                     try
                     {
-                        string queryUpdateLoyaltyPoints = "INSERT INTO `loyaltypoints_transactions`(`LoyaltyNumber`,`Amount`, `State`) VALUES (@loyaltyNumber,@loyaltyPoints,'Debit')";
+                        string queryUpdateLoyaltyPoints = "INSERT INTO `loyaltypoints_transactions`(`BillNumber`,`LoyaltyNumber`,`Amount`, `State`) VALUES (@BillNumber,@loyaltyNumber,@loyaltyPoints,'Debit')";
 
                         using (MySqlCommand cmd = new MySqlCommand(queryUpdateLoyaltyPoints, sqlConnection, transaction))
                         {
+                            cmd.Parameters.AddWithValue("@BillNumber", billNumber);
                             cmd.Parameters.AddWithValue("@loyaltyPoints", loyaltyPoints);
                             cmd.Parameters.AddWithValue("@loyaltyNumber", loyaltyNumber);
                             cmd.ExecuteNonQuery();
@@ -532,7 +590,6 @@ namespace Project_SIM.Models
             public string TotalPaidAmount { get; set; }
             public string TotalChange { get; set; }
             public string BillNumber { get; set; }
-            public string BillTotalAmount { get;set; }
         }
 
         public class TransactionDetailInfo
