@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Transactions;
 using Windows.Media.AppBroadcasting;
@@ -574,18 +575,19 @@ namespace Project_SIM.Models
                 sqlConnection.Open();
                 try
                 {
-                    
-                    string query = "SELECT * FROM `customer_bills` LIMIT 100 ";
+                    string query = "SELECT * FROM `customer_bills` ORDER BY TransactionDate DESC LIMIT 100 ";
+
                     using (MySqlCommand cmd = new MySqlCommand(query, sqlConnection))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             List<BillSummry> Bills = new List<BillSummry>();
-
+                            int counter = 1;
                             while (reader != null && reader.Read())
                             {
                                 BillSummry billSummary = new BillSummry
                                 {
+                                    ID = counter,
                                     TransactionID = reader["TransactionID"] != DBNull.Value ? Convert.ToInt32(reader["TransactionID"]) : 0,
                                     TransactionDate = reader["TransactionDate"] != DBNull.Value ? (DateTime)reader["TransactionDate"] : DateTime.MinValue,
                                     BillNumber = reader["BillNumber"] != DBNull.Value ? reader["BillNumber"].ToString() : string.Empty,
@@ -593,15 +595,19 @@ namespace Project_SIM.Models
                                     UserID = reader["UserID"] != DBNull.Value ? Convert.ToInt32(reader["UserID"]) : 0,
 
                                     TotalLineCount = reader["TotalLineCount"] != DBNull.Value ? Convert.ToInt32(reader["TotalLineCount"]) : 0,
-                                    TotalAmount = reader["TotalAmount"] != DBNull.Value ? reader["TotalAmount"].ToString() : string.Empty,
+                                    TotalCost = reader["TotalAmount"] != DBNull.Value ? reader["TotalAmount"].ToString() : string.Empty,
                                     TotalDiscount = reader["TotalDiscount"] != DBNull.Value ? reader["TotalDiscount"].ToString() : string.Empty,
+
                                     TotalPaidAmount = reader["TotalPaidAmount"] != DBNull.Value ? reader["TotalPaidAmount"].ToString() : string.Empty,
                                     TotalChange = reader["TotalChange"] != DBNull.Value ? reader["TotalChange"].ToString() : string.Empty,
-                                    
+
                                 };
+                                billSummary.Subtotal = (Convert.ToDecimal(billSummary.TotalCost) + Convert.ToDecimal(billSummary.TotalDiscount)).ToString("0.00");
+                                counter++;
 
                                 Bills.Add(billSummary);
                             }
+                            return Bills; // 
 
                         }
 
@@ -610,6 +616,7 @@ namespace Project_SIM.Models
                 catch (MySqlException ex)
                 {
                     Console.WriteLine($"Error executing query: {ex.Message}");
+                    return null; // 
                 }
                 finally
                 {
@@ -617,7 +624,7 @@ namespace Project_SIM.Models
                 }
             }
 
-            return null; // 
+            
         }
 
         public List<BillSummry> GetBillSummary(string billNumber)
@@ -627,18 +634,21 @@ namespace Project_SIM.Models
                 sqlConnection.Open();
                 try
                 {
-                    string query = "SELECT * FROM `customer_bills` WHERE BillNumber=@BillNumber LIMIT 100 ";
+                    string query = "SELECT * FROM `customer_bills` WHERE BillNumber LIKE @BillNumber ORDER BY TransactionDate DESC LIMIT 100 ";
+                    
                     using (MySqlCommand cmd = new MySqlCommand(query, sqlConnection))
                     {
                         cmd.Parameters.AddWithValue("@BillNumber", billNumber+'%');
+                        
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             List<BillSummry> Bills = new List<BillSummry>();
-
+                            int counter = 1;
                             while (reader != null && reader.Read())
                             {
                                 BillSummry billSummary = new BillSummry
                                 {
+                                    ID = counter,
                                     TransactionID = reader["TransactionID"] != DBNull.Value ? Convert.ToInt32(reader["TransactionID"]) : 0,
                                     TransactionDate = reader["TransactionDate"] != DBNull.Value ? (DateTime)reader["TransactionDate"] : DateTime.MinValue,
                                     BillNumber = reader["BillNumber"] != DBNull.Value ? reader["BillNumber"].ToString() : string.Empty,
@@ -646,23 +656,29 @@ namespace Project_SIM.Models
                                     UserID = reader["UserID"] != DBNull.Value ? Convert.ToInt32(reader["UserID"]) : 0,
 
                                     TotalLineCount = reader["TotalLineCount"] != DBNull.Value ? Convert.ToInt32(reader["TotalLineCount"]) : 0,
-                                    TotalAmount = reader["TotalAmount"] != DBNull.Value ? reader["TotalAmount"].ToString() : string.Empty,
+                                    TotalCost = reader["TotalAmount"] != DBNull.Value ? reader["TotalAmount"].ToString() : string.Empty,
                                     TotalDiscount = reader["TotalDiscount"] != DBNull.Value ? reader["TotalDiscount"].ToString() : string.Empty,
+                                    
                                     TotalPaidAmount = reader["TotalPaidAmount"] != DBNull.Value ? reader["TotalPaidAmount"].ToString() : string.Empty,
                                     TotalChange = reader["TotalChange"] != DBNull.Value ? reader["TotalChange"].ToString() : string.Empty,
 
                                 };
+                                billSummary.Subtotal = (Convert.ToDecimal(billSummary.TotalCost) + Convert.ToDecimal(billSummary.TotalDiscount)).ToString("0.00");
+                                counter++;
 
                                 Bills.Add(billSummary);
                             }
+                            return Bills;
 
                         }
 
                     }
+
                 }
                 catch (MySqlException ex)
                 {
                     Console.WriteLine($"Error executing query: {ex.Message}");
+                    return null; // 
                 }
                 finally
                 {
@@ -670,7 +686,7 @@ namespace Project_SIM.Models
                 }
             }
 
-            return null; // 
+            
         }
 
     }
@@ -756,16 +772,18 @@ namespace Project_SIM.Models
 
     public class BillSummry
     {
+        public int ID { get; set; }
         public int TransactionID { get; set; }
         public string BillNumber { get; set; }
         public int CustomerID { get; set; }
         public int UserID { get; set; }
         public DateTime TransactionDate { get; set; }
         public int TotalLineCount { get; set; }
-        public string TotalAmount { get; set; }
+        public string Subtotal { get; set; }
         public string TotalDiscount { get; set; }
+        public string TotalCost { get; set; }
         public string TotalPaidAmount { get; set; }
         public string TotalChange { get; set; }
-        public string BillTotalAmount { get; set; }
+        
     }
 }

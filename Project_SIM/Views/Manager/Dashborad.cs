@@ -176,7 +176,7 @@ namespace Project_SIM.Views.Manager
                 }
                 if (products != null)
                 {
-                    inventory.Close();
+                    products.Close();
                 }
                 
 

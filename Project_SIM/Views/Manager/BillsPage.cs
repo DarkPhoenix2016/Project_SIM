@@ -6,54 +6,38 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Media.Media3D;
 using static Project_SIM.Models.SimCustomer;
+using BrightIdeasSoftware;
 
 
 namespace Project_SIM.Views.Manager
 {
     public partial class BillsPage : MaterialForm
     {
-        private int currentItem = 1;
-        private int lastSelectedIndex = -1;
+
         SimBill SimBillClass;
         List<BillSummry> ListBills;
 
         public BillsPage()
         {
             InitializeComponent();
-            SetupListViewColumns();
             SimBillClass = new SimBill();
         }
         private void Screen_Resize(object sender, EventArgs e)
         {
             // Adjust column widths when the form is resized
-            SetupListViewColumns();
         }
 
         private void BillsPage_Load(object sender, EventArgs e)
         {
             LoadBillData();
         }
-        private void SetupListViewColumns()
-        {
-            // Specify the ratios for each column
-            double[] columnRatios = { 0.05, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15 };
-
-            // Calculate total width
-            int totalWidth = listViewBills.Width;
-
-            // Adjust column widths based on ratios
-            for (int i = 0; i < listViewBills.Columns.Count; i++)
-            {
-                listViewBills.Columns[i].Width = (int)(totalWidth * columnRatios[i]);
-            }
-        }
+        
         private void txtSearchWord_TextChanged(object sender, EventArgs e)
         {
             // If the text is empty, clear the ListView and reset the counter
             if (string.IsNullOrEmpty(txtSearchWord.Text.Trim()))
             {
-                listViewBills.Items.Clear();
-                currentItem = 1; // Reset the counter when clearing the ListView
+                objListViewBills.Items.Clear();
             }
             else
             {
@@ -66,8 +50,7 @@ namespace Project_SIM.Views.Manager
             // If the text is empty, clear the ListView and reset the counter
             if (string.IsNullOrEmpty(txtSearchWord.Text.Trim()))
             {
-                listViewBills.Items.Clear();
-                currentItem = 1; // Reset the counter when clearing the ListView
+                objListViewBills.Items.Clear();
             }
             else
             {
@@ -77,83 +60,105 @@ namespace Project_SIM.Views.Manager
 
         private void LoadBillData()
         {
-            listViewBills.Items.Clear();
-            currentItem = 1; // Reset the counter when reloading data
-
             // Retrieve customer bill summaries
             ListBills = SimBillClass.GetBillSummary();
-
-            if (ListBills != null && ListBills.Count > 0)
-            {
-                // Iterate over the list and process each CustomerBillSummry object
-                foreach (BillSummry billSummary in ListBills)
-                {
-                    ListViewItem newItem = new ListViewItem(currentItem.ToString());
-                    newItem.SubItems.Add(billSummary.TransactionDate.ToString("yyyy-MM-dd"));
-                    newItem.SubItems.Add(billSummary.BillNumber);
-                    newItem.SubItems.Add(billSummary.TotalLineCount.ToString());
-                    newItem.SubItems.Add("Rs " + (Convert.ToDecimal(billSummary.TotalDiscount) + Convert.ToDecimal(billSummary.TotalAmount)).ToString("0.00"));
-                    newItem.SubItems.Add("Rs " + billSummary.TotalDiscount);
-                    newItem.SubItems.Add("Rs " + billSummary.TotalAmount);
-
-                    listViewBills.Items.Add(newItem);
-                    currentItem++;
-                }
-            }
+            LoadBillDataObj();
         }
 
         private void LoadBillData(string billNumber)
         {
-            listViewBills.Items.Clear();
-            currentItem = 1; // Reset the counter when reloading data
-
-            // Retrieve customer bill summaries
             ListBills = SimBillClass.GetBillSummary(billNumber);
+            LoadBillDataObj();
+        }
 
-            if (ListBills != null && ListBills.Count > 0)
+        private void LoadBillDataObj()
+        {
+            // Set aspect getters for each column to display the desired details
+
+            NoCol.AspectGetter = (s) => (s as BillSummry)?.ID.ToString(); 
+            colDate.AspectGetter = (s) => (s as BillSummry)?.TransactionDate.ToString("yyyy-MM-dd");
+            colBillNumber.AspectGetter = (s) => (s as BillSummry)?.BillNumber;
+            colNoLins.AspectGetter = (s) => (s as BillSummry)?.TotalLineCount.ToString();
+            colSubTotal.AspectGetter = (s) => (s as BillSummry)?.Subtotal;
+            colDiscount.AspectGetter = (s) =>(s as BillSummry)?.TotalDiscount;
+            colTotal.AspectGetter = (s) => (s as BillSummry)?.TotalCost;
+
+            // Button column set up for viewing the bill
+            colViweBill.IsButton = true;
+            colViweBill.ButtonSizing = OLVColumn.ButtonSizingMode.CellBounds;
+            colViweBill.AspectGetter = (s) => "View";
+
+
+            // Clear existing items and set new objects to the ListView
+            objListViewBills.Items.Clear();
+            objListViewBills.SetObjects(ListBills);
+
+        }
+
+        
+        private void chckBoxShowGroups_CheckedChanged(object sender, EventArgs e)
+        {
+            if(chckBoxShowGroups.Checked == true)
             {
-                // Iterate over the list and process each CustomerBillSummry object
-                foreach (BillSummry billSummary in ListBills)
-                {
-                    ListViewItem newItem = new ListViewItem(currentItem.ToString());
-                    newItem.SubItems.Add(billSummary.TransactionDate.ToString("yyyy-MM-dd"));
-                    newItem.SubItems.Add(billSummary.BillNumber);
-                    newItem.SubItems.Add(billSummary.TotalLineCount.ToString());
-                    newItem.SubItems.Add("Rs " + (Convert.ToDecimal(billSummary.TotalDiscount) + Convert.ToDecimal(billSummary.TotalAmount)).ToString("0.00"));
-                    newItem.SubItems.Add("Rs " + billSummary.TotalDiscount);
-                    newItem.SubItems.Add("Rs " + billSummary.TotalAmount);
+                objListViewBills.ShowGroups =   true;
+            }
 
-                    listViewBills.Items.Add(newItem);
-                    currentItem++;
+            if (chckBoxShowGroups.Checked == false)
+            {
+                objListViewBills.ShowGroups = false;
+            }
+
+        }
+
+        private void objListViewBills_ButtonClick(object sender, CellClickEventArgs e)
+        {
+            if (e.Column == colViweBill)
+            {
+                Console.WriteLine("Viwe Button event Got Triggerd.");
+                try
+                {
+                    int clickedRow = e.RowIndex;  // Get the row index of the clicked button
+
+                    Console.WriteLine($"Index of the Clicked Row: {clickedRow}");
+
+                    if (clickedRow >= 0 && clickedRow < ListBills.Count)
+                    {
+                        // Access the underlying object associated with the clicked row
+                        BillSummry selectedBill = e.Model as BillSummry;
+
+                        if (selectedBill != null)
+                        {
+                            // Access the value of the first column in the clicked row
+                            string valueOfFirstColumn = selectedBill.TransactionID.ToString();
+
+                            // Use the value as needed
+                            Console.WriteLine($"Value of the first column: {valueOfFirstColumn}");
+
+                            // The rest of your code
+                            string savedBillNumber = selectedBill.BillNumber.ToString();
+                            string savedTransactionId = selectedBill.TransactionID.ToString();
+
+                            BillRecord record = new BillRecord();
+                            record.createdBillNumber = savedBillNumber;
+                            record.createdtransactionID = Convert.ToInt32(savedTransactionId);
+                            record.Show();
+
+
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
 
-        private void listViewBills_ItemActivate(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            int selectedIndex = listViewBills.SelectedIndices[0];
-
-            // Check if the selected item is the same as the last selected item
-            if (selectedIndex == lastSelectedIndex)
-            {
-                selectedIndex = listViewBills.SelectedIndices[0];
-
-                BillSummry selectedBill = ListBills[selectedIndex];
-
-                string savedBillNumber = selectedBill.BillNumber.ToString();
-                string savedTransactionId = selectedBill.TransactionID.ToString();
-
-                BillRecord record = new BillRecord();
-                record.createdBillNumber = savedBillNumber;
-                record.createdtransactionID = Convert.ToInt32(savedTransactionId);
-                record.ShowDialog();
-            }
-
-            // Update the last selected index
-            lastSelectedIndex = selectedIndex;
-
+            LoadBillData();
         }
-
     }  
 
 }
