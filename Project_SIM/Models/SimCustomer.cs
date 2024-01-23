@@ -37,7 +37,7 @@ namespace Project_SIM.Models
 
                 // Insert the new User Account
                 SimUser user = new SimUser();
-                bool result = user.Register(fullName, username, hashedPassword); // Use hashed password
+                bool result = user.Register(fullName, username, hashedPassword,"Customer"); // Use hashed password
                 if (result)
                 {
                     // Insert the new customer account

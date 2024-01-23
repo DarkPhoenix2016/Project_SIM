@@ -200,6 +200,12 @@
     <Compile Include="Views\Manager\Inventory.Designer.cs">
       <DependentUpon>Inventory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Manager\Users.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Manager\Users.Designer.cs">
+      <DependentUpon>Users.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Manager\Products.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -229,6 +235,12 @@
     </Compile>
     <Compile Include="Views\OpenScreen.Designer.cs">
       <DependentUpon>OpenScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportViews\BillTransactions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ReportViews\BillTransactions.Designer.cs">
+      <DependentUpon>BillTransactions.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ServerSettings.cs">
       <SubType>Form</SubType>
@@ -296,6 +308,12 @@
     <Compile Include="Views\User\PaymentSceren.Designer.cs">
       <DependentUpon>PaymentSceren.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\User\RegUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\User\RegUser.Designer.cs">
+      <DependentUpon>RegUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\User\ReturnScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -312,6 +330,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Reports\trasactionReport_without_grouping.rdlc" />
     <EmbeddedResource Include="Reports\bill.rdlc" />
     <EmbeddedResource Include="Views\Customer\BillRecord.resx">
       <DependentUpon>BillRecord.cs</DependentUpon>
@@ -352,14 +371,23 @@
     <EmbeddedResource Include="Views\Manager\Inventory.resx">
       <DependentUpon>Inventory.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Manager\Users.resx">
+      <DependentUpon>Users.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Manager\Products.resx">
       <DependentUpon>Products.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Manager\Reports.resx">
+      <DependentUpon>Reports.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Manager\UpdateDetails.resx">
       <DependentUpon>UpdateDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\OpenScreen.resx">
       <DependentUpon>OpenScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ReportViews\BillTransactions.resx">
+      <DependentUpon>BillTransactions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ServerSettings.resx">
       <DependentUpon>ServerSettings.cs</DependentUpon>
@@ -373,6 +401,9 @@
     <EmbeddedResource Include="Views\User\PaymentSceren.resx">
       <DependentUpon>PaymentSceren.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\User\RegUser.resx">
+      <DependentUpon>RegUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\User\ReturnScreen.resx">
       <DependentUpon>ReturnScreen.cs</DependentUpon>
     </EmbeddedResource>
@@ -383,6 +414,7 @@
     <None Include="Properties\DataSources\Project_SIM.Models.SalesTransaction.datasource" />
     <None Include="Properties\DataSources\Project_SIM.Models.SalesTransactionDetails.datasource" />
     <None Include="Properties\DataSources\Project_SIM.Models.StoreDetails.datasource" />
+    <None Include="Properties\DataSources\Project_SIM.Models.TransactionsReport.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -400,11 +432,16 @@
   <ItemGroup>
     <Content Include="icon.ico" />
     <Content Include="resources\artwork.png" />
+    <Content Include="resources\icons\activate-user.png" />
+    <Content Include="resources\icons\add-user.png" />
     <Content Include="resources\icons\box.png" />
     <Content Include="resources\icons\bill.png" />
     <Content Include="resources\icons\dashboard.png" />
+    <Content Include="resources\icons\deactivate-user.png" />
+    <Content Include="resources\icons\edit-user.png" />
     <Content Include="resources\icons\product.png" />
     <Content Include="resources\icons\public-relation.png" />
+    <Content Include="resources\icons\show.png" />
     <Content Include="resources\icons\statistics.png" />
     <Content Include="resources\icons\user %281%29.png" />
     <None Include="resources\icons\home.png" />

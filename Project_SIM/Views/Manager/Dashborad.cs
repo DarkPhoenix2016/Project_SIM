@@ -24,6 +24,8 @@ namespace Project_SIM.Views.Manager
         private Inventory inventory;
         private Products products;
         private BillsPage bills;
+        private Reports reports;
+        private Users users;
 
         public Dashborad()
         {
@@ -79,14 +81,11 @@ namespace Project_SIM.Views.Manager
             {
                 home.Activate();
 
-                if (inventory != null)
-                {
-                    inventory.Close();
-                }
-                if (products != null)
-                {
-                    products.Close();
-                }
+                CloseForm(inventory);
+                CloseForm(products);
+                CloseForm(bills);
+                CloseForm(reports);
+                CloseForm(users);
 
             }
         }
@@ -99,6 +98,7 @@ namespace Project_SIM.Views.Manager
             isClosing = true;
             this.Close();
         }
+        
         private void btnInventory_Click(object sender, EventArgs e)
         {
             if (inventory == null)
@@ -113,17 +113,14 @@ namespace Project_SIM.Views.Manager
             {
                 inventory.Activate();
 
-                if (home != null)
-                {
-                    home.Close();
-                }
-                if (products != null)
-                {
-                    products.Close();
-                }
+                CloseForm(home);
+                CloseForm(products);
+                CloseForm(bills);
+                CloseForm(reports);
+                CloseForm(users);
+
             }
         }
-
 
         private void btnProduct_Click(object sender, EventArgs e)
         {
@@ -139,17 +136,16 @@ namespace Project_SIM.Views.Manager
             {
                 products.Activate();
 
-                if (home != null)
-                {
-                    home.Close();
-                }
-                if (inventory != null)
-                {
-                    inventory.Close();
-                }
+                CloseForm(home);
+                CloseForm(inventory);
+                CloseForm(bills);
+                CloseForm(reports);
+                CloseForm(users);
+
 
             }
         }
+        
         private void btnBill_Click(object sender, EventArgs e)
         {
             if (bills == null)
@@ -165,25 +161,70 @@ namespace Project_SIM.Views.Manager
             else
             {
                 bills.Activate();
-
-                if (home != null)
-                {
-                    home.Close();
-                }
-                if (inventory != null)
-                {
-                    inventory.Close();
-                }
-                if (products != null)
-                {
-                    products.Close();
-                }
                 
+                CloseForm(home);
+                CloseForm(inventory);
+                CloseForm(products);
+                CloseForm(reports);
+                CloseForm(users);
+
+            }
+        }
+       
+        private void btnReports_Click(object sender, EventArgs e)
+        {
+            if (reports == null)
+            {
+                reports = new Reports();
+                reports.FormClosed += Reports_Formclosed;
+                reports.MdiParent = this;
+                reports.Dock = DockStyle.Fill;
+                reports.Show();
+
+
+            }
+            else
+            {
+                reports.Activate();
+
+                CloseForm(home);
+                CloseForm(inventory);
+                CloseForm(products);
+                CloseForm(bills);
+                CloseForm(users);
+
+
+            }
+        }
+        private void btnUsers_Click(object sender, EventArgs e)
+        {
+            if (users == null)
+            {
+                users = new Users();
+                users.FormClosed += Users_Formclosed;
+                users.MdiParent = this;
+                users.Dock = DockStyle.Fill;
+                users.Show();
+
+
+            }
+            else
+            {
+                users.Activate();
+
+                CloseForm(home);
+                CloseForm(inventory);
+                CloseForm(products);
+                CloseForm(bills);
+                CloseForm(reports);
 
             }
         }
 
+        private void btnProfile_Click(object sender, EventArgs e)
+        {
 
+        }
         private void btnLogout_Click(object sender, EventArgs e)
         {
             // Call the common method to handle session ending and application closing
@@ -193,6 +234,13 @@ namespace Project_SIM.Views.Manager
 
         //Form Close events
 
+        private void CloseForm(Form form)
+        {
+            if (form != null)
+            {
+                form.Close();
+            }
+        }
         private void Home_Formclosed(object sender, FormClosedEventArgs e)
         {
             home = null;
@@ -209,7 +257,14 @@ namespace Project_SIM.Views.Manager
         {
             bills = null;
         }
-
+        private void Reports_Formclosed(object sender, FormClosedEventArgs e)
+        {
+            reports = null;
+        }
+        private void Users_Formclosed(object sender, FormClosedEventArgs e)
+        {
+            users = null;
+        }
 
 
         private void Dashborad_FormClosing(object sender, FormClosingEventArgs e)
@@ -238,6 +293,7 @@ namespace Project_SIM.Views.Manager
                 e.Cancel = false;
             }
         }
+
 
         //Logout Logic
         public void HandleLogout(bool forced = false)

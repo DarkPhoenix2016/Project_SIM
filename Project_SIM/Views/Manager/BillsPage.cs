@@ -22,10 +22,6 @@ namespace Project_SIM.Views.Manager
             InitializeComponent();
             SimBillClass = new SimBill();
         }
-        private void Screen_Resize(object sender, EventArgs e)
-        {
-            // Adjust column widths when the form is resized
-        }
 
         private void BillsPage_Load(object sender, EventArgs e)
         {

@@ -96,6 +96,7 @@
             this.btnProfile.TabIndex = 15;
             this.btnProfile.Text = "Profile";
             this.btnProfile.UseVisualStyleBackColor = true;
+            this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
             // 
             // btnCustomer
             // 
@@ -126,6 +127,7 @@
             this.btnUsers.TabIndex = 14;
             this.btnUsers.Text = "Users";
             this.btnUsers.UseVisualStyleBackColor = true;
+            this.btnUsers.Click += new System.EventHandler(this.btnUsers_Click);
             // 
             // btnReports
             // 
@@ -141,6 +143,7 @@
             this.btnReports.TabIndex = 13;
             this.btnReports.Text = "Reports";
             this.btnReports.UseVisualStyleBackColor = true;
+            this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
             // 
             // btnBill
             // 

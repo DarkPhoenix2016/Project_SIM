@@ -251,7 +251,6 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "BillsPage";
             this.Load += new System.EventHandler(this.BillsPage_Load);
-            this.Resize += new System.EventHandler(this.Screen_Resize);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.objListViewBills)).EndInit();

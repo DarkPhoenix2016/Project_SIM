@@ -689,6 +689,72 @@ namespace Project_SIM.Models
             
         }
 
+        public List<TransactionsReport> GetTransactionsReport(DateTime FromDate, DateTime ToDate, string PaymentType)
+        {
+            using (MySqlConnection sqlConnection = new MySqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+
+                string _fromDate = FromDate.ToString("yyyy-MM-dd");
+                string _toDate = ToDate.AddDays(1).ToString("yyyy-MM-dd");
+
+                try
+                {
+                    string query = $"SELECT * FROM bill_transaction_payments WHERE (TransactionDate BETWEEN '{_fromDate}' AND '{_toDate}') AND (Name LIKE '{PaymentType}')";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, sqlConnection))
+                    {
+                        
+                        // Print the query with parameter values
+                        Console.WriteLine("Original query: " + query);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            List<TransactionsReport> recordsList = new List<TransactionsReport>();
+
+                            while (reader != null && reader.Read())
+                            {
+                                TransactionsReport record = new TransactionsReport
+                                {
+                                    TransactionDate = reader["TransactionDate"] != DBNull.Value ? (DateTime)reader["TransactionDate"] : DateTime.MinValue,
+                                    BillNumber = reader["BillNumber"] != DBNull.Value ? reader["BillNumber"].ToString() : string.Empty,
+                                    CashierName = reader["CashierName"] != DBNull.Value ? reader["CashierName"].ToString() : string.Empty,
+                                    CustomerName = reader["CustomerName"] != DBNull.Value ? reader["CustomerName"].ToString() : string.Empty,
+                                    LoyaltyNumber = reader["LoyaltyNumber"] != DBNull.Value ? reader["LoyaltyNumber"].ToString() : string.Empty,
+                                    BilledValue = reader["BilledValue"] != DBNull.Value ? Convert.ToDecimal(reader["BilledValue"]) : 0,
+                                    TotalDiscount = reader["TotalDiscount"] != DBNull.Value ? Convert.ToDecimal(reader["TotalDiscount"]) : 0,
+                                    TotalAmount = reader["TotalAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TotalAmount"]) : 0,
+                                    PaidAmount = reader["PaidAmount"] != DBNull.Value ? Convert.ToDecimal(reader["PaidAmount"]) : 0,
+                                    Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty,
+                                    Remark = reader["Remark"] != DBNull.Value ? reader["Remark"].ToString() : string.Empty,
+                                    TotalPaidAmount = reader["TotalPaidAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPaidAmount"]) : 0,
+                                    TotalChange = reader["TotalChange"] != DBNull.Value ? Convert.ToDecimal(reader["TotalChange"]) : 0
+                                };
+
+
+                                recordsList.Add(record);
+                            }
+                            return recordsList;
+
+                        }
+
+                    }
+
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine($"Error executing query: {ex.Message}");
+                    return null; // 
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+
+        }
+
     }
 
     public class SalesTransaction
@@ -786,4 +852,22 @@ namespace Project_SIM.Models
         public string TotalChange { get; set; }
         
     }
+
+    public class TransactionsReport
+    {
+        public DateTime TransactionDate { get; set; }
+        public string BillNumber { get; set; }
+        public string CashierName { get; set; }
+        public string CustomerName { get; set; }
+        public string LoyaltyNumber { get; set; }
+        public decimal BilledValue { get; set; }
+        public decimal TotalDiscount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal PaidAmount { get; set; }
+        public string Name { get; set; }
+        public string Remark { get; set; }
+        public decimal TotalPaidAmount { get; set; }
+        public decimal TotalChange { get; set; }
+    }
+
 }
