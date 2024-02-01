@@ -2,49 +2,42 @@
 using MaterialSkin.Controls;
 using Project_SIM.Models;
 using Project_SIM.Views.Customer;
-using Project_SIM.Views.User;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Windows.UI.Xaml.Controls.Primitives;
-using static Project_SIM.Models.SimCustomer;
-using static Project_SIM.Models.SimProduct;
-using static Project_SIM.Models.SimUser;
+
 
 namespace Project_SIM.Views.Manager
 {
-    public partial class Users : MaterialForm
+    public partial class Customers : MaterialForm
     {
 
+        SimCustomer cutomer;
         SimUser user;
-        List<UserData> UserList;
-        public Users()
+        List<SimCustomer.Customer> customerList;
+        public Customers()
         {
             InitializeComponent();
+            cutomer = new SimCustomer();
             user = new SimUser();
         }
 
         private void Users_Load(object sender, EventArgs e)
         {
-            SimUser user = new SimUser();
-            UserList = user.GetUsers();
+            SimCustomer cutomer = new SimCustomer();
+            customerList = cutomer.GetCoustomers();
             ShowData();
         }
         private void txtSearchWord_TextChanged(object sender, EventArgs e)
         {
-            UserList = user.GetUsers(txtSearchWord.Text.Trim());
+            customerList = cutomer.GetCoustomers(txtSearchWord.Text.Trim());
             ShowData();
         }
 
         private void txtSearchWord_KeyPress(object sender, KeyPressEventArgs e)
         {
-            UserList = user.GetUsers(txtSearchWord.Text.Trim());
+            customerList = cutomer.GetCoustomers(txtSearchWord.Text.Trim());
             ShowData();
         }
 
@@ -52,65 +45,65 @@ namespace Project_SIM.Views.Manager
         {
             if (chckBoxShowGroups.Checked == true)
             {
-                objListUsers.ShowGroups = true;
+                objListCustomers.ShowGroups = true;
             }
 
             if (chckBoxShowGroups.Checked == false)
             {
-                objListUsers.ShowGroups = false;
+                objListCustomers.ShowGroups = false;
             }
         }
 
         private void ShowData()
         {
             // Set aspect getters for each column to display the desired details
-            no.AspectGetter = (s) => (s as UserData)?.RecordId.ToString();
-            username.AspectGetter = (s) => (s as UserData)?.Username.ToString();
-            fullName.AspectGetter = (s) => (s as UserData)?.FullName;
-            accessLevel.AspectGetter = (s) => (s as UserData)?.AccessLevel.ToString();
-            accountState.AspectGetter = (s) => (s as UserData)?.AccountState;
+            no.AspectGetter = (s) => (s as SimCustomer.Customer)?.RecordId.ToString();
+            username.AspectGetter = (s) => (s as SimCustomer.Customer)?.Username.ToString();
+            fullName.AspectGetter = (s) => (s as SimCustomer.Customer)?.FullName;
+            accountState.AspectGetter = (s) => (s as SimCustomer.Customer)?.State;
 
             // Button column set up for viewing the User
-            SetupButtonColumn(view, "Show", "show", "View");
+            SetupButtonColumn(view, "View/Update");
 
             // Button column set up for activating the User
-            SetupButtonColumn(activate, "Activate", "activate-user", "Activate");
+            SetupButtonColumn(activate, "Activate");
 
             // Button column set up for deactivating the User
-            SetupButtonColumn(deactivate, "Deactivate", "deactivate-user", "Deactivate");
+            SetupButtonColumn(deactivate, "Deactivate");
 
             // Clear existing items and set new objects to the ListView
-            objListUsers.Items.Clear();
-            objListUsers.SetObjects(UserList);
+            objListCustomers.Items.Clear();
+            objListCustomers.SetObjects(customerList);
         }
 
-        private void SetupButtonColumn(OLVColumn column, string name, string iconName, string buttonText)
+        private void SetupButtonColumn(OLVColumn column,string buttonText)
         {
             column.IsButton = true;
             column.ButtonSizing = OLVColumn.ButtonSizingMode.FixedBounds;
             column.AspectGetter = (s) => buttonText;
         }
 
+
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            UserList = user.GetUsers();
+            customerList = cutomer.GetCoustomers();
             ShowData();
         }
 
         private void btnAddUser_Click(object sender, EventArgs e)
         {
-            RegUser regUser = new RegUser();
-            DialogResult result = regUser.ShowDialog();
+            RegCustomer regCustomer = new RegCustomer();
+            DialogResult result = regCustomer.ShowDialog();
 
             if (result == DialogResult.Yes)
             {
-                UserList = user.GetUsers();
+                customerList = cutomer.GetCoustomers();
                 ShowData();
             }
 
         }
 
-        private void objListUsers_ButtonClick(object sender, CellClickEventArgs e)
+        private void objListCustomers_ButtonClick(object sender, CellClickEventArgs e)
         {
             if (e.Column == view)
             {
@@ -120,17 +113,17 @@ namespace Project_SIM.Views.Manager
 
                     Console.WriteLine($"Index of the Clicked Row: {clickedRow}");
 
-                    if (clickedRow >= 0 && clickedRow < UserList.Count)
+                    if (clickedRow >= 0 && clickedRow < customerList.Count)
                     {
                         // Access the underlying object associated with the clicked row
-                        SimUser.UserData selectedUser = e.Model as SimUser.UserData;
+                        SimCustomer.Customer selectedCustomer = e.Model as SimCustomer.Customer;
 
-                        if (selectedUser != null)
+                        if (selectedCustomer != null)
                         {
-                            User.UpdateDetailsForm viewForm = new User.UpdateDetailsForm();
-                            viewForm.setDetails(selectedUser);
+                            UpdateDetailsForm viewForm = new UpdateDetailsForm();
+                            viewForm.setCustomerDetails(selectedCustomer);
                             viewForm.Show();
-                            UserList = user.GetUsers();
+                            customerList = cutomer.GetCoustomers();
                             ShowData();
                         }
                     }
@@ -148,30 +141,29 @@ namespace Project_SIM.Views.Manager
 
                     Console.WriteLine($"Index of the Clicked Row: {clickedRow}");
 
-                    if (clickedRow >= 0 && clickedRow < UserList.Count)
+                    if (clickedRow >= 0 && clickedRow < customerList.Count)
                     {
                         // Access the underlying object associated with the clicked row
-                        SimUser.UserData selectedUser = e.Model as SimUser.UserData;
+                        SimCustomer.Customer selectedCustomer = e.Model as SimCustomer.Customer;
 
-                        if (selectedUser != null && selectedUser.AccountState != "Active")
+                        if (selectedCustomer != null && selectedCustomer.State != "Active")
                         {
-                            bool result = user.SetState(selectedUser.UserID, true);
+                            bool result = user.SetState(selectedCustomer.UserID,true);
                             if (result)
                             {
-                                MessageBox.Show("User Account State Updated As Active...!", "State Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                UserList = user.GetUsers();
+                                MessageBox.Show("Customer Account State Updated As Active...!", "State Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                customerList = cutomer.GetCoustomers();
                                 ShowData();
                             }
                             else
                             {
                                 FormatMaker.ShowErrorMessageBox("Error While Updating State!");
                             }
-
+                            
                         }
-                        else
-                        {
+                        else {
 
-                            FormatMaker.ShowErrorMessageBox("Selected User Alrady in Active State!");
+                            FormatMaker.ShowErrorMessageBox("Selected Customer Alrady in Active State!");
                         }
 
                     }
@@ -189,18 +181,18 @@ namespace Project_SIM.Views.Manager
 
                     Console.WriteLine($"Index of the Clicked Row: {clickedRow}");
 
-                    if (clickedRow >= 0 && clickedRow < UserList.Count)
+                    if (clickedRow >= 0 && clickedRow < customerList.Count)
                     {
                         // Access the underlying object associated with the clicked row
-                        SimUser.UserData selectedUser = e.Model as SimUser.UserData;
+                        SimCustomer.Customer selectedCustomer = e.Model as SimCustomer.Customer;
 
-                        if (selectedUser != null && selectedUser.AccountState != "Deactive")
+                        if (selectedCustomer != null && selectedCustomer.State != "Deactive")
                         {
-                            bool result = user.SetState(selectedUser.UserID, false);
+                            bool result = user.SetState(selectedCustomer.UserID, false);
                             if (result)
                             {
-                                MessageBox.Show("User Account State Updated As Deactive...!", "State Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                UserList = user.GetUsers();
+                                MessageBox.Show("Customer Account State Updated As Deactive...!", "State Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                customerList = cutomer.GetCoustomers();
                                 ShowData();
                             }
                             else
@@ -212,7 +204,7 @@ namespace Project_SIM.Views.Manager
                         else
                         {
 
-                            FormatMaker.ShowErrorMessageBox("Selected User Alrady in Deactive State!");
+                            FormatMaker.ShowErrorMessageBox("Selected Customer Alrady in Deactive State!");
                         }
 
                     }
@@ -223,7 +215,5 @@ namespace Project_SIM.Views.Manager
                 }
             }
         }
-
-        
     }
 }

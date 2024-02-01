@@ -161,9 +161,9 @@
             this.label6.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(19, 97);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(148, 28);
+            this.label6.Size = new System.Drawing.Size(107, 28);
             this.label6.TabIndex = 18;
-            this.label6.Text = "Payment Method";
+            this.label6.Text = "Designation";
             // 
             // RegUser
             // 

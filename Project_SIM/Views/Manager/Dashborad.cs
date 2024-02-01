@@ -26,6 +26,8 @@ namespace Project_SIM.Views.Manager
         private BillsPage bills;
         private Reports reports;
         private Users users;
+        private Customers customers;
+        private Profile profile;
 
         public Dashborad()
         {
@@ -50,14 +52,13 @@ namespace Project_SIM.Views.Manager
             home.Dock = DockStyle.Fill;
             home.Show();
 
-            if (inventory != null)
-            {
-                inventory.Close();
-            }
-            if (products != null)
-            {
-                inventory.Close();
-            }
+            CloseForm(inventory);
+            CloseForm(products);
+            CloseForm(bills);
+            CloseForm(reports);
+            CloseForm(users);
+            CloseForm(customers);
+            CloseForm(profile);
 
         }
 
@@ -86,6 +87,8 @@ namespace Project_SIM.Views.Manager
                 CloseForm(bills);
                 CloseForm(reports);
                 CloseForm(users);
+                CloseForm(customers);
+                CloseForm(profile);
 
             }
         }
@@ -118,6 +121,8 @@ namespace Project_SIM.Views.Manager
                 CloseForm(bills);
                 CloseForm(reports);
                 CloseForm(users);
+                CloseForm(customers);
+                CloseForm(profile);
 
             }
         }
@@ -141,6 +146,8 @@ namespace Project_SIM.Views.Manager
                 CloseForm(bills);
                 CloseForm(reports);
                 CloseForm(users);
+                CloseForm(customers);
+                CloseForm(profile);
 
 
             }
@@ -167,6 +174,8 @@ namespace Project_SIM.Views.Manager
                 CloseForm(products);
                 CloseForm(reports);
                 CloseForm(users);
+                CloseForm(customers);
+                CloseForm(profile);
 
             }
         }
@@ -192,6 +201,8 @@ namespace Project_SIM.Views.Manager
                 CloseForm(products);
                 CloseForm(bills);
                 CloseForm(users);
+                CloseForm(customers);
+                CloseForm(profile);
 
 
             }
@@ -217,13 +228,64 @@ namespace Project_SIM.Views.Manager
                 CloseForm(products);
                 CloseForm(bills);
                 CloseForm(reports);
+                CloseForm(customers);
+                CloseForm(profile);
+
+            }
+        }
+        private void btnCustomer_Click(object sender, EventArgs e)
+        {
+            if (customers == null)
+            {
+                customers = new Customers();
+                customers.FormClosed += Customers_Formclosed;
+                customers.MdiParent = this;
+                customers.Dock = DockStyle.Fill;
+                customers.Show();
+
+
+            }
+            else
+            {
+                customers.Activate();
+
+                CloseForm(home);
+                CloseForm(inventory);
+                CloseForm(products);
+                CloseForm(bills);
+                CloseForm(reports);
+                CloseForm(users);
+                CloseForm(profile);
 
             }
         }
 
         private void btnProfile_Click(object sender, EventArgs e)
         {
+            if (profile == null)
+            {
+                profile = new Profile();
+                profile.SetSession(sessionID);
+                profile.FormClosed += Profile_Formclosed;
+                profile.MdiParent = this;
+                profile.Dock = DockStyle.Fill;
+                profile.Show();
 
+
+            }
+            else
+            {
+                profile.Activate();
+
+                CloseForm(home);
+                CloseForm(inventory);
+                CloseForm(products);
+                CloseForm(bills);
+                CloseForm(reports);
+                CloseForm(users);
+                CloseForm(customers);
+
+            }
         }
         private void btnLogout_Click(object sender, EventArgs e)
         {
@@ -265,8 +327,14 @@ namespace Project_SIM.Views.Manager
         {
             users = null;
         }
-
-
+        private void Customers_Formclosed(object sender, FormClosedEventArgs e)
+        {
+           customers = null;
+        }
+        private void Profile_Formclosed(object sender, FormClosedEventArgs e)
+        {
+            profile = null;
+        }
         private void Dashborad_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!isClosing)
@@ -332,7 +400,7 @@ namespace Project_SIM.Views.Manager
 
         }
 
-        
+       
     }
 
     }

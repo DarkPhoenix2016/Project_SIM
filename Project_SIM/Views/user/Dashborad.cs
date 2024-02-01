@@ -71,7 +71,7 @@ namespace Project_SIM.Views.User
         {
             sessionID = session.Trim();
             currentUser = SessionManager.GetUserInfo(sessionID);
-            loggedUserData = simUserClass.Select(currentUser.Username.ToString());
+            loggedUserData = simUserClass.Select(currentUser.Username.ToString(), currentUser.Designation.ToString());
             lblFullName.Text = loggedUserData.FullName + "(" + loggedUserData.Username + ")";
 
             if(currentUser.Designation == "Manager")

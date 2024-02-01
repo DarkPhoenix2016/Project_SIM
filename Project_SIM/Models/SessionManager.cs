@@ -53,7 +53,6 @@ namespace Project_SIM.Models
 
         public UserInfo(string username, string passwordHash, string designation)
         {
-
             Username = username;
             PasswordHash = passwordHash;
             Designation = designation;

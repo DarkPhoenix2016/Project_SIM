@@ -10,37 +10,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Project_SIM.Views.Manager
+namespace Project_SIM.Views.Customer
 {
-    public partial class UpdateDetails : MaterialForm
+    public partial class UpdateDetailsForm : MaterialForm
     {
         private bool detailsEdit = false;
         private bool passwordReste = false;
 
-        private UserInfo currentUser;
         private SimCustomer.Customer customerData;
-        private Dashborad dashborad;
 
-        public UpdateDetails()
+        public UpdateDetailsForm()
         {
             InitializeComponent();
         }
-        public void SetCurrentUser(UserInfo CurrentUser)
-        {
-            currentUser = CurrentUser;
-        }
+
         public void setCustomerDetails(SimCustomer.Customer CustomerData)
         {
+            txtLoyaltyNumber.Text = CustomerData.LoyaltyNumber;
+            txtName.Text = CustomerData.FullName;
+            txtUsername.Text = CustomerData.Username;
+            txtDateOfJoin.Text = CustomerData.DateOfJoin.ToString();
+
             customerData = CustomerData;
 
-            txtName.Text = customerData.FullName;
-            txtUsername.Text = customerData.Username;
-            txtDateOfJoin.Text = customerData.DateOfJoin.ToShortDateString();
-
-        }
-        public void setDashborad(Dashborad Dashborad)
-        {
-            dashborad= Dashborad;
         }
 
         public void EnableSave(bool enable)
@@ -58,15 +50,23 @@ namespace Project_SIM.Views.Manager
         }
         public void EnableDetails(bool enable)
         {
+            if (customerData.LoyaltyNumber == "0000000000")
+            {
+                txtLoyaltyNumber.Enabled = false;
+            }
+            else
+            {
+                txtLoyaltyNumber.Enabled = enable;
+            }
+
             txtName.Enabled = enable;
             txtDateOfJoin.Enabled = enable;
             txtUsername.Enabled = enable;
-
+            
             
         }
         public void EnablePassword(bool enable)
         {
-            txtOldPassword.Enabled = enable;
             txtNewPassword.Enabled = enable;
             txtConfirmPassword.Enabled = enable;
         }
@@ -109,8 +109,8 @@ namespace Project_SIM.Views.Manager
             {
                 if (UpdateCustomerDetails())
                 {
-                    MessageBox.Show("Data Updated.Logout and Login to Validate.", "Detail Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    dashborad.HandleLogout(true);
+                    MessageBox.Show("Details Updated...!", "Detail Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
                 }
                 else
                 {
@@ -125,8 +125,8 @@ namespace Project_SIM.Views.Manager
             {
                 if (UpdatePassword())
                 {
-                    MessageBox.Show("Password Changed Succesfull.Logout and Login to Validate.", "Password Reset", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    dashborad.HandleLogout(true);
+                    MessageBox.Show("Password Changed Succesfull.", "Password Reset", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
                 }
                 else
                 {
@@ -145,19 +145,10 @@ namespace Project_SIM.Views.Manager
         {
             string newPassword = txtNewPassword.Text;
             string confirmPassword = txtConfirmPassword.Text;
-            string oldPassword = txtOldPassword.Text;
 
-            string hashedPassword = currentUser.PasswordHash;
-
-            if (newPassword != confirmPassword || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword)  || string.IsNullOrEmpty(oldPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword) || string.IsNullOrWhiteSpace(oldPassword))
+            if (newPassword != confirmPassword || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword))
             {
                 FormatMaker.ShowErrorMessageBox("Every Feild need to Be filled \nNew Passwords Must Match");
-                return false;
-            }
-
-            if (!BCrypt.Net.BCrypt.Verify(oldPassword, hashedPassword))
-            {
-                FormatMaker.ShowErrorMessageBox("Given Current Password is incorrect");
                 return false;
             }
 
@@ -173,15 +164,19 @@ namespace Project_SIM.Views.Manager
             string newName = txtName.Text;
             string newDateofJoin = Convert.ToDateTime(txtDateOfJoin.Text).ToString("yyyy-MM-dd");
             string newUsername = txtUsername.Text;
+            string newLoyaltyNumber = txtLoyaltyNumber.Text;
 
 
-            if (string.IsNullOrEmpty(newName) || string.IsNullOrEmpty(newDateofJoin) || string.IsNullOrEmpty(newUsername) || string.IsNullOrWhiteSpace(newName) || string.IsNullOrWhiteSpace(newDateofJoin) || string.IsNullOrWhiteSpace(newUsername))
+            if (string.IsNullOrEmpty(newName) || string.IsNullOrEmpty(newDateofJoin) || string.IsNullOrEmpty(newUsername) || string.IsNullOrEmpty(newLoyaltyNumber)  || string.IsNullOrWhiteSpace(newName) || string.IsNullOrWhiteSpace(newDateofJoin) || string.IsNullOrWhiteSpace(newUsername) || string.IsNullOrWhiteSpace(newLoyaltyNumber))
             {
                 FormatMaker.ShowErrorMessageBox("Every Feild Must to Be filled");
                 return false;
             }
             SimCustomer customer = new SimCustomer();
-            return true;
+
+            bool updateResult = customer.Update(customerData.UserID,customerData.CustomerID,newName,newUsername,newLoyaltyNumber,newDateofJoin);
+
+            return updateResult;
         }
     }
 }

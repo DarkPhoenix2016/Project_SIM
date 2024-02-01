@@ -30,7 +30,7 @@
     <ProductName>Project SIM</ProductName>
     <PublisherName>CG_WIN11_PC</PublisherName>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -158,6 +158,12 @@
     <Compile Include="Views\Customer\RegCustomer.Designer.cs">
       <DependentUpon>RegCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Customer\UpdateDetails-form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Customer\UpdateDetails-form.Designer.cs">
+      <DependentUpon>UpdateDetails-form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Customer\UpdateDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -200,6 +206,12 @@
     <Compile Include="Views\Manager\Inventory.Designer.cs">
       <DependentUpon>Inventory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Manager\Customers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Manager\Customers.Designer.cs">
+      <DependentUpon>Customers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Manager\Users.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,11 +236,11 @@
     <Compile Include="Views\Manager\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Manager\UpdateDetails.cs">
+    <Compile Include="Views\Manager\Profile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Manager\UpdateDetails.Designer.cs">
-      <DependentUpon>UpdateDetails.cs</DependentUpon>
+    <Compile Include="Views\Manager\Profile.Designer.cs">
+      <DependentUpon>Profile.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\OpenScreen.cs">
       <SubType>Form</SubType>
@@ -320,6 +332,12 @@
     <Compile Include="Views\User\ReturnScreen.Designer.cs">
       <DependentUpon>ReturnScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\User\UpdateDetails-form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\User\UpdateDetails-form.Designer.cs">
+      <DependentUpon>UpdateDetails-form.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -350,6 +368,9 @@
     <EmbeddedResource Include="Views\Customer\regCustomer.resx">
       <DependentUpon>RegCustomer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Customer\UpdateDetails-form.resx">
+      <DependentUpon>UpdateDetails-form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Customer\UpdateDetails.resx">
       <DependentUpon>UpdateDetails.cs</DependentUpon>
     </EmbeddedResource>
@@ -371,6 +392,9 @@
     <EmbeddedResource Include="Views\Manager\Inventory.resx">
       <DependentUpon>Inventory.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Manager\Customers.resx">
+      <DependentUpon>Customers.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Manager\Users.resx">
       <DependentUpon>Users.cs</DependentUpon>
     </EmbeddedResource>
@@ -380,8 +404,8 @@
     <EmbeddedResource Include="Views\Manager\Reports.resx">
       <DependentUpon>Reports.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Manager\UpdateDetails.resx">
-      <DependentUpon>UpdateDetails.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Manager\Profile.resx">
+      <DependentUpon>Profile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\OpenScreen.resx">
       <DependentUpon>OpenScreen.cs</DependentUpon>
@@ -406,6 +430,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\User\ReturnScreen.resx">
       <DependentUpon>ReturnScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\User\UpdateDetails-form.resx">
+      <DependentUpon>UpdateDetails-form.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Project_SIM_1_TemporaryKey.pfx" />
     <None Include="Project_SIM_TemporaryKey.pfx" />

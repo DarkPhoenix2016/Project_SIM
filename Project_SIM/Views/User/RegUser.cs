@@ -49,7 +49,7 @@ namespace Project_SIM.Views.User
             {
                 FormatMaker.ShowErrorMessageBox("Evey Feild is Madnotory");
 
-            }else if (!(user.IsUsernameAvailable(username)))
+            }else if (!(user.IsUsernameAvailable(username,designation)))
             {
                 FormatMaker.ShowErrorMessageBox("Username is alrady taken ");
                 txtUsername.Text = "";

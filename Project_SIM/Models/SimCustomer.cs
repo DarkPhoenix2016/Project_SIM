@@ -7,6 +7,7 @@ using System.Windows.Documents;
 using System.Xml.Linq;
 using Windows.System;
 using static Project_SIM.Models.SimCustomer;
+using static Project_SIM.Models.SimUser;
 
 namespace Project_SIM.Models
 {
@@ -26,26 +27,40 @@ namespace Project_SIM.Models
         {
             MySqlTransaction transaction = null;
 
-            try
+            using (MySqlConnection sqlConnection = new MySqlConnection(connectionString))
             {
-                // Hash the password and get salt
-                string hashedPassword = Authenticator.HashPassword(password);
-
-                // Open connection and begin transaction
-                sqlConnection.Open();
-                transaction = sqlConnection.BeginTransaction();
-
-                // Insert the new User Account
-                SimUser user = new SimUser();
-                bool result = user.Register(fullName, username, hashedPassword,"Customer"); // Use hashed password
-                if (result)
+                try
                 {
+                    // Hash the password and get salt
+                    string hashedPassword = Authenticator.HashPassword(password);
+
+                    // Open connection and begin transaction
+                    sqlConnection.Open();
+                    transaction = sqlConnection.BeginTransaction();
+
+                    // Insert the new user account
+                    string queryAddUserAccount = $"INSERT INTO `users`(`Username`, `PasswordHash`, `FullName`, `AccessLevel`)" +
+                        $"VALUES (@Username, @PasswordHash, @FullName, @AccessLevel)";
+
+                    // Use parameters to avoid SQL injection
+                    MySqlCommand cmdAddUserAccount = new MySqlCommand(queryAddUserAccount, sqlConnection, transaction);
+                    cmdAddUserAccount.Parameters.AddWithValue("@Username", username);
+                    cmdAddUserAccount.Parameters.AddWithValue("@PasswordHash", hashedPassword);
+                    cmdAddUserAccount.Parameters.AddWithValue("@FullName", fullName);
+                    cmdAddUserAccount.Parameters.AddWithValue("@AccessLevel", "Customer"); // Assuming the access level is 'Customer' for customers
+                    cmdAddUserAccount.ExecuteNonQuery();
+
+                    // Retrieve the last inserted ID
+                    long lastInsertId = cmdAddUserAccount.LastInsertedId;
+
                     // Insert the new customer account
                     string queryAddCustomerAccount = $"INSERT INTO `customers`(`UserID`, `LoyaltyNumber`, `LoyaltyPoints`)" +
-                        $"VALUES (LAST_INSERT_ID(),'{loyaltyNumber}','0')";
+                        $"VALUES (@UserID, @LoyaltyNumber, '0')";
 
-                    // ExecuteNonQuery is used for non-query commands (INSERT, UPDATE, DELETE)
-                    new MySqlCommand(queryAddCustomerAccount, sqlConnection, transaction).ExecuteNonQuery();
+                    MySqlCommand cmdAddCustomerAccount = new MySqlCommand(queryAddCustomerAccount, sqlConnection, transaction);
+                    cmdAddCustomerAccount.Parameters.AddWithValue("@UserID", lastInsertId);
+                    cmdAddCustomerAccount.Parameters.AddWithValue("@LoyaltyNumber", loyaltyNumber);
+                    cmdAddCustomerAccount.ExecuteNonQuery();
 
                     // Commit the transaction
                     transaction.Commit();
@@ -55,25 +70,21 @@ namespace Project_SIM.Models
 
                     return true;
                 }
-                else
+                catch (MySqlException ex)
                 {
-                    MessageBox.Show("Error while registration ");
+                    // Roll back the transaction in case of an exception
+                    MessageBox.Show($"Error registering customer: {ex.Message}");
+                    transaction?.Rollback();
                     return false;
                 }
-            }
-            catch (MySqlException ex)
-            {
-                // Roll back the transaction in case of an exception
-                MessageBox.Show($"Error registering customer: {ex.Message}");
-                transaction?.Rollback();
-                return false;
-            }
-            finally
-            {
-                // Close connection
-                sqlConnection.Close();
+                finally
+                {
+                    // Close connection
+                    sqlConnection.Close();
+                }
             }
         }
+
 
         public bool IsAvailable(string loyaltyNumber)
         {
@@ -134,6 +145,7 @@ namespace Project_SIM.Models
                             {
                                 UserID = Convert.ToInt32(reader["UserID"]),
                                 Username = reader["Username"].ToString(),
+                                State = reader["State"].ToString(),
                                 AccessLevel = reader["AccessLevel"].ToString(),
                                 FullName = reader["FullName"].ToString(),
                                 CustomerID = Convert.ToInt32(reader["CustomerID"]),
@@ -216,7 +228,69 @@ namespace Project_SIM.Models
                 }
             }
         }
-        
+
+
+        public List<Customer> GetCoustomers(string searchText = null)
+        {
+            string query = "SELECT * FROM customer_details ";
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query += $" WHERE (`LoyaltyNumber` LIKE '{searchText}%' OR `FullName` LIKE '{searchText}%') ";
+            }
+
+            query += " LIMIT 100;";
+
+            Console.WriteLine(query);
+
+            sqlConnection.Open();
+
+            try
+            {
+                List<Customer> userList = new List<Customer>();
+
+                using (MySqlCommand cmd = new MySqlCommand(query, sqlConnection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        int count = 1;
+
+                        while (reader.Read())
+                        {
+                            Customer user = new Customer
+                            {
+                                RecordId = count,
+                                UserID = Convert.ToInt32(reader["UserID"]),
+                                Username = reader["Username"].ToString(),
+                                State = reader["State"].ToString(),
+                                AccessLevel = reader["AccessLevel"].ToString(),
+                                FullName = reader["FullName"].ToString(),
+                                CustomerID = Convert.ToInt32(reader["CustomerID"]),
+                                LoyaltyNumber = reader["LoyaltyNumber"].ToString(),
+                                LoyaltyPoints = Convert.ToInt32(reader["LoyaltyPoints"]),
+                                DateOfJoin = (DateTime)reader["DateOfJoin"]
+                            };
+
+                            userList.Add(user);
+                            count++;
+                        }
+                    }
+
+                    return userList;
+                }
+            }
+            catch (MySqlException ex)
+            {
+                FormatMaker.ShowErrorMessageBox($"Error executing query: {ex.Message}");
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+            return null;
+        }
+
         public CustomerLastBillReport SelectCustomerLastBillSummary(string CustomerID)
         {
             string query = @"SELECT * FROM customer_bill_summary WHERE CustomerID = @CustomerID";
@@ -550,8 +624,10 @@ namespace Project_SIM.Models
 
         public class Customer
         {
+            public int RecordId { get; set; }
             public int UserID { get; set; }
             public string Username { get; set; }
+            public string State {  get; set; }  
             public string AccessLevel { get; set; }
             public string FullName { get; set; }
             public int CustomerID { get; set; }

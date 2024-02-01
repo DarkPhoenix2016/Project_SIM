@@ -65,9 +65,9 @@ namespace Project_SIM.Models
             }
         }
 
-        public UserData Select(string username)
+        public UserData Select(string userName, string Designation)
         {
-            string query = $"SELECT * FROM `users` WHERE `Username`= '{username}';";
+            string query = $"SELECT * FROM `users` WHERE `Username`= '{userName}' AND `AccessLevel`= '{Designation}';";
             sqlConnection.Open();
 
             try
@@ -102,6 +102,95 @@ namespace Project_SIM.Models
             }
 
             return null; 
+        }
+
+        public bool SetState(int userId,bool BoolState)
+        {
+            try
+            {
+                using (MySqlConnection _sqlConnection = new MySqlConnection(connectionString))
+                {
+                    _sqlConnection.Open();
+
+                    using (MySqlTransaction transaction = _sqlConnection.BeginTransaction())
+                    {
+                        string state = "Deactive";
+                        if (BoolState)
+                        {
+                            state = "Active";
+                        }
+                        try
+                        {
+                            string query = $"UPDATE users SET State ='{state}' WHERE UserID = {userId} ";
+
+                            Console.WriteLine(query);
+
+                            // ExecuteNonQuery is used for non-query commands (INSERT, UPDATE, DELETE)
+                            new MySqlCommand(query, _sqlConnection, transaction).ExecuteNonQuery();
+
+                            // Commit the transaction
+                            transaction.Commit();
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            FormatMaker.ShowErrorMessageBox($"Error during transaction: {ex.Message}");
+
+                            // Rollback the transaction in case of an error
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                FormatMaker.ShowErrorMessageBox($"Error connecting to the database: {ex.Message}");
+                return false;
+            }
+
+        }
+
+        public bool Update(int userId, string fullName, string username, string AccessLevel)
+        {
+            try
+            {
+                using (MySqlConnection _sqlConnection = new MySqlConnection(connectionString))
+                {
+                    _sqlConnection.Open();
+
+                    using (MySqlTransaction transaction = _sqlConnection.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = $"UPDATE users SET FullName ='{fullName}', Username ='{username}', AccessLevel = '{AccessLevel}'  WHERE UserID = {userId} ";
+
+                            Console.WriteLine(query);
+
+                            // ExecuteNonQuery is used for non-query commands (INSERT, UPDATE, DELETE)
+                            new MySqlCommand(query, _sqlConnection, transaction).ExecuteNonQuery();
+
+                            // Commit the transaction
+                            transaction.Commit();
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            FormatMaker.ShowErrorMessageBox($"Error during transaction: {ex.Message}");
+
+                            // Rollback the transaction in case of an error
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                FormatMaker.ShowErrorMessageBox($"Error connecting to the database: {ex.Message}");
+                return false;
+            }
+
         }
 
         public bool Update(int userId, string fullName, string username)
@@ -298,34 +387,6 @@ namespace Project_SIM.Models
             return null;
         }
         
-        public string GetHashedPassword(string username)
-        {
-            using (sqlConnection)
-            {
-                try
-                {
-                    sqlConnection.Open();
-
-                    // Select the password hash for the given username
-                    string querySelectPasswordHash = $"SELECT `PasswordHash` FROM `users` WHERE `Username` = '{username}'";
-                    object result = new MySqlCommand(querySelectPasswordHash, sqlConnection).ExecuteScalar();
-
-                    // Check if the username exists and return the hashed password, or return null if not found
-                    return result != null ? result.ToString() : null;
-                }
-                catch (MySqlException ex)
-                {
-                    FormatMaker.ShowErrorMessageBox($"Error retrieving hashed password: {ex.Message}");
-                    // Consider handling the exception according to your application's needs
-                    return null;
-                }
-                finally
-                {
-                    sqlConnection.Close();
-                }
-            }
-        }
-
         public string GetHashedPassword(string username, string designation)
         {
             using (sqlConnection)

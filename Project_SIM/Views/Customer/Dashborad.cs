@@ -42,7 +42,7 @@ namespace Project_SIM.Views.Customer
             sessionID = session.Trim();
             Console.WriteLine(session);
             currentUser = SessionManager.GetUserInfo(sessionID);
-            loggedUserData = simUserClass.Select(currentUser.Username.ToString());
+            loggedUserData = simUserClass.Select(currentUser.Username.ToString(), currentUser.Designation.ToString());
             CustomerData = simCustomerClass.Select(loggedUserData.UserID.ToString());
 
         }

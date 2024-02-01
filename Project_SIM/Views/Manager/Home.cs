@@ -79,7 +79,7 @@ namespace Project_SIM.Views.Manager
             sessionID = session.Trim();
             Console.WriteLine("Session Id Set  in Home As " + session);
             currentUser = SessionManager.GetUserInfo(sessionID);
-            loggedUserData = UserClass.Select(currentUser.Username.ToString());
+            loggedUserData = UserClass.Select(currentUser.Username.ToString(), currentUser.Designation.ToString());
 
         }
 
