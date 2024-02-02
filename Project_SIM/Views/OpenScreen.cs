@@ -1,4 +1,5 @@
-﻿using Project_SIM.Models;
+﻿using MySql.Data.MySqlClient;
+using Project_SIM.Models;
 using Project_SIM.Views.Customer;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,9 @@ namespace Project_SIM.Views
                 string validatedDesignation = logingForm.validatedDesignation;
                 if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnManager.Text)
                 {
-                    FormatMaker.ShowErrorMessageBox($"Login Success Session Created {sessionID} ");
+                    Manager.Dashborad dashborad = new Manager.Dashborad();
+                    dashborad.SetSession(sessionID);
+                    dashborad.Show();
                     isClosing = false;
                     this.Close();
                 }
@@ -92,6 +95,35 @@ namespace Project_SIM.Views
                 if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnUser.Text)
                 {
                     User.Dashborad dashborad = new User.Dashborad();
+                    dashborad.SetSession(sessionID);
+                    dashborad.Show();
+                    isClosing = false;
+                    this.Close();
+                }
+                else
+                {
+                    FormatMaker.ShowErrorMessageBox("Unkown Error During Login");
+                }
+            }
+        }
+        private void btnCustomer_Click(object sender, EventArgs e)
+        {
+            logingForm.SetPosition(btnCustomer.Text);
+            this.WindowState = FormWindowState.Minimized;
+            DialogResult dialogResult = logingForm.ShowDialog();
+            logingForm.Focus();
+            if (dialogResult == DialogResult.Cancel)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            if (dialogResult == DialogResult.OK)
+            {
+                string sessionID = logingForm.sessionID;
+                string validatedDesignation = logingForm.validatedDesignation;
+
+                if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnCustomer.Text)
+                {
+                    Dashborad dashborad = new Dashborad();
                     dashborad.SetSession(sessionID);
                     dashborad.Show();
                     isClosing = false;
@@ -131,33 +163,47 @@ namespace Project_SIM.Views
             }
         }
 
-        private void btnCustomer_Click(object sender, EventArgs e)
+        private void btnServerSettings_Click(object sender, EventArgs e)
         {
-            logingForm.SetPosition(btnCustomer.Text);
-            this.WindowState = FormWindowState.Minimized;
-            DialogResult dialogResult = logingForm.ShowDialog();
-            logingForm.Focus();
-            if (dialogResult == DialogResult.Cancel)
+            ServerSettings serverSettings = new ServerSettings();
+            serverSettings.ShowDialog();
+            ValidateConncetion();
+        }
+
+        private void ValidateConncetion()
+        {
+            string connectionString = SqlConnectionClass.GetConnectionString();
+
+            try
             {
-                this.WindowState = FormWindowState.Normal;
+                using (MySqlConnection sqlConnection = new MySqlConnection(connectionString))
+                {
+                    sqlConnection.Open();
+                    sqlConnection.Close();
+
+                    btnCustomer.Enabled = true;
+                    btnInventory.Enabled = false;
+                    btnManager.Enabled = true;
+                    btnUser.Enabled = true;
+                }
+
             }
-            if (dialogResult == DialogResult.OK)
+            catch (Exception ex)
             {
-                string sessionID = logingForm.sessionID;
-                string validatedDesignation = logingForm.validatedDesignation;
-                if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnCustomer.Text)
-                {
-                    FormatMaker.ShowErrorMessageBox($"Login Success Session Created {sessionID} ");
-                    isClosing = false;
-                    this.Close();
-                }
-                else
-                {
-                    FormatMaker.ShowErrorMessageBox("Unkown Error During Login");
-                }
+                FormatMaker.ShowErrorMessageBox($"Error On New Conncetion Details\nPlease Update Conncetion details to the Server\nError Message: {ex.Message}");
+                btnCustomer.Enabled = false;
+                btnInventory.Enabled = false;
+                btnManager.Enabled = false;
+                btnUser.Enabled = false;
+                btnServerSettings.Focus();
+
             }
         }
 
+        private void OpenScreen_Load(object sender, EventArgs e)
+        {
+            ValidateConncetion();
+        }
     }
 
 }

@@ -35,8 +35,12 @@
             this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.quantity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.unit = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.amount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnCancelBill = new System.Windows.Forms.Button();
+            this.materialDivider3 = new MaterialSkin.Controls.MaterialDivider();
+            this.btnManagerDashborad = new System.Windows.Forms.Button();
             this.materialDivider2 = new MaterialSkin.Controls.MaterialDivider();
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
             this.btnReturnItem = new System.Windows.Forms.Button();
@@ -70,7 +74,6 @@
             this.lblFullName = new System.Windows.Forms.Label();
             this.lblCurrentCustomer = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.unit = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -126,6 +129,10 @@
             this.quantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.quantity.Width = 200;
             // 
+            // unit
+            // 
+            this.unit.Text = "Unit";
+            // 
             // amount
             // 
             this.amount.Text = "Amount";
@@ -136,6 +143,9 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.btnCancelBill);
+            this.panel1.Controls.Add(this.materialDivider3);
+            this.panel1.Controls.Add(this.btnManagerDashborad);
             this.panel1.Controls.Add(this.materialDivider2);
             this.panel1.Controls.Add(this.materialDivider1);
             this.panel1.Controls.Add(this.btnReturnItem);
@@ -151,6 +161,40 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(378, 450);
             this.panel1.TabIndex = 15;
+            // 
+            // btnCancelBill
+            // 
+            this.btnCancelBill.Font = new System.Drawing.Font("Poppins SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancelBill.Location = new System.Drawing.Point(5, 339);
+            this.btnCancelBill.Name = "btnCancelBill";
+            this.btnCancelBill.Size = new System.Drawing.Size(120, 96);
+            this.btnCancelBill.TabIndex = 15;
+            this.btnCancelBill.Text = "Cancel Bill (F3)";
+            this.btnCancelBill.UseVisualStyleBackColor = true;
+            this.btnCancelBill.Click += new System.EventHandler(this.btnCancelBill_Click);
+            // 
+            // materialDivider3
+            // 
+            this.materialDivider3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialDivider3.Depth = 0;
+            this.materialDivider3.Location = new System.Drawing.Point(0, 328);
+            this.materialDivider3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialDivider3.Name = "materialDivider3";
+            this.materialDivider3.Size = new System.Drawing.Size(370, 5);
+            this.materialDivider3.TabIndex = 13;
+            this.materialDivider3.Text = "materialDivider3";
+            // 
+            // btnManagerDashborad
+            // 
+            this.btnManagerDashborad.Font = new System.Drawing.Font("Poppins SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnManagerDashborad.Location = new System.Drawing.Point(255, 339);
+            this.btnManagerDashborad.Name = "btnManagerDashborad";
+            this.btnManagerDashborad.Size = new System.Drawing.Size(120, 96);
+            this.btnManagerDashborad.TabIndex = 12;
+            this.btnManagerDashborad.Text = "Manager Dashborad";
+            this.btnManagerDashborad.UseVisualStyleBackColor = true;
+            this.btnManagerDashborad.Visible = false;
+            this.btnManagerDashborad.Click += new System.EventHandler(this.btnManagerDashborad_Click);
             // 
             // materialDivider2
             // 
@@ -539,10 +583,6 @@
             this.label12.TabIndex = 21;
             this.label12.Text = "Current Customer:";
             // 
-            // unit
-            // 
-            this.unit.Text = "Unit";
-            // 
             // Dashborad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -630,5 +670,8 @@
         private System.Windows.Forms.Label lblCurrentCustomer;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ColumnHeader unit;
+        private System.Windows.Forms.Button btnManagerDashborad;
+        private MaterialSkin.Controls.MaterialDivider materialDivider3;
+        private System.Windows.Forms.Button btnCancelBill;
     }
 }

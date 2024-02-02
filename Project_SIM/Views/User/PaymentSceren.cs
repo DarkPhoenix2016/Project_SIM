@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using static Project_SIM.Models.SimCustomer;
 using Windows.System;
+using Microsoft.Reporting.WinForms;
+using Project_SIM.Views.Customer;
 
 namespace Project_SIM.Views.User
 {
@@ -15,7 +17,9 @@ namespace Project_SIM.Views.User
         public SimCustomer.Customer customerData;
         public List<BillItem> bill;
 
-        
+        public string createdBillNumber { get; private set; }
+        public int createdtransactionID { get; private set; }
+
         private decimal total = 0;
         private decimal discount = 0;
         private decimal deuAmount = 0;
@@ -43,6 +47,7 @@ namespace Project_SIM.Views.User
             txtDiscount.Text = discount.ToString("0.00");
             txtTotal.Text = total.ToString("0.00");
             chkBoxLoyaltyDiscount.Checked = false;
+            this.KeyPreview = true;
             SetPaymentMethods();
             SetLoyaltyPresentage();
 
@@ -64,6 +69,11 @@ namespace Project_SIM.Views.User
                 txtLoyaltyBalance.Text = "0.00";
             }
 
+            if (total == 0)
+            {
+                btnCloseBill.Enabled = false;
+            }
+
         }
         
 
@@ -75,6 +85,7 @@ namespace Project_SIM.Views.User
                 this.Close();
             }
         }
+
         private void txtPayAmount_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -94,6 +105,12 @@ namespace Project_SIM.Views.User
             if (e.KeyCode == Keys.Enter)
             {
                 EnableDetailsFeild(comBoxPayMethods.SelectedItem.ToString());
+            }
+
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.DialogResult = DialogResult.Cancel;
+                this.Close();
             }
         }
         private void txtCardNumber_KeyPress(object sender, KeyPressEventArgs e)
@@ -152,69 +169,94 @@ namespace Project_SIM.Views.User
 
         private void btnAddPayment_Click(object sender, EventArgs e)
         {
-            bool result = true;
-            chkBoxLoyaltyDiscount.Enabled = false;
+            if (!string.IsNullOrEmpty(txtPayAmount.Text.Trim()))
+            {
+                bool result = true;
+                chkBoxLoyaltyDiscount.Enabled = false;
 
-            if (comBoxPayMethods.SelectedItem.ToString() == "Loyalty Points")
-            {
-                result = LoyaltyPayment();
-            }
-            if (comBoxPayMethods.SelectedItem.ToString() == "Card")
-            {
-                result = CardPayment();
-            }
+                if (comBoxPayMethods.SelectedItem.ToString() == "Loyalty Points")
+                {
+                    result = LoyaltyPayment();
+                }
+                if (comBoxPayMethods.SelectedItem.ToString() == "Card")
+                {
+                    result = CardPayment();
+                }
 
-            if (result)
-            {
-                AddPayment();
-                AddToListView();
+                if (result)
+                {
+                    AddPayment();
+                    AddToListView();
+                }
             }
+            else
+            {
+                FormatMaker.ShowErrorMessageBox("Amount Can not be Empty!");
+                txtPayAmount.Focus();
+            }
+            
 
         }
         private void btnCloseBill_Click(object sender, EventArgs e)
         {
-            try
+            if (total != 0)
             {
-                // Step 1: Create Transaction
-                bool result_transaction = billClass.CreateTransaction(loggedUserData.UserID.ToString(), customerData.CustomerID.ToString(), total, discount, totalPaidAmount, totalChange);
-
-                // Step 2: Create Transaction Payments
-                bool result_payments = billClass.CreateTransactionPayments(payments, customerData.LoyaltyNumber);
-
-
-                // Step 3: Create Transaction Details
-                bool result_transactionDetails = billClass.CreateTransactionDetails(bill);
-
-                bool result_loyaltyPoints = true;
-
-                if (customerData.CustomerID != 1) {
-                    result_loyaltyPoints = billClass.AddLoyalyaltyPoints(customerData.LoyaltyNumber, earnedLoyaltyPoints.ToString("0.00"));
-                }
-
-                // If all steps are successful, get the created bill number and transaction ID
-                if (result_transaction && result_payments && result_transactionDetails && result_loyaltyPoints)
+                try
                 {
+                    // Step 1: Create Transaction
+                    bool result_transaction = billClass.CreateTransaction(loggedUserData.UserID.ToString(), customerData.CustomerID.ToString(), total, discount, totalPaidAmount, totalChange);
+
                     string savedBillNumber = billClass.GetCreatedBillNumber();
                     string savedTransactionId = billClass.GetInsertedTransactionId();
 
-                    // Optionally, inform the user about the overall success
-                    MessageBox.Show($"Bill closed successfully!\nBill Number: {savedBillNumber}\nTransaction ID: {savedTransactionId}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Step 2: Create Transaction Payments
+                    bool result_payments = billClass.CreateTransactionPayments(payments, savedBillNumber, customerData.LoyaltyNumber);
+
+
+                    // Step 3: Create Transaction Details
+                    bool result_transactionDetails = billClass.CreateTransactionDetails(bill);
+
+                    bool result_loyaltyPoints = true;
+
+
+
+                    if (customerData.CustomerID != 1)
+                    {
+                        result_loyaltyPoints = billClass.AddLoyalyaltyPoints(savedBillNumber, customerData.LoyaltyNumber, earnedLoyaltyPoints.ToString("0.00"));
+                    }
+
+                    // If all steps are successful, get the created bill number and transaction ID
+                    if (result_transaction && result_payments && result_transactionDetails && result_loyaltyPoints)
+                    {
+
+
+
+                        // Optionally, inform the user about the overall success
+                        MessageBox.Show($"Bill closed successfully!\nBill Number: {savedBillNumber}\nTransaction ID: {savedTransactionId}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        BillRecord record = new BillRecord();
+                        record.createdBillNumber = savedBillNumber;
+                        record.createdtransactionID = Convert.ToInt32(savedTransactionId);
+                        record.ShowDialog();
+
+                    }
+                    else
+                    {
+                        FormatMaker.ShowErrorMessageBox("Some steps failed. Bill closure unsuccessful.");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    FormatMaker.ShowErrorMessageBox("Some steps failed. Bill closure unsuccessful.");
+                    // Handle unexpected exceptions
+                    FormatMaker.ShowErrorMessageBox($"An unexpected error occurred: {ex.Message}");
+                }
+                finally
+                {
+                    DialogResult = DialogResult.OK;
+                    this.Close();
                 }
             }
-            catch (Exception ex)
-            {
-                // Handle unexpected exceptions
-                FormatMaker.ShowErrorMessageBox($"An unexpected error occurred: {ex.Message}");
-            }
-            finally
-            {
-                DialogResult = DialogResult.OK;
-                this.Close();
-            }
+            
         }
 
         private void SetLoyaltyPresentage(int presentage = 10)
@@ -415,6 +457,13 @@ namespace Project_SIM.Views.User
             txtCardNumber.Text = string.Empty;
         }
 
-        
+        private void PaymentSceren_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Escape)
+            {
+                this.DialogResult = DialogResult.Cancel;
+                this.Close();
+            }
+        }
     }
 }

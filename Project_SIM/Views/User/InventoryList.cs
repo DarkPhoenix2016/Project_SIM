@@ -18,11 +18,14 @@ namespace Project_SIM.Views.User
         private int currentItem = 1;
         private SimProduct simProduct = new SimProduct();
         private double[] coloumRatios = { 0.05, 0.25, 0.40, 0.20,0.05 };
+        
 
         public InventoryList()
         {
             InitializeComponent();
             FormatMaker.SetupListViewColumns(listViewProductList, coloumRatios);
+            txtSearchWord.Focus();
+            this.KeyPreview = true;
 
         }
 
@@ -61,7 +64,7 @@ namespace Project_SIM.Views.User
             {
                 DialogResult = DialogResult.Cancel;
                 this.Close();
-                
+
             }
         }
 
@@ -95,6 +98,7 @@ namespace Project_SIM.Views.User
 
         private void listViewProductList_KeyDown(object sender, KeyEventArgs e)
         {
+            Console.WriteLine("Key Pressed: " + e.KeyCode);
             if (e.KeyCode == Keys.Enter)
             {
                 if (listViewProductList.SelectedItems.Count > 0 && !string.IsNullOrEmpty(listViewProductList.SelectedItems[0].SubItems[1].Text))
@@ -112,6 +116,12 @@ namespace Project_SIM.Views.User
                     listViewProductList.Select();
                 }
 
+
+            }
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+                this.Close();
 
             }
         }

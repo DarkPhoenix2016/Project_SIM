@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Reporting.WinForms;
+using Project_SIM.Views.Customer;
+using Project_SIM.Views.ReportView;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +21,7 @@ namespace Project_SIM
             Application.SetCompatibleTextRenderingDefault(false);
             Views.OpenScreen startScreen = new Views.OpenScreen();
             startScreen.Show();
-            Application.Run();
+            Application.Run(); ;
         }
     }
 }

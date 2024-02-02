@@ -20,6 +20,10 @@ namespace Project_SIM.Views
         public LogingForm()
         {
             InitializeComponent();
+
+            this.Activate();
+            this.Focus();
+            txtUsername.Focus();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -46,10 +50,25 @@ namespace Project_SIM.Views
                 DialogResult = DialogResult.OK;
                 this.Close();
             }
+            txtPassword.Text = string.Empty; 
+            txtUsername.Text = string.Empty;
             
         }
 
-        
+        private void LogingForm_Load(object sender, EventArgs e)
+        {
+            this.Activate();
+            this.Focus();
+            txtUsername.Focus();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            txtPassword.Text = string.Empty;
+            txtUsername.Text = string.Empty;
+            this.Close();
+        }
     }
 
 

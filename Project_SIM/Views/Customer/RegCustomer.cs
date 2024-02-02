@@ -26,7 +26,17 @@ namespace Project_SIM.Views.Customer
         public RegCustomer()
         {
             InitializeComponent();
+            KeyPreview = true;
             
+        }
+        private void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+                this.Close();
+
+            }
         }
         private void btnSubmit_Click(object sender, EventArgs e)
         {
@@ -43,7 +53,7 @@ namespace Project_SIM.Views.Customer
             {
                 FormatMaker.ShowErrorMessageBox("Evey Feild is Madnotory");
 
-            }else if (!(user.IsUsernameAvailable(username)))
+            }else if (!(user.IsUsernameAvailable(username,"Customer")))
             {
                 FormatMaker.ShowErrorMessageBox("Username is alrady taken ");
                 txtUsername.Text = "";
@@ -70,7 +80,13 @@ namespace Project_SIM.Views.Customer
             }
             else
             {
-                customer.Register(name, username,loyaltyNumber,password);
+                bool results = customer.Register(name, username,loyaltyNumber,password);
+                DialogResult = DialogResult.No;
+                if (results)
+                {
+                    DialogResult = DialogResult.Yes;
+                }
+                
                 this.Close();
             }
         }

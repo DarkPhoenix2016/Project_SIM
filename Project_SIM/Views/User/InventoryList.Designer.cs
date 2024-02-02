@@ -53,7 +53,7 @@
             this.listViewProductList.Location = new System.Drawing.Point(6, 67);
             this.listViewProductList.MultiSelect = false;
             this.listViewProductList.Name = "listViewProductList";
-            this.listViewProductList.Size = new System.Drawing.Size(1348, 560);
+            this.listViewProductList.Size = new System.Drawing.Size(1364, 560);
             this.listViewProductList.TabIndex = 0;
             this.listViewProductList.UseCompatibleStateImageBehavior = false;
             this.listViewProductList.View = System.Windows.Forms.View.Details;
@@ -94,8 +94,8 @@
             this.txtSearchWord.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSearchWord.Location = new System.Drawing.Point(232, 659);
             this.txtSearchWord.Name = "txtSearchWord";
-            this.txtSearchWord.Size = new System.Drawing.Size(247, 31);
-            this.txtSearchWord.TabIndex = 2;
+            this.txtSearchWord.Size = new System.Drawing.Size(517, 31);
+            this.txtSearchWord.TabIndex = 0;
             this.txtSearchWord.TextChanged += new System.EventHandler(this.txtSearchWord_TextChanged);
             this.txtSearchWord.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearchWord_KeyPress);
             // 
@@ -103,7 +103,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1360, 915);
+            this.ClientSize = new System.Drawing.Size(1376, 753);
             this.Controls.Add(this.txtSearchWord);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listViewProductList);
@@ -115,6 +115,7 @@
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Product List";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
