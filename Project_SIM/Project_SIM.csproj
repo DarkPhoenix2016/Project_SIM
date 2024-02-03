@@ -230,12 +230,6 @@
     <Compile Include="Views\Manager\Reports.Designer.cs">
       <DependentUpon>Reports.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Manager\Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Manager\Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Manager\Profile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -260,11 +254,11 @@
     <Compile Include="Views\ServerSettings.Designer.cs">
       <DependentUpon>ServerSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\StoreKeeper\Dahsborad.cs">
+    <Compile Include="Views\StoreKeeper\Dashborad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\StoreKeeper\Dahsborad.Designer.cs">
-      <DependentUpon>Dahsborad.cs</DependentUpon>
+    <Compile Include="Views\StoreKeeper\Dashborad.Designer.cs">
+      <DependentUpon>Dashborad.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\StoreKeeper\Home.cs">
       <SubType>Form</SubType>
@@ -272,11 +266,23 @@
     <Compile Include="Views\StoreKeeper\Home.Designer.cs">
       <DependentUpon>Home.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\StoreKeeper\Inventory.cs">
+    <Compile Include="Views\StoreKeeper\MainInverntory.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\StoreKeeper\Inventory.Designer.cs">
-      <DependentUpon>Inventory.cs</DependentUpon>
+    <Compile Include="Views\StoreKeeper\MainInverntory.Designer.cs">
+      <DependentUpon>MainInverntory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StoreKeeper\StockTransactions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\StoreKeeper\StockTransactions.Designer.cs">
+      <DependentUpon>StockTransactions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StoreKeeper\StoreInventory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\StoreKeeper\StoreInventory.Designer.cs">
+      <DependentUpon>StoreInventory.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\StoreKeeper\Products.cs">
       <SubType>Form</SubType>
@@ -284,23 +290,17 @@
     <Compile Include="Views\StoreKeeper\Products.Designer.cs">
       <DependentUpon>Products.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\StoreKeeper\Profile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\StoreKeeper\Profile.Designer.cs">
+      <DependentUpon>Profile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\StoreKeeper\Reports.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\StoreKeeper\Reports.Designer.cs">
       <DependentUpon>Reports.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StoreKeeper\Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\StoreKeeper\Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StoreKeeper\Stores.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\StoreKeeper\Stores.Designer.cs">
-      <DependentUpon>Stores.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\User\Dashborad.cs">
       <SubType>Form</SubType>
@@ -415,6 +415,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ServerSettings.resx">
       <DependentUpon>ServerSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoreKeeper\Dashborad.resx">
+      <DependentUpon>Dashborad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoreKeeper\Home.resx">
+      <DependentUpon>Home.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoreKeeper\MainInverntory.resx">
+      <DependentUpon>MainInverntory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoreKeeper\StockTransactions.resx">
+      <DependentUpon>StockTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoreKeeper\StoreInventory.resx">
+      <DependentUpon>StoreInventory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoreKeeper\Products.resx">
+      <DependentUpon>Products.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoreKeeper\Profile.resx">
+      <DependentUpon>Profile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoreKeeper\Reports.resx">
+      <DependentUpon>Reports.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\User\Dashborad.resx">
       <DependentUpon>Dashborad.cs</DependentUpon>

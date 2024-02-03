@@ -1,6 +1,6 @@
 ﻿namespace Project_SIM.Views.StoreKeeper
 {
-    partial class Products
+    partial class StockTransactions
     {
         /// <summary>
         /// Required designer variable.

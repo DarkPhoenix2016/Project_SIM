@@ -152,7 +152,9 @@ namespace Project_SIM.Views
                 string validatedDesignation = logingForm.validatedDesignation;
                 if (!string.IsNullOrEmpty(sessionID) && validatedDesignation == btnInventory.Text)
                 {
-                    FormatMaker.ShowErrorMessageBox($"Login Success Session Created {sessionID} ");
+                    StoreKeeper.Dashborad dashborad = new StoreKeeper.Dashborad();
+                    dashborad.SetSession(sessionID);
+                    dashborad.Show();
                     isClosing = false;
                     this.Close();
                 }
@@ -182,7 +184,7 @@ namespace Project_SIM.Views
                     sqlConnection.Close();
 
                     btnCustomer.Enabled = true;
-                    btnInventory.Enabled = false;
+                    btnInventory.Enabled = true;
                     btnManager.Enabled = true;
                     btnUser.Enabled = true;
                 }

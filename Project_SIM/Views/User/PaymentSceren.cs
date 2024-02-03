@@ -234,10 +234,15 @@ namespace Project_SIM.Views.User
                         // Optionally, inform the user about the overall success
                         MessageBox.Show($"Bill closed successfully!\nBill Number: {savedBillNumber}\nTransaction ID: {savedTransactionId}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        BillRecord record = new BillRecord();
-                        record.createdBillNumber = savedBillNumber;
-                        record.createdtransactionID = Convert.ToInt32(savedTransactionId);
-                        record.ShowDialog();
+                        DialogResult result = MessageBox.Show("Do you want to view the bill?", "Bill View", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                        if (result == DialogResult.Yes)
+                        {
+                            BillRecord record = new BillRecord();
+                            record.createdBillNumber = savedBillNumber;
+                            record.createdtransactionID = Convert.ToInt32(savedTransactionId);
+                            record.ShowDialog();
+                        }
+                        
 
                     }
                     else

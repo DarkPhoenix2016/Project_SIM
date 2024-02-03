@@ -93,11 +93,12 @@ namespace Project_SIM.Views.User
             }
             else if (e.KeyCode == Keys.F2)
             {
-                ClearOutCurrentBillData();
-            }
-            else if (e.KeyCode == Keys.F3)
-            {
                 EditQuntity();
+                
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                ClearOutCurrentBillData();
             }
             else if (e.KeyCode == Keys.F6)
             {

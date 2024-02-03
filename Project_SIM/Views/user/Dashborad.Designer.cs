@@ -169,7 +169,7 @@
             this.btnCancelBill.Name = "btnCancelBill";
             this.btnCancelBill.Size = new System.Drawing.Size(120, 96);
             this.btnCancelBill.TabIndex = 15;
-            this.btnCancelBill.Text = "Cancel Bill (F3)";
+            this.btnCancelBill.Text = "Cancel Bill (ESC)";
             this.btnCancelBill.UseVisualStyleBackColor = true;
             this.btnCancelBill.Click += new System.EventHandler(this.btnCancelBill_Click);
             // 

@@ -14,14 +14,14 @@ using static Project_SIM.Models.SimProduct;
 
 namespace Project_SIM.Views.StoreKeeper
 {
-    public partial class Products : MaterialForm
+    public partial class StockTransactions : MaterialForm
     {
         private double[] coloumRatios = { 0.05, 0.25, 0.30, 0.15, 0.15 };
         private int currentItem = 1;
         private SimProduct simProduct = new SimProduct();
         private List<SimProductData> productList;
 
-        public Products()
+        public StockTransactions()
         {
             InitializeComponent();
             FormatMaker.SetupListViewColumns(listViewProductList, coloumRatios);
