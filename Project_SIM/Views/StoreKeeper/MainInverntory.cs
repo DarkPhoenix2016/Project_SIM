@@ -16,6 +16,8 @@ namespace Project_SIM.Views.StoreKeeper
         private SimInventory InventoryClass;
         private SimProduct simProduct;
 
+        private SubViews.AddToMainInventory AddToMainInventory;
+
 
         List<StoreStockedProducts> productList;
 
@@ -78,7 +80,7 @@ namespace Project_SIM.Views.StoreKeeper
             ListViewProductInventory.Items.Clear();
             currentItem = 1; // Reset the counter when reloading data
 
-            productList = InventoryClass.GetStoreStockedProductsInverntory();
+            productList = InventoryClass.GetMainStockedProductsInverntory();
 
             if (productList != null && productList.Count > 0)
             {
@@ -87,7 +89,6 @@ namespace Project_SIM.Views.StoreKeeper
                 {
                     ListViewItem newItem = new ListViewItem(currentItem.ToString());
 
-                    newItem.SubItems.Add(item.Date.ToString("dd-MM-yyy"));
                     newItem.SubItems.Add(item.ProductCode);
                     newItem.SubItems.Add(item.Name);
                     newItem.SubItems.Add(item.Quantity.ToString());
@@ -106,7 +107,7 @@ namespace Project_SIM.Views.StoreKeeper
             currentItem = 1; // Reset the counter when reloading data
             if (!(string.IsNullOrEmpty(productNameOrCode)||string.IsNullOrWhiteSpace(productNameOrCode)))
             {
-                productList = InventoryClass.GetStoreStockedProductsInverntory(productNameOrCode);
+                productList = InventoryClass.GetMainStockedProductsInverntory(productNameOrCode);
 
                 if (productList != null && productList.Count > 0)
                 {
@@ -115,7 +116,6 @@ namespace Project_SIM.Views.StoreKeeper
                     {
                         ListViewItem newItem = new ListViewItem(currentItem.ToString());
 
-                        newItem.SubItems.Add(item.Date.ToString("dd-MM-yyy"));
                         newItem.SubItems.Add(item.ProductCode);
                         newItem.SubItems.Add(item.Name);
                         newItem.SubItems.Add(item.Quantity.ToString());
@@ -152,7 +152,6 @@ namespace Project_SIM.Views.StoreKeeper
                 TxtUnitOfMasure.Text = selectedProductData.Unit;
 
                 //Set inventroy record data
-                TxtDate.Text = selectedInventoryRecord.Date.ToString("dd-MM-yyy");
                 TxtQunatity.Text = selectedInventoryRecord.Quantity.ToString("0.000");
                 TxtExpiryDate.Text = selectedInventoryRecord.ExpiryDate.ToString("dd-MM-yyyy");
                 TxtRemark.Text = selectedInventoryRecord.Remark;
@@ -175,6 +174,11 @@ namespace Project_SIM.Views.StoreKeeper
             }
         }
 
-        
+        private void btnAddStock_Click(object sender, EventArgs e)
+        {
+            AddToMainInventory = new SubViews.AddToMainInventory();
+            AddToMainInventory.ShowDialog();
+        }
+
     }
 }

@@ -302,6 +302,12 @@
     <Compile Include="Views\StoreKeeper\Reports.Designer.cs">
       <DependentUpon>Reports.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\StoreKeeper\SubViews\AddToMainInventory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\StoreKeeper\SubViews\AddToMainInventory.Designer.cs">
+      <DependentUpon>AddToMainInventory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\User\Dashborad.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -439,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\StoreKeeper\Reports.resx">
       <DependentUpon>Reports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoreKeeper\SubViews\AddToMainInventory.resx">
+      <DependentUpon>AddToMainInventory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\User\Dashborad.resx">
       <DependentUpon>Dashborad.cs</DependentUpon>

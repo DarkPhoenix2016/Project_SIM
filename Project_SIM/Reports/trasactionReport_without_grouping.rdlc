@@ -121,25 +121,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.53125in</Width>
+                  <Width>0.48794in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.11806in</Width>
+                  <Width>0.89766in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.25in</Width>
+                  <Width>1.38377in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.36458in</Width>
+                  <Width>1.11293in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.25in</Width>
+                  <Width>1.36405in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.09375in</Width>
+                  <Width>0.92544in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.35306in</Width>
+                  <Width>1.14308in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -220,6 +220,7 @@
                       <CellContents>
                         <Textbox Name="Textbox58">
                           <CanGrow>true</CanGrow>
+                          <CanShrink>true</CanShrink>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -360,6 +361,7 @@
                       <CellContents>
                         <Textbox Name="Textbox66">
                           <CanGrow>true</CanGrow>
+                          <CanShrink>true</CanShrink>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -466,6 +468,7 @@
                       <CellContents>
                         <Textbox Name="BillNumber2">
                           <CanGrow>true</CanGrow>
+                          <CanShrink>true</CanShrink>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -592,6 +595,7 @@
                       <CellContents>
                         <Textbox Name="PaidAmount2">
                           <CanGrow>true</CanGrow>
+                          <CanShrink>true</CanShrink>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -667,6 +671,7 @@
                       <CellContents>
                         <Textbox Name="BillNumber">
                           <CanGrow>true</CanGrow>
+                          <CanShrink>true</CanShrink>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -737,6 +742,7 @@
                       <CellContents>
                         <Textbox Name="PaidAmount">
                           <CanGrow>true</CanGrow>
+                          <CanShrink>true</CanShrink>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -797,14 +803,21 @@
             </TablixRowHierarchy>
             <NoRowsMessage>No Transaction Record Found</NoRowsMessage>
             <DataSetName>trasactionReport</DataSetName>
+            <SortExpressions>
+              <SortExpression>
+                <Value>=Fields!TransactionDate.Value</Value>
+                <Direction>Descending</Direction>
+              </SortExpression>
+            </SortExpressions>
             <Top>0.02904in</Top>
             <Left>0.13305in</Left>
             <Height>0.75in</Height>
-            <Width>7.9607in</Width>
+            <Width>7.31487in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
+              <FontSize>9pt</FontSize>
             </Style>
           </Tablix>
         </ReportItems>
@@ -813,10 +826,10 @@
           <BackgroundColor>White</BackgroundColor>
         </Style>
       </Body>
-      <Width>8.5625in</Width>
+      <Width>7.59263in</Width>
       <Page>
         <PageHeader>
-          <Height>2.32861in</Height>
+          <Height>2.41194in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -962,7 +975,7 @@
                       <Value>Trasaction Records  </Value>
                       <Style>
                         <FontFamily>Poppins</FontFamily>
-                        <FontSize>16pt</FontSize>
+                        <FontSize>13pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -978,7 +991,6 @@
                       <Style>
                         <FontStyle>Italic</FontStyle>
                         <FontFamily>Poppins</FontFamily>
-                        <FontSize>11pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
@@ -986,7 +998,6 @@
                       <Style>
                         <FontStyle>Italic</FontStyle>
                         <FontFamily>Poppins</FontFamily>
-                        <FontSize>11pt</FontSize>
                         <Format>dd-MM-yyyy</Format>
                       </Style>
                     </TextRun>
@@ -995,7 +1006,6 @@
                       <Style>
                         <FontStyle>Italic</FontStyle>
                         <FontFamily>Poppins</FontFamily>
-                        <FontSize>11pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
@@ -1003,7 +1013,6 @@
                       <Style>
                         <FontStyle>Italic</FontStyle>
                         <FontFamily>Poppins</FontFamily>
-                        <FontSize>11pt</FontSize>
                         <Format>dd-MM-yyyy</Format>
                       </Style>
                     </TextRun>
@@ -1018,7 +1027,6 @@
                       <Value>On Pamyment Method:</Value>
                       <Style>
                         <FontFamily>Poppins</FontFamily>
-                        <FontSize>11pt</FontSize>
                         <FontWeight>Normal</FontWeight>
                       </Style>
                     </TextRun>
@@ -1035,7 +1043,6 @@
                       <Style>
                         <FontStyle>Italic</FontStyle>
                         <FontFamily>Poppins</FontFamily>
-                        <FontSize>11pt</FontSize>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -1047,7 +1054,7 @@
               <rd:DefaultName>Textbox12</rd:DefaultName>
               <Top>1.26737in</Top>
               <Left>0.13305in</Left>
-              <Height>1.02083in</Height>
+              <Height>1.07513in</Height>
               <Width>7.42945in</Width>
               <ZIndex>5</ZIndex>
               <Style>

@@ -32,7 +32,6 @@
             this.txtSearchWord = new System.Windows.Forms.TextBox();
             this.ListViewProductInventory = new System.Windows.Forms.ListView();
             this.No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.inventoryDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.productCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.productName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.recivedQuantity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -41,12 +40,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.TxtProductCode = new System.Windows.Forms.TextBox();
             this.TxtProductName = new System.Windows.Forms.TextBox();
             this.TxtBarcode = new System.Windows.Forms.TextBox();
-            this.TxtDate = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblUnit1 = new System.Windows.Forms.Label();
+            this.lblUnit4 = new System.Windows.Forms.Label();
+            this.lblUnit3 = new System.Windows.Forms.Label();
+            this.lblUnit2 = new System.Windows.Forms.Label();
             this.TxtStockLocation = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.TxtTotalCurrentStock = new System.Windows.Forms.TextBox();
@@ -72,21 +73,18 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lblUnit1 = new System.Windows.Forms.Label();
-            this.lblUnit2 = new System.Windows.Forms.Label();
-            this.lblUnit3 = new System.Windows.Forms.Label();
-            this.lblUnit4 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.btnAddStock = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -112,7 +110,6 @@
             // 
             this.ListViewProductInventory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.No,
-            this.inventoryDate,
             this.productCode,
             this.productName,
             this.recivedQuantity,
@@ -124,7 +121,7 @@
             this.ListViewProductInventory.Location = new System.Drawing.Point(0, 0);
             this.ListViewProductInventory.MultiSelect = false;
             this.ListViewProductInventory.Name = "ListViewProductInventory";
-            this.ListViewProductInventory.Size = new System.Drawing.Size(922, 759);
+            this.ListViewProductInventory.Size = new System.Drawing.Size(923, 759);
             this.ListViewProductInventory.TabIndex = 3;
             this.ListViewProductInventory.UseCompatibleStateImageBehavior = false;
             this.ListViewProductInventory.View = System.Windows.Forms.View.Details;
@@ -133,12 +130,6 @@
             // No
             // 
             this.No.Text = "#";
-            // 
-            // inventoryDate
-            // 
-            this.inventoryDate.Text = "Date";
-            this.inventoryDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.inventoryDate.Width = 85;
             // 
             // productCode
             // 
@@ -195,15 +186,6 @@
             this.label4.TabIndex = 6;
             this.label4.Text = "Barcode";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 299);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 28);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Oder Date";
-            // 
             // TxtProductCode
             // 
             this.TxtProductCode.BackColor = System.Drawing.Color.White;
@@ -211,7 +193,7 @@
             this.TxtProductCode.Location = new System.Drawing.Point(187, 53);
             this.TxtProductCode.Name = "TxtProductCode";
             this.TxtProductCode.ReadOnly = true;
-            this.TxtProductCode.Size = new System.Drawing.Size(288, 31);
+            this.TxtProductCode.Size = new System.Drawing.Size(262, 31);
             this.TxtProductCode.TabIndex = 9;
             // 
             // TxtProductName
@@ -221,7 +203,7 @@
             this.TxtProductName.Location = new System.Drawing.Point(187, 94);
             this.TxtProductName.Name = "TxtProductName";
             this.TxtProductName.ReadOnly = true;
-            this.TxtProductName.Size = new System.Drawing.Size(288, 31);
+            this.TxtProductName.Size = new System.Drawing.Size(262, 31);
             this.TxtProductName.TabIndex = 10;
             // 
             // TxtBarcode
@@ -231,18 +213,8 @@
             this.TxtBarcode.Location = new System.Drawing.Point(187, 135);
             this.TxtBarcode.Name = "TxtBarcode";
             this.TxtBarcode.ReadOnly = true;
-            this.TxtBarcode.Size = new System.Drawing.Size(288, 31);
+            this.TxtBarcode.Size = new System.Drawing.Size(262, 31);
             this.TxtBarcode.TabIndex = 12;
-            // 
-            // TxtDate
-            // 
-            this.TxtDate.BackColor = System.Drawing.Color.White;
-            this.TxtDate.ForeColor = System.Drawing.Color.Black;
-            this.TxtDate.Location = new System.Drawing.Point(187, 299);
-            this.TxtDate.Name = "TxtDate";
-            this.TxtDate.ReadOnly = true;
-            this.TxtDate.Size = new System.Drawing.Size(288, 31);
-            this.TxtDate.TabIndex = 13;
             // 
             // panel1
             // 
@@ -273,34 +245,68 @@
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.TxtQunatity);
             this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.TxtDate);
             this.panel1.Controls.Add(this.TxtBarcode);
             this.panel1.Controls.Add(this.TxtProductName);
             this.panel1.Controls.Add(this.TxtProductCode);
-            this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(462, 759);
+            this.panel1.Size = new System.Drawing.Size(461, 759);
             this.panel1.TabIndex = 14;
+            // 
+            // lblUnit1
+            // 
+            this.lblUnit1.AutoSize = true;
+            this.lblUnit1.Location = new System.Drawing.Point(413, 545);
+            this.lblUnit1.Name = "lblUnit1";
+            this.lblUnit1.Size = new System.Drawing.Size(48, 28);
+            this.lblUnit1.TabIndex = 37;
+            this.lblUnit1.Text = "___";
+            // 
+            // lblUnit4
+            // 
+            this.lblUnit4.AutoSize = true;
+            this.lblUnit4.Location = new System.Drawing.Point(414, 672);
+            this.lblUnit4.Name = "lblUnit4";
+            this.lblUnit4.Size = new System.Drawing.Size(48, 28);
+            this.lblUnit4.TabIndex = 40;
+            this.lblUnit4.Text = "___";
+            // 
+            // lblUnit3
+            // 
+            this.lblUnit3.AutoSize = true;
+            this.lblUnit3.Location = new System.Drawing.Point(414, 630);
+            this.lblUnit3.Name = "lblUnit3";
+            this.lblUnit3.Size = new System.Drawing.Size(48, 28);
+            this.lblUnit3.TabIndex = 39;
+            this.lblUnit3.Text = "___";
+            // 
+            // lblUnit2
+            // 
+            this.lblUnit2.AutoSize = true;
+            this.lblUnit2.Location = new System.Drawing.Point(413, 589);
+            this.lblUnit2.Name = "lblUnit2";
+            this.lblUnit2.Size = new System.Drawing.Size(48, 28);
+            this.lblUnit2.TabIndex = 38;
+            this.lblUnit2.Text = "___";
             // 
             // TxtStockLocation
             // 
             this.TxtStockLocation.BackColor = System.Drawing.Color.White;
             this.TxtStockLocation.ForeColor = System.Drawing.Color.Black;
-            this.TxtStockLocation.Location = new System.Drawing.Point(187, 463);
+            this.TxtStockLocation.Location = new System.Drawing.Point(187, 426);
             this.TxtStockLocation.Name = "TxtStockLocation";
             this.TxtStockLocation.ReadOnly = true;
-            this.TxtStockLocation.Size = new System.Drawing.Size(288, 31);
+            this.TxtStockLocation.Size = new System.Drawing.Size(262, 31);
             this.TxtStockLocation.TabIndex = 36;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(15, 463);
+            this.label10.Location = new System.Drawing.Point(15, 426);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(127, 28);
             this.label10.TabIndex = 35;
@@ -313,7 +319,7 @@
             this.TxtTotalCurrentStock.Location = new System.Drawing.Point(187, 669);
             this.TxtTotalCurrentStock.Name = "TxtTotalCurrentStock";
             this.TxtTotalCurrentStock.ReadOnly = true;
-            this.TxtTotalCurrentStock.Size = new System.Drawing.Size(235, 31);
+            this.TxtTotalCurrentStock.Size = new System.Drawing.Size(212, 31);
             this.TxtTotalCurrentStock.TabIndex = 34;
             this.TxtTotalCurrentStock.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -333,7 +339,7 @@
             this.TxtTotalRetuens.Location = new System.Drawing.Point(187, 627);
             this.TxtTotalRetuens.Name = "TxtTotalRetuens";
             this.TxtTotalRetuens.ReadOnly = true;
-            this.TxtTotalRetuens.Size = new System.Drawing.Size(235, 31);
+            this.TxtTotalRetuens.Size = new System.Drawing.Size(212, 31);
             this.TxtTotalRetuens.TabIndex = 32;
             this.TxtTotalRetuens.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -353,7 +359,7 @@
             this.TxtTotalSale.Location = new System.Drawing.Point(187, 586);
             this.TxtTotalSale.Name = "TxtTotalSale";
             this.TxtTotalSale.ReadOnly = true;
-            this.TxtTotalSale.Size = new System.Drawing.Size(235, 31);
+            this.TxtTotalSale.Size = new System.Drawing.Size(212, 31);
             this.TxtTotalSale.TabIndex = 30;
             this.TxtTotalSale.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -362,9 +368,9 @@
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(15, 586);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(98, 28);
+            this.label18.Size = new System.Drawing.Size(127, 28);
             this.label18.TabIndex = 29;
-            this.label18.Text = "Total Sales";
+            this.label18.Text = "Total Releases";
             // 
             // TxtTotalStock
             // 
@@ -373,7 +379,7 @@
             this.TxtTotalStock.Location = new System.Drawing.Point(187, 545);
             this.TxtTotalStock.Name = "TxtTotalStock";
             this.TxtTotalStock.ReadOnly = true;
-            this.TxtTotalStock.Size = new System.Drawing.Size(235, 31);
+            this.TxtTotalStock.Size = new System.Drawing.Size(212, 31);
             this.TxtTotalStock.TabIndex = 28;
             this.TxtTotalStock.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -413,7 +419,7 @@
             this.TxtUnitOfMasure.Location = new System.Drawing.Point(187, 217);
             this.TxtUnitOfMasure.Name = "TxtUnitOfMasure";
             this.TxtUnitOfMasure.ReadOnly = true;
-            this.TxtUnitOfMasure.Size = new System.Drawing.Size(288, 31);
+            this.TxtUnitOfMasure.Size = new System.Drawing.Size(262, 31);
             this.TxtUnitOfMasure.TabIndex = 24;
             // 
             // label14
@@ -432,7 +438,7 @@
             this.TxtUnitPrice.Location = new System.Drawing.Point(187, 176);
             this.TxtUnitPrice.Name = "TxtUnitPrice";
             this.TxtUnitPrice.ReadOnly = true;
-            this.TxtUnitPrice.Size = new System.Drawing.Size(288, 31);
+            this.TxtUnitPrice.Size = new System.Drawing.Size(262, 31);
             this.TxtUnitPrice.TabIndex = 22;
             this.TxtUnitPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -459,16 +465,16 @@
             // 
             this.TxtRemark.BackColor = System.Drawing.Color.White;
             this.TxtRemark.ForeColor = System.Drawing.Color.Black;
-            this.TxtRemark.Location = new System.Drawing.Point(187, 422);
+            this.TxtRemark.Location = new System.Drawing.Point(187, 385);
             this.TxtRemark.Name = "TxtRemark";
             this.TxtRemark.ReadOnly = true;
-            this.TxtRemark.Size = new System.Drawing.Size(288, 31);
+            this.TxtRemark.Size = new System.Drawing.Size(262, 31);
             this.TxtRemark.TabIndex = 19;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(15, 422);
+            this.label8.Location = new System.Drawing.Point(15, 385);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(73, 28);
             this.label8.TabIndex = 18;
@@ -478,16 +484,16 @@
             // 
             this.TxtExpiryDate.BackColor = System.Drawing.Color.White;
             this.TxtExpiryDate.ForeColor = System.Drawing.Color.Black;
-            this.TxtExpiryDate.Location = new System.Drawing.Point(187, 381);
+            this.TxtExpiryDate.Location = new System.Drawing.Point(187, 344);
             this.TxtExpiryDate.Name = "TxtExpiryDate";
             this.TxtExpiryDate.ReadOnly = true;
-            this.TxtExpiryDate.Size = new System.Drawing.Size(288, 31);
+            this.TxtExpiryDate.Size = new System.Drawing.Size(262, 31);
             this.TxtExpiryDate.TabIndex = 17;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(15, 381);
+            this.label7.Location = new System.Drawing.Point(15, 344);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(100, 28);
             this.label7.TabIndex = 16;
@@ -497,17 +503,17 @@
             // 
             this.TxtQunatity.BackColor = System.Drawing.Color.White;
             this.TxtQunatity.ForeColor = System.Drawing.Color.Black;
-            this.TxtQunatity.Location = new System.Drawing.Point(187, 340);
+            this.TxtQunatity.Location = new System.Drawing.Point(187, 303);
             this.TxtQunatity.Name = "TxtQunatity";
             this.TxtQunatity.ReadOnly = true;
-            this.TxtQunatity.Size = new System.Drawing.Size(288, 31);
+            this.TxtQunatity.Size = new System.Drawing.Size(262, 31);
             this.TxtQunatity.TabIndex = 15;
             this.TxtQunatity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 340);
+            this.label6.Location = new System.Drawing.Point(15, 303);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(81, 28);
             this.label6.TabIndex = 14;
@@ -519,9 +525,9 @@
             this.label9.Font = new System.Drawing.Font("Poppins Medium", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(14, 16);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(271, 34);
+            this.label9.Size = new System.Drawing.Size(178, 34);
             this.label9.TabIndex = 17;
-            this.label9.Text = "Store Inverntory Records";
+            this.label9.Text = "Main Inverntory";
             // 
             // panel2
             // 
@@ -532,17 +538,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1388, 888);
             this.panel2.TabIndex = 18;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.txtSearchWord);
-            this.panel3.Controls.Add(this.label9);
-            this.panel3.Controls.Add(this.label1);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1388, 122);
-            this.panel3.TabIndex = 19;
             // 
             // panel4
             // 
@@ -567,46 +562,34 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.ListViewProductInventory);
             this.splitContainer1.Size = new System.Drawing.Size(1388, 759);
-            this.splitContainer1.SplitterDistance = 462;
+            this.splitContainer1.SplitterDistance = 461;
             this.splitContainer1.TabIndex = 17;
             // 
-            // lblUnit1
+            // panel3
             // 
-            this.lblUnit1.AutoSize = true;
-            this.lblUnit1.Location = new System.Drawing.Point(427, 545);
-            this.lblUnit1.Name = "lblUnit1";
-            this.lblUnit1.Size = new System.Drawing.Size(48, 28);
-            this.lblUnit1.TabIndex = 37;
-            this.lblUnit1.Text = "___";
+            this.panel3.Controls.Add(this.btnAddStock);
+            this.panel3.Controls.Add(this.txtSearchWord);
+            this.panel3.Controls.Add(this.label9);
+            this.panel3.Controls.Add(this.label1);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1388, 122);
+            this.panel3.TabIndex = 19;
             // 
-            // lblUnit2
+            // btnAddStock
             // 
-            this.lblUnit2.AutoSize = true;
-            this.lblUnit2.Location = new System.Drawing.Point(427, 589);
-            this.lblUnit2.Name = "lblUnit2";
-            this.lblUnit2.Size = new System.Drawing.Size(48, 28);
-            this.lblUnit2.TabIndex = 38;
-            this.lblUnit2.Text = "___";
+            this.btnAddStock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddStock.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddStock.Location = new System.Drawing.Point(1250, 55);
+            this.btnAddStock.Name = "btnAddStock";
+            this.btnAddStock.Size = new System.Drawing.Size(138, 40);
+            this.btnAddStock.TabIndex = 18;
+            this.btnAddStock.Text = "Add Stock";
+            this.btnAddStock.UseVisualStyleBackColor = true;
+            this.btnAddStock.Click += new System.EventHandler(this.btnAddStock_Click);
             // 
-            // lblUnit3
-            // 
-            this.lblUnit3.AutoSize = true;
-            this.lblUnit3.Location = new System.Drawing.Point(428, 630);
-            this.lblUnit3.Name = "lblUnit3";
-            this.lblUnit3.Size = new System.Drawing.Size(48, 28);
-            this.lblUnit3.TabIndex = 39;
-            this.lblUnit3.Text = "___";
-            // 
-            // lblUnit4
-            // 
-            this.lblUnit4.AutoSize = true;
-            this.lblUnit4.Location = new System.Drawing.Point(428, 672);
-            this.lblUnit4.Name = "lblUnit4";
-            this.lblUnit4.Size = new System.Drawing.Size(48, 28);
-            this.lblUnit4.TabIndex = 40;
-            this.lblUnit4.Text = "___";
-            // 
-            // Inventory
+            // MainInventory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 28F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -615,7 +598,7 @@
             this.Font = new System.Drawing.Font("Poppins", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormStyle = MaterialSkin.Controls.MaterialForm.FormStyles.StatusAndActionBar_None;
             this.Margin = new System.Windows.Forms.Padding(6);
-            this.Name = "Inventory";
+            this.Name = "MainInventory";
             this.Padding = new System.Windows.Forms.Padding(6, 0, 6, 6);
             this.Text = "Inventory";
             this.Load += new System.EventHandler(this.Inventory_Load);
@@ -623,13 +606,13 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -642,14 +625,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox TxtProductCode;
         private System.Windows.Forms.TextBox TxtProductName;
         private System.Windows.Forms.TextBox TxtBarcode;
-        private System.Windows.Forms.TextBox TxtDate;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ColumnHeader No;
-        private System.Windows.Forms.ColumnHeader inventoryDate;
         private System.Windows.Forms.ColumnHeader productCode;
         private System.Windows.Forms.ColumnHeader productName;
         private System.Windows.Forms.ColumnHeader recivedQuantity;
@@ -687,5 +667,6 @@
         private System.Windows.Forms.Label lblUnit3;
         private System.Windows.Forms.Label lblUnit2;
         private System.Windows.Forms.Label lblUnit1;
+        private System.Windows.Forms.Button btnAddStock;
     }
 }

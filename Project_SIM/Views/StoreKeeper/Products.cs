@@ -105,20 +105,20 @@ namespace Project_SIM.Views.StoreKeeper
 
                 SimProductData selectedItem = productList[selectedIndex];
 
-                TxtProductCode.Text = selectedItem.ProductCode;
-                TxtProductName.Text = selectedItem.Name;
-                TxtCategory.Text = selectedItem.CatDiscription;
-                TxtUnitPrice.Text = selectedItem.Price.ToString("0.00");
-                TxtMasurementUnit.Text = selectedItem.Unit;
+                txtProductCode.Text = selectedItem.ProductCode;
+                txtProductName.Text = selectedItem.Name;
+                txtProductCategory.Text = selectedItem.CatDiscription;
+                txtProductUnitPrice.Text = selectedItem.Price.ToString("0.00");
+                txtProductMasureUnit.Text = selectedItem.Unit;
 
             }
             else
             {
-                TxtProductCode.Text = string.Empty;
-                TxtProductName.Text = string.Empty;
-                TxtCategory.Text = string.Empty;
-                TxtUnitPrice.Text = string.Empty;
-                TxtMasurementUnit.Text = string.Empty;
+                txtProductCode.Text = string.Empty;
+                txtProductName.Text = string.Empty;
+                txtProductCategory.Text = string.Empty;
+                txtProductUnitPrice.Text = string.Empty;
+                txtProductMasureUnit.Text = string.Empty;
             }
 
         }
